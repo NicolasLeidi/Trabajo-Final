@@ -14,14 +14,7 @@ class TextPresenter():
         print("Text entered:", text)
 
     def load_text_file(self, file_path):
-        return(self.model.load_knowledge_base(file_path))
-        
-        text = FileHandler.read_text_file(file_path)
-        if text is not None:
-            return(text)
-        else:
-            return("File not found or unable to read.")
-    
+        return(self.model.load_knowledge_base(file_path))    
     
     def query(self, query):
-        self.model.query(query)
+        return(self.model.query(query))

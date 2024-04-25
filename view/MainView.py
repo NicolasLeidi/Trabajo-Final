@@ -37,8 +37,12 @@ class MainView():
         query_entry = tk.Entry(self.root)
         query_entry.pack()
         
-        query_button = tk.Button(self.root, text="Query", command=lambda: self.query_submit(query_entry))
+        query_response = tk.Text(self.root, state="disabled", height=3, width=30)
+        
+        query_button = tk.Button(self.root, text="Query", command=lambda: self.query_submit(query_entry, query_response))
         query_button.pack()
+        
+        query_response.pack()
         
     
     def submit_prolog_predicate(self, text_entry):
@@ -52,5 +56,10 @@ class MainView():
         text_entry.insert(tk.END, text)
         text_entry.configure(state="disabled")
     
-    def query_submit(self, query_entry):
-        self.presenter.query(query_entry.get())
+    def query_submit(self, query_entry, query_response):
+        text = self.presenter.query(query_entry.get())
+        
+        query_response.configure(state="normal")
+        query_response.delete(1.0, tk.END)
+        query_response.insert(tk.END, text)
+        query_response.configure(state="disabled")

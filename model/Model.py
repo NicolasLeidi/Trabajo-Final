@@ -18,6 +18,6 @@ class Model():
             return("File not found or unable to read.")
     
     def query(self, query):
-        print(self.prolog_reader.query(query))
+        return(self.prolog_reader.query(query))
     
     
