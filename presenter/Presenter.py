@@ -12,6 +12,7 @@ class TextPresenter():
 
     def submit_prolog_predicate(self, text):
         print("Text entered:", text)
+        self.model.submit_prolog_predicate(text)
 
     def load_text_file(self, file_path):
         return(self.model.load_knowledge_base(file_path))    
