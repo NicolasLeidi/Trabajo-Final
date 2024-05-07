@@ -23,9 +23,4 @@ class Model():
     def submit_prolog_predicate(self, prolog_predicate):
         self.prolog_interface.set_prolog_predicate(prolog_predicate)
     
-    def submit_examples(self, examples):
-        examples_list = examples.splitlines()
-        for example in examples_list:
-            PrologInterface.
-    
     
