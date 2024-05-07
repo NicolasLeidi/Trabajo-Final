@@ -44,6 +44,15 @@ class MainView():
         
         query_response.pack()
         
+        examples_label = tk.Label(self.root, text="Ejemplos de uso: ")
+        examples_label.pack()
+        
+        examples = tk.Text(self.root, height=5, width=50)
+        examples.pack()
+        
+        examples_button = tk.Button(self.root, text="Load Examples", command=lambda: self.load_examples(examples))
+        examples_button.pack()
+        
     
     def submit_prolog_predicate(self, text_entry):
         self.presenter.submit_prolog_predicate(text_entry.get())
@@ -63,3 +72,6 @@ class MainView():
         query_response.delete(1.0, tk.END)
         query_response.insert(tk.END, text)
         query_response.configure(state="disabled")
+    
+    def load_examples(self, examples):
+        self.presenter.examples(examples.get())

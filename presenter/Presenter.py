@@ -19,3 +19,6 @@ class TextPresenter():
     
     def query(self, query):
         return(self.model.query(query))
+    
+    def examples(self, examples):
+        self.model.submit_examples(examples)

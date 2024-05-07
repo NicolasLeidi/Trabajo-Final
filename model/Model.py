@@ -1,6 +1,5 @@
-from model.PrologInterface import PrologInterface
+from model.prolog.PrologInterface import PrologInterface
 from utils.FileHandler import FileHandler
-from utils.PrologPredicate import PrologPredicate
 
 class Model():
     def __init__(self):
@@ -23,5 +22,10 @@ class Model():
     
     def submit_prolog_predicate(self, prolog_predicate):
         self.prolog_interface.set_prolog_predicate(prolog_predicate)
+    
+    def submit_examples(self, examples):
+        examples_list = examples.splitlines()
+        for example in examples_list:
+            PrologInterface.
     
     
