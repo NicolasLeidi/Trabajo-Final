@@ -1,3 +1,4 @@
+import json
 from model.prolog.PrologInterface import PrologInterface
 from utils.FileHandler import FileHandler
 
@@ -22,5 +23,18 @@ class Model():
     
     def submit_prolog_predicate(self, prolog_predicate):
         self.prolog_interface.set_prolog_predicate(prolog_predicate)
+    
+    def submit_examples(self, examples):
+        examples_list = examples.splitlines()
+        print(examples_list)
+        for example in examples_list:
+            self.prolog_interface.add_example(example)
+            
+        FileHandler.write_text_file("examples.txt", json.dumps(self.prolog_interface.get_examples()))
+        
+        # Para probar los ejemplos
+        recovered = json.loads(FileHandler.read_text_file("examples.txt"))
+        
+        self.prolog_interface.test_examples(recovered)
     
     

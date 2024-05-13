@@ -74,4 +74,4 @@ class MainView():
         query_response.configure(state="disabled")
     
     def load_examples(self, examples):
-        self.presenter.examples(examples.get())
+        self.presenter.examples(examples.get("1.0",'end'))

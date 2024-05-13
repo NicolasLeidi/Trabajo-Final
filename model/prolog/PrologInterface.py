@@ -1,11 +1,12 @@
 from pyswip.core import *
 from pyswip.prolog import Prolog
-from model.prolog.Predicate.PredicateDefinition import PredicateDefinition
+from model.prolog.predicate.PredicateDefinition import PredicateDefinition
 
 class PrologInterface():
     
     def __init__(self):
         self.prolog = Prolog()
+        self.examples_base = []
     
     def consult_knowledge_base(self):
         print(self.knowledge_base)
@@ -25,4 +26,32 @@ class PrologInterface():
         print("Output: ", self.prolog_predicate.output_parameters)
         print("Input u Output: ", self.prolog_predicate.input_or_output_parameters)
         print("Predicado recuperado: ", self.prolog_predicate)
+    
+    def add_example(self, example):
+        result = self.query(example)
+        self.examples_base.append([example, result])
+    
+    def get_examples(self):
+        return self.examples_base
+    
+    def test_examples(self):        
+        for example, expected_result in self.examples_base:
+            self._run_example(example, expected_result)
+    
+    def test_examples(self, examples):
+        for example, expected_result in examples:
+            self._run_example(example, expected_result)
+    
+    def _run_example(self, example, expected_result):
+        result = self.query(example)
+            
+        print("Example: ", example)
+        print("Expected result: ", expected_result)
+        print("Actual result: ", result)
+        
+        if result == expected_result:
+            print("Test passed")
+        else:
+            print("Test failed")
+            
     
