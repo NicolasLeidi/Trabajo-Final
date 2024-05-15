@@ -50,8 +50,15 @@ class MainView():
         examples = tk.Text(self.root, height=5, width=50)
         examples.pack()
         
-        examples_button = tk.Button(self.root, text="Load Examples", command=lambda: self.load_examples(examples))
+        examples_button = tk.Button(self.root, text="Cargar ejemplos", command=lambda: self.load_examples(examples))
         examples_button.pack()
+        
+        test_result = tk.Text(self.root, state="disabled", height=3, width=30)
+        
+        test_solution_button = tk.Button(self.root, text="Probar solución", command=lambda: self.test_solution(test_result))
+        test_solution_button.pack()
+        
+        test_result.pack()
         
     
     def submit_prolog_predicate(self, text_entry):
@@ -75,3 +82,11 @@ class MainView():
     
     def load_examples(self, examples):
         self.presenter.examples(examples.get("1.0",'end'))
+    
+    def test_solution(self, text_entry):
+        text = self.presenter.test_examples(filedialog.askopenfilename(filetypes=[("Batería de test", "*.txt")]))
+        
+        text_entry.configure(state="normal")
+        text_entry.delete(1.0, tk.END)
+        text_entry.insert(tk.END, text)
+        text_entry.configure(state="disabled")

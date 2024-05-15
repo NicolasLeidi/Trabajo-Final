@@ -35,12 +35,16 @@ class PrologInterface():
         return self.examples_base
     
     def test_examples(self):        
+        feedback = ""
         for example, expected_result in self.examples_base:
-            self._run_example(example, expected_result)
+            feedback += self._run_example(example, expected_result)
+        return feedback
     
     def test_examples(self, examples):
+        feedback = ""
         for example, expected_result in examples:
-            self._run_example(example, expected_result)
+            feedback += self._run_example(example, expected_result)
+        return feedback
     
     def _run_example(self, example, expected_result):
         result = self.query(example)
@@ -50,8 +54,8 @@ class PrologInterface():
         print("Actual result: ", result)
         
         if result == expected_result:
-            print("Test passed")
+            return("Test passed")
         else:
-            print("Test failed")
+            return("Test failed")
             
     

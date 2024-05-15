@@ -37,4 +37,6 @@ class Model():
         
         self.prolog_interface.test_examples(recovered)
     
+    def test_examples(self, examples):
+        return self.prolog_interface.test_examples(json.loads(FileHandler.read_text_file(examples)))
     

@@ -22,3 +22,6 @@ class TextPresenter():
     
     def examples(self, examples):
         self.model.submit_examples(examples)
+
+    def test_examples(self, file_path):
+        return(self.model.test_examples(file_path))
