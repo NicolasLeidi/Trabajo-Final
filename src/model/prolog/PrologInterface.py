@@ -16,8 +16,8 @@ class PrologInterface():
         self.knowledge_base = knowledge_base
     
     def query(self, query):
-        print(query)
-        return list(self.prolog.query(query))
+        prolog_result = self.prolog.query(query)
+        return list(prolog_result)
     
     def set_prolog_predicate(self, predicate):
         self.prolog_predicate = PredicateDefinition(predicate)

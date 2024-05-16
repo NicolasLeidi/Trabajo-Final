@@ -1,4 +1,3 @@
-from model.prolog.predicate.PredicateInstance import PredicateInstance
 from utils.Stringify import Stringify
 
 class PredicateDefinition:
@@ -54,12 +53,6 @@ class PredicateDefinition:
         predicate = predicate.strip(",")
         predicate += ")"
         return predicate        
-    
-    # Ignorar, era parte de lo necesario para el modelo
-    def dissect_example(self, example):
-        instance = PredicateInstance(self.parameters_ordered, example)
-        self.instances.append(instance)
-        return instance
     
     def __str__(self):
         predicate = self.name + "("
