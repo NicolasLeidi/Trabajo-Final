@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter.filedialog import asksaveasfilename
 
 from utils.FileHandler import FileHandler
 
@@ -21,7 +22,12 @@ class TextPresenter():
         return(self.model.query(query))
     
     def examples(self, examples):
-        self.model.submit_examples(examples)
+        file_path = asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt")])
+    
+        if not file_path:
+            return
+        
+        self.model.submit_examples(examples, file_path)
 
     def test_examples(self, file_path):
         return(self.model.test_examples(file_path))
