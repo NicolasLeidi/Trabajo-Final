@@ -1,6 +1,6 @@
 from pyswip.core import *
 from pyswip.prolog import Prolog
-from model.prolog.predicate.PredicateDefinition import PredicateDefinition
+from utils.FeedbackEnum import FeedbackEnum
 
 class PrologInterface():
     
@@ -19,43 +19,33 @@ class PrologInterface():
         prolog_result = self.prolog.query(query)
         return list(prolog_result)
     
-    def set_prolog_predicate(self, predicate):
-        self.prolog_predicate = PredicateDefinition(predicate)
-        print("Nombre: ", self.prolog_predicate.name)
-        print("Input: ", self.prolog_predicate.input_parameters)
-        print("Output: ", self.prolog_predicate.output_parameters)
-        print("Input u Output: ", self.prolog_predicate.input_or_output_parameters)
-        print("Predicado recuperado: ", self.prolog_predicate)
-    
-    def add_example(self, example):
+    def create_example(self, example):
         result = self.query(example)
+        self.examples_base.append([example, result])
+    
+    def empty_examples_base(self):
+        self.examples_base = []
+        
+    def add_example_to_base(self, example_with_result):
+        example = example_with_result[0]
+        result = example_with_result[1]
         self.examples_base.append([example, result])
     
     def get_examples(self):
         return self.examples_base
     
     def test_examples(self):        
-        feedback = ""
+        feedback = []
         for example, expected_result in self.examples_base:
-            feedback += self._run_example(example, expected_result)
-        return feedback
-    
-    def test_examples(self, examples):
-        feedback = ""
-        for example, expected_result in examples:
-            feedback += self._run_example(example, expected_result)
+            feedback.append(self._run_example(example, expected_result))
         return feedback
     
     def _run_example(self, example, expected_result):
         result = self.query(example)
-            
-        print("Example: ", example)
-        print("Expected result: ", expected_result)
-        print("Actual result: ", result)
         
         if result == expected_result:
-            return("Test passed")
+            return(example, "Test passed", FeedbackEnum.SUCCESS)
         else:
-            return("Test failed")
+            return(example, "Test failed", FeedbackEnum.ERROR)
             
     

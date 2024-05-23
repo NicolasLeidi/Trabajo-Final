@@ -1,4 +1,5 @@
 import json
+import logging
 from model.prolog.PrologInterface import PrologInterface
 from utils.FileHandler import FileHandler
 
@@ -14,15 +15,13 @@ class Model():
         if text is not None:
             self.prolog_interface.set_knowledge_base(knowledge_base_path)
             self.prolog_interface.consult_knowledge_base()
-            return(text)
+            return(True, "Base de conocimiento cargada")
         else:
-            return("File not found or unable to read.")
+            logging.warning("Archivo no encontrado o no se pudo leer.")
+            return(False, "Error")
     
     def query(self, query):
         return(self.prolog_interface.query(query))
-    
-    def submit_prolog_predicate(self, prolog_predicate):
-        self.prolog_interface.set_prolog_predicate(prolog_predicate)
     
     def submit_examples(self, examples, file_path):
         examples_list = examples.splitlines()
@@ -37,6 +36,21 @@ class Model():
         
         self.prolog_interface.test_examples(recovered)
     
-    def test_examples(self, examples):
-        return self.prolog_interface.test_examples(json.loads(FileHandler.read_text_file(examples)))
+    def load_examples(self, file_path):
+        self.prolog_interface.empty_examples_base()
+        
+        examples = json.loads(FileHandler.read_text_file(file_path))
+        
+        # Hay que recuperar los ejemplos y devolverlos sin correrlos
+        
+        for example in examples:
+            self.prolog_interface.add_example_to_base(example)
+        
+        return(self.prolog_interface.get_examples())
+    
+    def test_examples(self, file_path):
+        return self.prolog_interface.test_examples(json.loads(FileHandler.read_text_file(file_path)))
+    
+    def run_examples(self):
+        return self.prolog_interface.test_examples()
     
