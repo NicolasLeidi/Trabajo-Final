@@ -11,11 +11,8 @@ class AppPresenter():
     def bind_view(self, view):
         self.view = view 
     
-    def examples(self, file_path, examples):
-        if not file_path:
-            return
-        
-        self.model.submit_examples(examples, file_path)
+    def examples(self, file_path, examples, ordered, first_only):        
+        self.model.submit_examples(examples, file_path, ordered, first_only)
 
     def load_knowledge_base(self, file_path):
         response = self.model.load_knowledge_base(file_path)
@@ -27,23 +24,28 @@ class AppPresenter():
         return (self.model.test_examples(file_path))
     
     def enter_test_mode(self, file_path):      
-        self.view.clean_feedback()
+        self.view.clean_main_text_box()
          
         response = self.model.load_examples(file_path)
         
         self.mode = self.modes.Testing
                
-        for [query, description] in response:
-            self.view.insert_example_to_list(query, description)
+        for example in response:
+            self.view.insert_example_to_main_text_box(example[0])
+            
+        self.view.change_to_test_mode()
     
     def enter_create_mode(self):
         self.mode = self.modes.Creating
+        
+        self.view.clean_main_text_box()
+        self.view.change_to_create_mode()
     
     def open_popup(self, type, message):
         self.view.open_popup(type, message)
     
     def run_examples(self):
         results = self.model.run_examples()
-        self.view.clean_feedback()
+        self.view.clean_main_text_box()
         for [query, description, result] in results:
-            self.view.insert_example_to_list(query, description, result)
+            self.view.insert_example_to_main_text_box(query, description, result)

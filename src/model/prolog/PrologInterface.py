@@ -19,9 +19,9 @@ class PrologInterface():
         prolog_result = self.prolog.query(query)
         return list(prolog_result)
     
-    def create_example(self, example):
+    def create_example(self, example, ordered, first_only):
         result = self.query(example)
-        self.examples_base.append([example, result])
+        self.examples_base.append([example, result, ordered, first_only])
     
     def empty_examples_base(self):
         self.examples_base = []
@@ -29,23 +29,25 @@ class PrologInterface():
     def add_example_to_base(self, example_with_result):
         example = example_with_result[0]
         result = example_with_result[1]
-        self.examples_base.append([example, result])
+        ordered = example_with_result[2]
+        first_only = example_with_result[3]
+        self.examples_base.append([example, result, ordered, first_only])
     
     def get_examples(self):
         return self.examples_base
     
     def test_examples(self):        
         feedback = []
-        for example, expected_result in self.examples_base:
-            feedback.append(self._run_example(example, expected_result))
+        for query, expected_result, ordered, first_only in self.examples_base:
+            feedback.append(self._run_example(query, expected_result, ordered, first_only))
         return feedback
     
-    def _run_example(self, example, expected_result):
-        result = self.query(example)
+    def _run_example(self, query, expected_result, ordered, first_only):
+        result = self.query(query)
         
         if result == expected_result:
-            return(example, "Test passed", FeedbackEnum.SUCCESS)
+            return(query, "Test passed", FeedbackEnum.SUCCESS)
         else:
-            return(example, "Test failed", FeedbackEnum.ERROR)
+            return(query, "Test failed", FeedbackEnum.ERROR)
             
     

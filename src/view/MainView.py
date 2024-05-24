@@ -8,6 +8,8 @@ class MainView():
     def __init__(self, root, presenter):
         self.root = root
         self.presenter = presenter
+        self.ordered = IntVar()
+        self.first_only = IntVar()
         self.create_widgets()
 
 
@@ -23,21 +25,27 @@ class MainView():
         self.creating_mode_button = tk.Button(self.root, text="Modo de creación", command=lambda: self.create_mode())
         self.creating_mode_button.grid(row = 0, column = 2, sticky = W, pady = 2)
         
-        self.feedback = Text(self.root, height=10, width=50)
-        self.feedback.grid(row = 1, column = 0, columnspan = 3, sticky = W, pady = 2)
+        self.main_text_box = Text(self.root, height=10, width=50)
+        self.main_text_box.grid(row = 1, column = 0, columnspan = 3, sticky = W, pady = 2)
         
-        self.ordered_checkbox = tk.Checkbutton(self.root, text="Ordenado")
+        self.ordered_checkbox = tk.Checkbutton(self.root, text="Ordenado", variable= self.ordered)
         self.ordered_checkbox.grid(row = 2, column = 0, sticky = W, pady = 2)
         
-        self.first_only_checkbox = tk.Checkbutton(self.root, text="Primer Resultado")
+        self.first_only_checkbox = tk.Checkbutton(self.root, text="Primer Resultado", variable= self.first_only)
         self.first_only_checkbox.grid(row = 2, column = 1, sticky = W, pady = 2)
         
         self.run_tests = tk.Button(self.root, text="Correr", command=lambda: self.test_solution())
         self.run_tests.grid(row = 2, column = 3, sticky = W, pady = 2)
+        
+        self.save_tests = tk.Button(self.root, text="Guardar", command=lambda: self.load_examples())
     
-    def load_examples(self, examples):
+    def load_examples(self):
         file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt")])
-        self.presenter.examples(file_path, examples.get("1.0",'end'))
+        
+        if not file_path:
+            return
+        
+        self.presenter.examples(file_path, self.main_text_box.get("1.0",'end'), self.ordered.get(), self.first_only.get())
     
     def load_knowledge_base(self):
         file_path = filedialog.askopenfilename(filetypes=[("Archivo PROLOG", "*.pl")])
@@ -71,27 +79,40 @@ class MainView():
         ok_button = tk.Button(popup, text="Ok", command=popup.destroy)
         ok_button.pack()
     
-    def insert_example_to_list(self, query, description = "", result = FeedbackEnum.NONE):
-        line_number = self.feedback.index('end-1c').split('.')[0]
+    def insert_example_to_main_text_box(self, query, description = "", result = FeedbackEnum.NONE):
+        self.main_text_box.config(state = "normal")
+        line_number = self.main_text_box.index('end-1c').split('.')[0]
         line_number_to_str = str(line_number) + ".0"
         
         match result:
             case FeedbackEnum.NONE:
                 text = f"Test {line_number} - {query}\n"
                 tag = "none"
-                self.feedback.tag_config(tag, background="gray")
+                self.main_text_box.tag_config(tag, background="gray")
             case FeedbackEnum.SUCCESS:
                 text = f"Test {line_number} - {query} - Correcto\n"
                 tag = "success"
-                self.feedback.tag_config(tag, background="green")
+                self.main_text_box.tag_config(tag, background="green")
             case FeedbackEnum.ERROR:
                 text = f"Test {line_number} - {query} - {description}\n"
                 tag = "error"
-                self.feedback.tag_config(tag, background="red")
+                self.main_text_box.tag_config(tag, background="red")
 
-        self.feedback.insert(END, text)
-        self.feedback.tag_add(tag, line_number_to_str, line_number_to_str + "+1lines")
+        self.main_text_box.insert(END, text)
+        self.main_text_box.tag_add(tag, line_number_to_str, line_number_to_str + "+1lines")
         
     
-    def clean_feedback(self):
-        self.feedback.delete('1.0', END)
+    def clean_main_text_box(self):
+        self.main_text_box.config(state = "normal")
+        self.main_text_box.delete('1.0', END)
+    
+    def change_to_test_mode(self):
+        self.creating_mode_button.config(state = "normal")
+        self.main_text_box.config(state = "disabled")
+        self.run_tests.grid(row = 2, column = 3, sticky = W, pady = 2)
+        self.save_tests.grid_forget()
+    
+    def change_to_create_mode(self):
+        self.creating_mode_button.config(state = "disabled")
+        self.run_tests.grid_forget()
+        self.save_tests.grid(row = 2, column = 3, sticky = W, pady = 2)
