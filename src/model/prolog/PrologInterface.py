@@ -1,6 +1,7 @@
 from pyswip.core import *
 from pyswip.prolog import Prolog
 from utils.FeedbackEnum import FeedbackEnum
+from utils.ListOfDictsComparer import ListOfDictsComparer
 
 class PrologInterface():
     
@@ -42,12 +43,35 @@ class PrologInterface():
             feedback.append(self._run_example(query, expected_result, ordered, first_only))
         return feedback
     
-    def _run_example(self, query, expected_result, ordered, first_only):
+    def _run_example(self, query, expected_result, is_ordered, is_first_only):
         result = self.query(query)
         
-        if result == expected_result:
-            return(query, "Test passed", FeedbackEnum.SUCCESS)
-        else:
-            return(query, "Test failed", FeedbackEnum.ERROR)
+        match (is_ordered, is_first_only):
+            case (1, 1):
+                result = [result[0]]
+                expected_result = [expected_result[0]]
+                if ListOfDictsComparer.equals(result, expected_result):
+                    return(query, "Test passed", FeedbackEnum.SUCCESS)
+                else:
+                    return(query, "Test failed", FeedbackEnum.ERROR)
+                
+            case (1, 0):
+                if ListOfDictsComparer.equals(result, expected_result):
+                    return(query, "Test passed", FeedbackEnum.SUCCESS)
+                else:
+                    return(query, "Test failed", FeedbackEnum.ERROR)
+                
+            case (0, 1):
+                expected_result = [expected_result[0]]
+                if ListOfDictsComparer.includes(result, expected_result):
+                    return(query, "Test passed", FeedbackEnum.SUCCESS)
+                else:
+                    return(query, "Test failed", FeedbackEnum.ERROR)
+                
+            case (0, 0):
+                if ListOfDictsComparer.equal_set(result, expected_result):
+                    return(query, "Test passed", FeedbackEnum.SUCCESS)
+                else:
+                    return(query, "Test failed", FeedbackEnum.ERROR)
             
     
