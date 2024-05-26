@@ -24,8 +24,9 @@ class Model():
         return(self.prolog_interface.query(query))
     
     def submit_examples(self, examples, file_path, ordered, first_only):
+        self.prolog_interface.empty_examples_base()
+        
         examples_list = examples.splitlines()
-        print(examples_list)
         for example in examples_list:
             self.prolog_interface.create_example(example, ordered, first_only)
             

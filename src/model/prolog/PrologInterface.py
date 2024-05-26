@@ -8,9 +8,9 @@ class PrologInterface():
     def __init__(self):
         self.prolog = Prolog()
         self.examples_base = []
+        self.source_file = None
     
     def consult_knowledge_base(self):
-        print(self.knowledge_base)
         self.prolog.consult(self.knowledge_base)
     
     def set_knowledge_base(self, knowledge_base):
