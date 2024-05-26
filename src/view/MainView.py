@@ -30,13 +30,10 @@ class MainView():
         self.main_text_box.grid(row = 1, column = 0, columnspan = 3, sticky = W, pady = 2)
         
         self.ordered_checkbox = tk.Checkbutton(self.root, text="Ordenado", variable= self.ordered)
-        self.ordered_checkbox.grid(row = 2, column = 0, sticky = W, pady = 2)
         
         self.first_only_checkbox = tk.Checkbutton(self.root, text="Primer Resultado", variable= self.first_only)
-        self.first_only_checkbox.grid(row = 2, column = 1, sticky = W, pady = 2)
         
         self.run_tests = tk.Button(self.root, text="Correr", command=lambda: self.test_solution())
-        self.run_tests.grid(row = 2, column = 3, sticky = W, pady = 2)
         
         self.save_tests = tk.Button(self.root, text="Guardar", command=lambda: self.load_examples())
     
@@ -111,9 +108,13 @@ class MainView():
         self.creating_mode_button.config(state = "normal")
         self.main_text_box.config(state = "disabled")
         self.run_tests.grid(row = 2, column = 3, sticky = W, pady = 2)
+        self.ordered_checkbox.grid_forget()
+        self.first_only_checkbox.grid_forget()
         self.save_tests.grid_forget()
     
     def change_to_create_mode(self):
         self.creating_mode_button.config(state = "disabled")
         self.run_tests.grid_forget()
+        self.ordered_checkbox.grid(row = 2, column = 0, sticky = W, pady = 2)
+        self.first_only_checkbox.grid(row = 2, column = 1, sticky = W, pady = 2)
         self.save_tests.grid(row = 2, column = 3, sticky = W, pady = 2)
