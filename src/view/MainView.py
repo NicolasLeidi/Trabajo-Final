@@ -26,6 +26,7 @@ class MainView():
         self.creating_mode_button.grid(row = 0, column = 2, sticky = W, pady = 2)
         
         self.main_text_box = Text(self.root, height=10, width=50)
+        self.main_text_box.config(state = "disabled")
         self.main_text_box.grid(row = 1, column = 0, columnspan = 3, sticky = W, pady = 2)
         
         self.ordered_checkbox = tk.Checkbutton(self.root, text="Ordenado", variable= self.ordered)
