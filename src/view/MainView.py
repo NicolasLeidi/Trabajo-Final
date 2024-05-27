@@ -11,31 +11,32 @@ class MainView():
         self.ordered = IntVar()
         self.first_only = IntVar()
         self.create_widgets()
+        self.set_initial_dimensions()
 
 
     def create_widgets(self):
         self.root.title("Nombre a colocar")
         
         self.submit_knowledge_base_button = tk.Button(self.root, text="Cargar Base de conocimiento", command=lambda: self.load_knowledge_base())
-        self.submit_knowledge_base_button.grid(row = 0, column = 0, sticky = W, pady = 2)
+        self.submit_knowledge_base_button.grid(row = 0, column = 0, pady = 2)
         
-        self.testing_mode_button = tk.Button(self.root, text="Modo de prueba", command=lambda: self.test_mode())
-        self.testing_mode_button.grid(row = 0, column = 1, sticky = W, pady = 2)
+        self.testing_mode_button = tk.Button(self.root, text="Modo de prueba", width=20, command=lambda: self.test_mode())
+        self.testing_mode_button.grid(row = 0, column = 1, pady = 2)
         
-        self.creating_mode_button = tk.Button(self.root, text="Modo de creación", command=lambda: self.create_mode())
-        self.creating_mode_button.grid(row = 0, column = 2, sticky = W, pady = 2)
+        self.creating_mode_button = tk.Button(self.root, text="Modo de creación", width=20, command=lambda: self.create_mode())
+        self.creating_mode_button.grid(row = 0, column = 2, pady = 2)
         
-        self.main_text_box = Text(self.root, height=10, width=50)
+        self.main_text_box = Text(self.root, height=30, width=100)
         self.main_text_box.config(state = "disabled")
-        self.main_text_box.grid(row = 1, column = 0, columnspan = 3, sticky = W, pady = 2)
+        self.main_text_box.grid(row = 1, column = 0, columnspan = 3, pady = 2)
         
         self.ordered_checkbox = tk.Checkbutton(self.root, text="Ordenado", variable= self.ordered)
         
         self.first_only_checkbox = tk.Checkbutton(self.root, text="Primer Resultado", variable= self.first_only)
         
-        self.run_tests = tk.Button(self.root, text="Correr", command=lambda: self.test_solution())
+        self.run_tests = tk.Button(self.root, text="Correr", width=20, command=lambda: self.test_solution())
         
-        self.save_tests = tk.Button(self.root, text="Guardar", command=lambda: self.load_examples())
+        self.save_tests = tk.Button(self.root, text="Guardar", width=20, command=lambda: self.load_examples())
     
     def load_examples(self):
         file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt")])
@@ -107,7 +108,7 @@ class MainView():
     def change_to_test_mode(self):
         self.creating_mode_button.config(state = "normal")
         self.main_text_box.config(state = "disabled")
-        self.run_tests.grid(row = 2, column = 3, sticky = W, pady = 2)
+        self.run_tests.grid(row = 2, column = 1, pady = 10)
         self.ordered_checkbox.grid_forget()
         self.first_only_checkbox.grid_forget()
         self.save_tests.grid_forget()
@@ -115,6 +116,13 @@ class MainView():
     def change_to_create_mode(self):
         self.creating_mode_button.config(state = "disabled")
         self.run_tests.grid_forget()
-        self.ordered_checkbox.grid(row = 2, column = 0, sticky = W, pady = 2)
-        self.first_only_checkbox.grid(row = 2, column = 1, sticky = W, pady = 2)
-        self.save_tests.grid(row = 2, column = 3, sticky = W, pady = 2)
+        self.ordered_checkbox.grid(row = 2, column = 0, pady = 10)
+        self.first_only_checkbox.grid(row = 2, column = 1, pady = 10)
+        self.save_tests.grid(row = 2, column = 2, pady = 10)
+    
+    def set_initial_dimensions(self):
+        self.root.minsize(300, 565)
+        
+        for col in range(3):
+            self.root.grid_columnconfigure(col, minsize=100)
+        
