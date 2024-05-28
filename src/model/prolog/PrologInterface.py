@@ -37,7 +37,7 @@ class PrologInterface():
     def get_examples(self):
         return self.examples_base
     
-    def test_examples(self):        
+    def test_examples(self):
         feedback = []
         for query, expected_result, ordered, first_only in self.examples_base:
             feedback.append(self._run_example(query, expected_result, ordered, first_only))

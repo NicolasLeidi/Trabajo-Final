@@ -17,7 +17,9 @@ class AppPresenter():
     def load_knowledge_base(self, file_path):
         response = self.model.load_knowledge_base(file_path)
         
-        if (not response[0]):
+        if response[0]:
+            self.view.enable_mode_buttons()
+        else:
             self.open_popup("Error", response[1])
 
     def test_examples(self, file_path):

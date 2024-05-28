@@ -22,9 +22,11 @@ class MainView():
         self.submit_knowledge_base_button.grid(row = 0, column = 0, pady = 2)
         
         self.testing_mode_button = tk.Button(self.root, text="Modo de prueba", width=20, command=lambda: self.test_mode())
+        self.testing_mode_button.config(state = "disabled")
         self.testing_mode_button.grid(row = 0, column = 1, pady = 2)
         
         self.creating_mode_button = tk.Button(self.root, text="Modo de creación", width=20, command=lambda: self.create_mode())
+        self.creating_mode_button.config(state = "disabled")
         self.creating_mode_button.grid(row = 0, column = 2, pady = 2)
         
         self.main_text_box = Text(self.root, height=30, width=100)
@@ -115,21 +117,33 @@ class MainView():
     def change_to_test_mode(self):
         self.creating_mode_button.config(state = "normal")
         self.main_text_box.config(state = "disabled")
-        self.run_tests.grid(row = 2, column = 1, pady = 10)
+        self.testing_mode_button.config(text = "Cambiar ejemplos")
+        self.show_test_mode_widgets()
         self.ordered_checkbox.grid_forget()
         self.first_only_checkbox.grid_forget()
         self.save_tests.grid_forget()
     
     def change_to_create_mode(self):
         self.creating_mode_button.config(state = "disabled")
+        self.testing_mode_button.config(text = "Modo de prueba")
         self.run_tests.grid_forget()
-        self.ordered_checkbox.grid(row = 2, column = 0, pady = 10)
-        self.first_only_checkbox.grid(row = 2, column = 1, pady = 10)
-        self.save_tests.grid(row = 2, column = 2, pady = 10)
+        self.show_create_mode_widgets()
     
     def set_initial_dimensions(self):
         self.root.minsize(300, 565)
         
         for col in range(3):
             self.root.grid_columnconfigure(col, minsize=100)
+    
+    def show_test_mode_widgets(self):
+        self.run_tests.grid(row = 2, column = 1, pady = 10)
+    
+    def show_create_mode_widgets(self):
+        self.save_tests.grid(row = 2, column = 2, pady = 10)
+        self.first_only_checkbox.grid(row = 2, column = 1, pady = 10)
+        self.save_tests.grid(row = 2, column = 2, pady = 10)
+    
+    def enable_mode_buttons(self):
+        self.testing_mode_button.config(state = "normal")
+        self.creating_mode_button.config(state = "normal")
         
