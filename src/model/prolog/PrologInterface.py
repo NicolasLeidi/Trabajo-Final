@@ -48,30 +48,47 @@ class PrologInterface():
         
         match (is_ordered, is_first_only):
             case (1, 1):
-                result = [result[0]]
-                expected_result = [expected_result[0]]
-                if ListOfDictsComparer.equals(result, expected_result):
-                    return(query, "Test passed", FeedbackEnum.SUCCESS)
-                else:
-                    return(query, "Test failed", FeedbackEnum.ERROR)
-                
+                return self.__run_example_ordered_and_first_only(query, result, expected_result)
             case (1, 0):
-                if ListOfDictsComparer.equals(result, expected_result):
-                    return(query, "Test passed", FeedbackEnum.SUCCESS)
-                else:
-                    return(query, "Test failed", FeedbackEnum.ERROR)
-                
+                return self.__run_example_ordered(query, result, expected_result)
             case (0, 1):
-                expected_result = [expected_result[0]]
-                if ListOfDictsComparer.includes(result, expected_result):
-                    return(query, "Test passed", FeedbackEnum.SUCCESS)
-                else:
-                    return(query, "Test failed", FeedbackEnum.ERROR)
-                
+                return self.__run_example_first_only(query, result, expected_result)
             case (0, 0):
-                if ListOfDictsComparer.equal_set(result, expected_result):
-                    return(query, "Test passed", FeedbackEnum.SUCCESS)
-                else:
-                    return(query, "Test failed", FeedbackEnum.ERROR)
+                return self.__run_example_base(query, result, expected_result)
+    
+    def __run_example_ordered_and_first_only(self, query, result, expected_result):
+        result = [result[0]]
+        expected_result = [expected_result[0]]
+        if ListOfDictsComparer.equals(result, expected_result):
+            return(query, FeedbackEnum.SUCCESS, result, expected_result, "")
+        else:
+            explanation = "La primera respuesta devuelta no coincide con la esperada."
+            
+            return(query, FeedbackEnum.ERROR, result, expected_result, explanation),
+    
+    def __run_example_ordered(self, query, result, expected_result):
+        if ListOfDictsComparer.equal_set(result, expected_result):
+            return(query, FeedbackEnum.SUCCESS, result, expected_result, "")
+        else:
+            explanation = "Las respuestas devueltas no coinciden con las esperadas."
+            
+            return(query, FeedbackEnum.ERROR, result, expected_result, explanation)
+    
+    def __run_example_first_only(self, query, result, expected_result):
+        expected_result = [expected_result[0]]
+        if ListOfDictsComparer.includes(result, expected_result):
+            return(query, FeedbackEnum.SUCCESS, result, expected_result, "")
+        else:
+            explanation = "La primera respuesta devuelta no coincide con la esperada."
+            
+            return(query, FeedbackEnum.ERROR, result, expected_result, explanation)
+    
+    def __run_example_base(self, query, result, expected_result):
+        if ListOfDictsComparer.equals(result, expected_result):
+            return(query, FeedbackEnum.SUCCESS, result, expected_result, "")
+        else:
+            explanation = "Las respuestas devueltas no coinciden con las esperadas."
+            
+            return(query, FeedbackEnum.ERROR, result, expected_result, explanation)
             
     

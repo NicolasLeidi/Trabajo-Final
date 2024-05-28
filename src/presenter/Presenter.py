@@ -47,5 +47,5 @@ class AppPresenter():
     def run_examples(self):
         results = self.model.run_examples()
         self.view.clean_main_text_box()
-        for [query, description, result] in results:
-            self.view.insert_example_to_main_text_box(query, description, result)
+        for [query, result_code, result, expected_result, explanation] in results:
+            self.view.insert_example_to_main_text_box(query, result_code, explanation, expected_result, result)

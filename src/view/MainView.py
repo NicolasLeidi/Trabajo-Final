@@ -12,6 +12,7 @@ class MainView():
         self.first_only = IntVar()
         self.create_widgets()
         self.set_initial_dimensions()
+        self.test_counter = 0
 
 
     def create_widgets(self):
@@ -78,32 +79,38 @@ class MainView():
         ok_button = tk.Button(popup, text="Ok", command=popup.destroy)
         ok_button.pack()
     
-    def insert_example_to_main_text_box(self, query, description = "", result = FeedbackEnum.NONE):
+    def insert_example_to_main_text_box(self, query, result = FeedbackEnum.NONE, explanation = "", expected = "", obtained = ""):
         self.main_text_box.config(state = "normal")
         line_number = self.main_text_box.index('end-1c').split('.')[0]
         line_number_to_str = str(line_number) + ".0"
         
+        self.test_counter += 1
+        
         match result:
             case FeedbackEnum.NONE:
-                text = f"Test {line_number} - {query}\n"
+                text = f"Test {self.test_counter} - {query}\n"
                 tag = "none"
                 self.main_text_box.tag_config(tag, background="gray")
             case FeedbackEnum.SUCCESS:
-                text = f"Test {line_number} - {query} - Correcto\n"
+                text = f"Test {self.test_counter} - {query} - Test passed.\n"
                 tag = "success"
                 self.main_text_box.tag_config(tag, background="green")
             case FeedbackEnum.ERROR:
-                text = f"Test {line_number} - {query} - {description}\n"
+                text = f"Test {self.test_counter} - {query} - Test failed.\n{explanation}\nSe esperaba: {expected}\nSe obtuvo: {obtained}\n"
                 tag = "error"
                 self.main_text_box.tag_config(tag, background="red")
 
         self.main_text_box.insert(END, text)
-        self.main_text_box.tag_add(tag, line_number_to_str, line_number_to_str + "+1lines")
+        
+        # Coloreo una cantidad de lineas igual a la cantidad de lineas que ocupó la respuesta
+        
+        self.main_text_box.tag_add(tag, line_number_to_str, line_number_to_str + "+" + str(len(text.split("\n")) - 1) + "lines")
         
     
     def clean_main_text_box(self):
         self.main_text_box.config(state = "normal")
         self.main_text_box.delete('1.0', END)
+        self.test_counter = 0
     
     def change_to_test_mode(self):
         self.creating_mode_button.config(state = "normal")
