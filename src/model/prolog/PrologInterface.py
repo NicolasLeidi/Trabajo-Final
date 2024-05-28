@@ -57,14 +57,14 @@ class PrologInterface():
                 return self.__run_example_base(query, result, expected_result)
     
     def __run_example_ordered_and_first_only(self, query, result, expected_result):
-        result = [result[0]]
-        expected_result = [expected_result[0]]
-        if ListOfDictsComparer.equals(result, expected_result):
-            return(query, FeedbackEnum.SUCCESS, result, expected_result, "")
+        result_first_only = [result[0]]
+        expected_result_first_only = [expected_result[0]]
+        if ListOfDictsComparer.equals(result_first_only, expected_result_first_only):
+            return(query, FeedbackEnum.SUCCESS, result, expected_result_first_only, "")
         else:
             explanation = "La primera respuesta devuelta no coincide con la esperada."
             
-            return(query, FeedbackEnum.ERROR, result, expected_result, explanation),
+            return(query, FeedbackEnum.ERROR, result_first_only, expected_result_first_only, explanation),
     
     def __run_example_ordered(self, query, result, expected_result):
         if ListOfDictsComparer.equal_set(result, expected_result):
@@ -75,13 +75,13 @@ class PrologInterface():
             return(query, FeedbackEnum.ERROR, result, expected_result, explanation)
     
     def __run_example_first_only(self, query, result, expected_result):
-        expected_result = [expected_result[0]]
-        if ListOfDictsComparer.includes(result, expected_result):
-            return(query, FeedbackEnum.SUCCESS, result, expected_result, "")
+        expected_result_first_only = [expected_result[0]]
+        if ListOfDictsComparer.includes(result, expected_result_first_only):
+            return(query, FeedbackEnum.SUCCESS, result, expected_result_first_only, "")
         else:
-            explanation = "La primera respuesta devuelta no coincide con la esperada."
+            explanation = "La respuesta esperada no se encuentra entre las devueltas."
             
-            return(query, FeedbackEnum.ERROR, result, expected_result, explanation)
+            return(query, FeedbackEnum.ERROR, result, expected_result_first_only, explanation)
     
     def __run_example_base(self, query, result, expected_result):
         if ListOfDictsComparer.equals(result, expected_result):
