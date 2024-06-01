@@ -81,33 +81,19 @@ class MainView():
         ok_button = tk.Button(popup, text="Ok", command=popup.destroy)
         ok_button.pack()
     
-    def insert_example_to_main_text_box(self, query, result = FeedbackEnum.NONE, explanation = "", expected = "", obtained = ""):
+    def insert_example_to_main_text_box(self, text, tag = 0):
         self.main_text_box.config(state = "normal")
         line_number = self.main_text_box.index('end-1c').split('.')[0]
         line_number_to_str = str(line_number) + ".0"
-        
-        self.test_counter += 1
-        
-        match result:
-            case FeedbackEnum.NONE:
-                text = f"Test {self.test_counter} - {query}\n"
-                tag = "none"
-                self.main_text_box.tag_config(tag, background="gray")
-            case FeedbackEnum.SUCCESS:
-                text = f"Test {self.test_counter} - {query} - Test passed.\n"
-                tag = "success"
-                self.main_text_box.tag_config(tag, background="green")
-            case FeedbackEnum.ERROR:
-                text = f"Test {self.test_counter} - {query} - Test failed.\n{explanation}\nSe esperaba: {expected}\nSe obtuvo: {obtained}\n"
-                tag = "error"
-                self.main_text_box.tag_config(tag, background="red")
 
         self.main_text_box.insert(END, text)
-        
+                
         # Coloreo una cantidad de lineas igual a la cantidad de lineas que ocupó la respuesta
         
         self.main_text_box.tag_add(tag, line_number_to_str, line_number_to_str + "+" + str(len(text.split("\n")) - 1) + "lines")
-        
+    
+    def set_main_text_tag_color(self, tag, color):
+        self.main_text_box.tag_config(tag, background = color)
     
     def clean_main_text_box(self):
         self.main_text_box.config(state = "normal")
@@ -139,7 +125,7 @@ class MainView():
         self.run_tests.grid(row = 2, column = 1, pady = 10)
     
     def show_create_mode_widgets(self):
-        self.save_tests.grid(row = 2, column = 2, pady = 10)
+        self.ordered_checkbox.grid(row = 2, column = 0, pady = 10)
         self.first_only_checkbox.grid(row = 2, column = 1, pady = 10)
         self.save_tests.grid(row = 2, column = 2, pady = 10)
     

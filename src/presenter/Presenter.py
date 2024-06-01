@@ -10,6 +10,9 @@ class AppPresenter():
 
     def bind_view(self, view):
         self.view = view 
+        self.view.set_main_text_tag_color( FeedbackEnum.NONE.value, "gray" )
+        self.view.set_main_text_tag_color( FeedbackEnum.ERROR.value, "red" )
+        self.view.set_main_text_tag_color( FeedbackEnum.SUCCESS.value, "green" )
     
     def examples(self, file_path, examples, ordered, first_only):        
         self.model.submit_examples(examples, file_path, ordered, first_only)
@@ -33,7 +36,7 @@ class AppPresenter():
         self.mode = self.modes.Testing
                
         for example in response:
-            self.view.insert_example_to_main_text_box(example[0])
+            self.view.insert_example_to_main_text_box(str(example[0]) + "\n")
             
         self.view.change_to_test_mode()
     
@@ -49,5 +52,26 @@ class AppPresenter():
     def run_examples(self):
         results = self.model.run_examples()
         self.view.clean_main_text_box()
-        for [query, result_code, result, expected_result, explanation] in results:
-            self.view.insert_example_to_main_text_box(query, result_code, explanation, expected_result, result)
+        test_number = 0
+        
+        for [query, result_code, results, expected_results, explanation] in results:
+            test_number += 1
+            self.send_example_to_view(query, test_number, result_code, explanation, expected_results, results)
+    
+    def send_example_to_view(self, query, test_number, result_code, explanation, expected_results, results):
+        text = f"Test {test_number} - {query}\n"
+        
+        match result_code:
+            case FeedbackEnum.SUCCESS:
+                text = f"Test {test_number} - {query} - Test passed.\n"
+            case FeedbackEnum.ERROR:
+                text = f"Test {test_number} - {query} - Test failed.\n{explanation}\n\n>Se esperaba:\n"
+                for expected_result in expected_results:
+                    text += f">>{expected_result}\n"
+                text += "\n>Se obtuvo:\n"
+                
+                for result in results:
+                    text += f">>{result}\n"
+        
+        
+        self.view.insert_example_to_main_text_box(text, result_code.value)

@@ -90,5 +90,3 @@ class PrologInterface():
             explanation = "Las respuestas devueltas no coinciden con las esperadas."
             
             return(query, FeedbackEnum.ERROR, result, expected_result, explanation)
-            
-    
