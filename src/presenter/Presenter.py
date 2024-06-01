@@ -10,9 +10,11 @@ class AppPresenter():
 
     def bind_view(self, view):
         self.view = view 
-        self.view.set_main_text_tag_color( FeedbackEnum.NONE.value, "gray" )
-        self.view.set_main_text_tag_color( FeedbackEnum.ERROR.value, "red" )
-        self.view.set_main_text_tag_color( FeedbackEnum.SUCCESS.value, "green" )
+        
+        # Los colores de tkinter se pueden poner en #rgb, #rrggbb o #rrrgggbbb
+        self.view.set_main_text_tag_color( FeedbackEnum.NONE.value, "white" )
+        self.view.set_main_text_tag_color( FeedbackEnum.ERROR.value, "#FF8686" )
+        self.view.set_main_text_tag_color( FeedbackEnum.SUCCESS.value, "#99FF99" )
     
     def examples(self, file_path, examples, ordered, first_only):        
         self.model.submit_examples(examples, file_path, ordered, first_only)
