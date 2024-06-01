@@ -72,6 +72,9 @@ class PrologInterface():
         else:
             explanation = "Las respuestas devueltas no coinciden con las esperadas."
             
+            if ListOfDictsComparer.includes(result, expected_result):
+                explanation = "Las respuestas devueltas tienen la respuesta esperada, pero también devuelve respuestas adicionales."
+            
             return(query, FeedbackEnum.ERROR, result, expected_result, explanation)
     
     def __run_example_first_only(self, query, result, expected_result):
@@ -88,5 +91,11 @@ class PrologInterface():
             return(query, FeedbackEnum.SUCCESS, result, expected_result, "")
         else:
             explanation = "Las respuestas devueltas no coinciden con las esperadas."
+            
+            if ListOfDictsComparer.includes(result, expected_result):
+                explanation = "Las respuestas devueltas tienen la respuesta esperada, pero también devuelve respuestas adicionales."
+            
+            if ListOfDictsComparer.equal_set(result, expected_result):
+                explanation = "Las respuestas devueltas no están en el orden correcto."
             
             return(query, FeedbackEnum.ERROR, result, expected_result, explanation)
