@@ -23,15 +23,21 @@ class Model():
     def query(self, query):
         return(self.prolog_interface.query(query))
     
-    def submit_examples(self, examples, file_path, ordered, first_only):
-        self.prolog_interface.empty_examples_base()
-        
+    def add_examples(self, examples, ordered, first_only):
         examples_list = examples.splitlines()
         for example in examples_list:
             self.prolog_interface.create_example(example, ordered, first_only)
             
+    def submit_examples(self, examples, file_path, ordered, first_only):        
+        self.add_examples(examples, ordered, first_only)
+            
         FileHandler.write_text_file(file_path, json.dumps(self.prolog_interface.get_examples()))
+        
+        self.clean_examples()
     
+    def clean_examples(self):
+        self.prolog_interface.empty_examples_base()
+        
     def load_examples(self, file_path):
         self.prolog_interface.empty_examples_base()
         

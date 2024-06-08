@@ -16,7 +16,10 @@ class AppPresenter():
         self.view.set_main_text_tag_color( FeedbackEnum.ERROR.value, "#FF8686" )
         self.view.set_main_text_tag_color( FeedbackEnum.SUCCESS.value, "#99FF99" )
     
-    def examples(self, file_path, examples, ordered, first_only):        
+    def add_examples(self, examples, ordered, first_only):
+        self.model.add_examples(examples, ordered, first_only)
+    
+    def save_examples(self, file_path, examples, ordered, first_only):        
         self.model.submit_examples(examples, file_path, ordered, first_only)
 
     def load_knowledge_base(self, file_path):
@@ -44,6 +47,7 @@ class AppPresenter():
     
     def enter_create_mode(self):
         self.mode = self.modes.Creating
+        self.model.clean_examples()
         
         self.view.clean_main_text_box()
         self.view.change_to_create_mode()
