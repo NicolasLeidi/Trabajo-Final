@@ -17,6 +17,7 @@ class AppPresenter():
         self.view.set_main_text_tag_color( FeedbackEnum.SUCCESS.value, "#99FF99" )
     
     def add_examples(self, examples, ordered, first_only):
+        self.view.clean_main_text_box()
         self.model.add_examples(examples, ordered, first_only)
     
     def save_examples(self, file_path, examples, ordered, first_only):        
