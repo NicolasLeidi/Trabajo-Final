@@ -154,4 +154,5 @@ class MainView():
     def enable_mode_buttons(self):
         self.testing_mode_button.config(state = "normal")
         self.creating_mode_button.config(state = "normal")
+        self.submit_knowledge_base_button.config(state = "disabled")
         
