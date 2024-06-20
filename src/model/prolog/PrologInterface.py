@@ -1,7 +1,9 @@
 from pyswip.core import *
 from pyswip.prolog import Prolog
+from model.exception.PrologSyntaxException import PrologSyntaxException
 from utils.FeedbackEnum import FeedbackEnum
 from utils.ListOfDictsComparer import ListOfDictsComparer
+from utils.StringHandler import StringHandler
 
 class PrologInterface():
     
@@ -17,12 +19,19 @@ class PrologInterface():
         self.knowledge_base = knowledge_base
     
     def query(self, query):
-        prolog_result = self.prolog.query(query)
+        try:
+            prolog_result = self.prolog.query(query)
+        except Exception:
+            return {}
         return list(prolog_result)
     
     def create_example(self, example, ordered, first_only):
-        result = self.query(example)
-        self.examples_base.append([example, result, ordered, first_only])
+        if StringHandler.check_brackets_are_balanced(example):
+            result = self.query(example)
+            self.examples_base.append([example, result, ordered, first_only])
+        else:
+            self.empty_examples_base()
+            raise PrologSyntaxException("La sintaxis de los ejemplos no es correcta.")
     
     def empty_examples_base(self):
         self.examples_base = []

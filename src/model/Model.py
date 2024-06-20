@@ -32,11 +32,14 @@ class Model():
             return (False, "Error")
             
     def submit_examples(self, examples, file_path, ordered, first_only):        
-        if self.add_examples(examples, ordered, first_only)[0]:
-            FileHandler.write_text_file(file_path, json.dumps(self.prolog_interface.get_examples()))
-            self.clean_examples()
+        if examples:
+            if self.add_examples(examples, ordered, first_only)[0]:
+                FileHandler.write_text_file(file_path, json.dumps(self.prolog_interface.get_examples()))
+                self.clean_examples()
+            else:
+                return (False)
         else:
-            return (False)
+            FileHandler.write_text_file(file_path, json.dumps(self.prolog_interface.get_examples()))            
     
     def clean_examples(self):
         self.prolog_interface.empty_examples_base()
