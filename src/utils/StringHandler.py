@@ -1,5 +1,3 @@
-from pyparsing import Word, alphas, alphanums, nums, Group, Forward, oneOf, ZeroOrMore, Suppress, Optional
-
 class StringHandler:
     
     @staticmethod

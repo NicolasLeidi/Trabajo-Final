@@ -12,9 +12,9 @@ class AppPresenter():
         self.view = view 
         
         # Los colores de tkinter se pueden poner en #rgb, #rrggbb o #rrrgggbbb
-        self.view.set_main_text_tag_color( FeedbackEnum.NONE.value, "white" )
-        self.view.set_main_text_tag_color( FeedbackEnum.ERROR.value, "#FF8686" )
-        self.view.set_main_text_tag_color( FeedbackEnum.SUCCESS.value, "#99FF99" )
+        self.view.set_test_text_tag_color( FeedbackEnum.NONE.value, "white" )
+        self.view.set_test_text_tag_color( FeedbackEnum.ERROR.value, "#FF8686" )
+        self.view.set_test_text_tag_color( FeedbackEnum.SUCCESS.value, "#99FF99" )
     
     def add_examples(self, examples, ordered, first_only):
         if self.model.add_examples(examples, ordered, first_only)[0]:
@@ -35,14 +35,14 @@ class AppPresenter():
         return (self.model.test_examples(file_path))
     
     def enter_test_mode(self, file_path):      
-        self.view.clean_main_text_box()
+        self.view.clean_test_text_box()
          
         response = self.model.load_examples(file_path)
         
         self.mode = self.modes.Testing
                
         for example in response:
-            self.view.insert_example_to_main_text_box(str(example[0]) + "\n")
+            self.view.insert_example_to_test_text_box(str(example[0]) + "\n")
             
         self.view.change_to_test_mode()
     
@@ -50,7 +50,7 @@ class AppPresenter():
         self.mode = self.modes.Creating
         self.model.clean_examples()
         
-        self.view.clean_main_text_box()
+        self.view.clean_test_text_box()
         self.view.change_to_create_mode()
     
     def open_popup(self, type, message):
@@ -58,7 +58,7 @@ class AppPresenter():
     
     def run_examples(self):
         results = self.model.run_examples()
-        self.view.clean_main_text_box()
+        self.view.clean_test_text_box()
         test_number = 0
         
         for [query, result_code, results, expected_results, explanation] in results:
@@ -81,7 +81,7 @@ class AppPresenter():
                     text += f">>{result}\n"
         
         
-        self.view.insert_example_to_main_text_box(text, result_code.value)
+        self.view.insert_example_to_test_text_box(text, result_code.value)
     
     def show_message(self, type, message):
         self.view.open_popup(type, message)
