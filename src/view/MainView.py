@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import * 
-from utils.FeedbackEnum import FeedbackEnum
 
 class MainView():
     
@@ -53,7 +52,7 @@ class MainView():
         
         self.run_tests_button = tk.Button(lower_side, text="Correr", width=20, command=lambda: self.test_solution())
         
-        self.add_tests_button = tk.Button(lower_side, text="Agregar", width=20, command=lambda: self.load_examples())
+        self.add_tests_button = tk.Button(lower_side, text="Agregar", width=20, command=lambda: self.add_example())
         
         self.save_tests_button = tk.Button(lower_side, text="Guardar", width=20, command=lambda: self.save_examples())
         
@@ -64,8 +63,8 @@ class MainView():
     def test_solution(self):
         self.presenter.run_examples()
         
-    def load_examples(self):        
-        self.presenter.add_examples(self.test_text_box.get("1.0",'end'), self.ordered.get(), self.first_only.get())
+    def add_example(self):        
+        self.presenter.add_examples(self.create_text_box.get("1.0",'end'), self.ordered.get(), self.first_only.get())
     
     def save_examples(self):
         file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt")])
@@ -73,13 +72,13 @@ class MainView():
         if not file_path:
             return
         
-        self.presenter.save_examples(file_path, self.test_text_box.get("1.0",'end'), self.ordered.get(), self.first_only.get())
+        self.presenter.save_examples(file_path, self.create_text_box.get("1.0",'end'), self.ordered.get(), self.first_only.get())
     
     def clean_examples(self):
-        pass
+        self.presenter.clean_examples()
     
     def pop_examples(self):
-        pass
+        self.presenter.pop_examples()
     
     def load_knowledge_base(self):
         file_path = filedialog.askopenfilename(filetypes=[("Archivo PROLOG", "*.pl")])
@@ -120,6 +119,11 @@ class MainView():
         
         self.test_text_box.tag_add(tag, line_number_to_str, line_number_to_str + "+" + str(len(text.split("\n")) - 1) + "lines")
     
+    def insert_example_to_loaded_examples_text_box(self, text):
+        self.loaded_examples_text_box.config(state = "normal")
+        self.loaded_examples_text_box.insert(END, text)
+        self.loaded_examples_text_box.config(state = "disabled")
+    
     def set_test_text_tag_color(self, tag, color):
         self.test_text_box.tag_config(tag, background = color)
     
@@ -127,6 +131,13 @@ class MainView():
         self.test_text_box.config(state = "normal")
         self.test_text_box.delete('1.0', END)
     
+    def clean_create_text_box(self):
+        self.create_text_box.delete('1.0', END)
+        
+    def clean_loaded_examples_text_box(self):
+        self.loaded_examples_text_box.config(state = "normal")
+        self.loaded_examples_text_box.delete('1.0', END)    
+        
     def change_to_test_mode(self):
         self.creating_mode_button.config(state = "normal")
         self.test_text_box.config(state = "disabled")

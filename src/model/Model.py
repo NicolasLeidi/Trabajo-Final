@@ -41,6 +41,9 @@ class Model():
         else:
             FileHandler.write_text_file(file_path, json.dumps(self.prolog_interface.get_examples()))            
     
+    def get_loaded_examples(self):
+        return self.prolog_interface.get_examples()
+    
     def clean_examples(self):
         self.prolog_interface.empty_examples_base()
         
@@ -74,3 +77,8 @@ class Model():
             logging.warning("Error al correr las pruebas.")
             self.presenter.show_message("Error", "Error al correr las pruebas.")
     
+    def clean_examples(self):
+        self.prolog_interface.empty_examples_base()
+    
+    def pop_examples(self):
+        self.prolog_interface.pop_example_from_base()

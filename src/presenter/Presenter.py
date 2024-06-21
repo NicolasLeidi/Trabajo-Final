@@ -18,7 +18,8 @@ class AppPresenter():
     
     def add_examples(self, examples, ordered, first_only):
         if self.model.add_examples(examples, ordered, first_only)[0]:
-            self.view.clean_main_text_box()
+            self.view.clean_test_text_box()
+            self.__update_loaded_examples_text_box()
     
     def save_examples(self, file_path, examples, ordered, first_only):        
         self.model.submit_examples(examples, file_path, ordered, first_only)
@@ -33,6 +34,14 @@ class AppPresenter():
 
     def test_examples(self, file_path):
         return (self.model.test_examples(file_path))
+    
+    def clean_examples(self):
+        self.model.clean_examples()
+        self.view.clean_loaded_examples_text_box()
+    
+    def pop_examples(self):
+        self.model.pop_examples()
+        self.__update_loaded_examples_text_box()
     
     def enter_test_mode(self, file_path):      
         self.view.clean_test_text_box()
@@ -85,3 +94,8 @@ class AppPresenter():
     
     def show_message(self, type, message):
         self.view.open_popup(type, message)
+    
+    def __update_loaded_examples_text_box(self):
+        self.view.clean_loaded_examples_text_box()
+        for example in self.model.get_loaded_examples():
+            self.view.insert_example_to_loaded_examples_text_box(str(example[0]) + "\n")
