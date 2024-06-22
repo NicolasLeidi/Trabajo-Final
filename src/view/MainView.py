@@ -26,14 +26,14 @@ class MainView():
         
         upper_side.grid_columnconfigure(1, weight=1, minsize=150)
         
-        self.submit_knowledge_base_button = tk.Button(upper_side, text="Cargar Base de conocimiento", command=lambda: self.load_knowledge_base())
+        self.submit_knowledge_base_button = tk.Button(upper_side, text="Cargar Base de Conocimiento", command=lambda: self.load_knowledge_base())
         self.submit_knowledge_base_button.grid(row = 0, column = 0, pady = 2, sticky=W)
         
-        self.testing_mode_button = tk.Button(upper_side, text="Modo de prueba", width=20, command=lambda: self.test_mode())
+        self.testing_mode_button = tk.Button(upper_side, text="Modo de Prueba", width=20, command=lambda: self.test_mode())
         self.testing_mode_button.config(state = "disabled")
         self.testing_mode_button.grid(row = 0, column = 2, pady = 2, padx = 10, sticky=E)
         
-        self.creating_mode_button = tk.Button(upper_side, text="Modo de creación", width=20, command=lambda: self.create_mode())
+        self.creating_mode_button = tk.Button(upper_side, text="Modo de Creación", width=20, command=lambda: self.create_mode())
         self.creating_mode_button.config(state = "disabled")
         self.creating_mode_button.grid(row = 0, column = 3, pady = 2, sticky=E)
         
@@ -46,7 +46,7 @@ class MainView():
         self.loaded_examples_text_box.config(state = "disabled")
         self.loaded_examples_text_box.configure(bg="gray")
         
-        self.ordered_checkbox = tk.Checkbutton(lower_side, text="Ordenar", variable= self.ordered)
+        self.ordered_checkbox = tk.Checkbutton(lower_side, text="Sin Orden", variable= self.ordered)
         
         self.first_only_checkbox = tk.Checkbutton(lower_side, text="Primer Resultado", variable= self.first_only)
         
