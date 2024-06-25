@@ -28,3 +28,6 @@ crossword(V1, V2, V3, H1, H2, H3):-
     V1 \= H1,
     V2 \= H2,
     V3 \= H3.
+
+this_must_fail(_):-
+	fail.

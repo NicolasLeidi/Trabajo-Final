@@ -1,5 +1,6 @@
 import json
 import logging
+from model.exception.PrologSyntaxException import PrologSyntaxException
 from model.prolog.PrologInterface import PrologInterface
 from utils.FileHandler import FileHandler
 
@@ -26,7 +27,7 @@ class Model():
             for example in examples_list:
                 self.prolog_interface.create_example(example, ordered, first_only)
             return (True, "Ejemplos agregados correctamente.")
-        except Exception:
+        except PrologSyntaxException:
             logging.warning("Error al correr los ejemplos.")
             self.presenter.show_message("Error", "Error al correr los ejemplos. Verifique la sintaxis de los ejemplos.")
             return (False, "Error")

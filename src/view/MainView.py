@@ -67,7 +67,7 @@ class MainView():
         self.presenter.add_examples(self.create_text_box.get("1.0",'end'), self.ordered.get(), self.first_only.get())
     
     def save_examples(self):
-        file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt")])
+        file_path = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("JSON files", "*.json")])
         
         if not file_path:
             return
@@ -90,7 +90,7 @@ class MainView():
         
     def test_mode(self):
         # Para entrar al modo de testeo, primero se debe cargar una batería de tests válida
-        file_path = filedialog.askopenfilename(filetypes=[("Batería de test", "*.txt")])
+        file_path = filedialog.askopenfilename(filetypes=[("Batería de test", "*.json")])
         
         if not file_path:
             return
