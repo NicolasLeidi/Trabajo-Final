@@ -40,6 +40,7 @@ Para crear una batería de tests tiene que realizar:
         -   **Primer Resultado**: solo compara la primera unificación de ambos resultados.
     -   Si se seleccionan ambos, se cumplirá si la primera unificación está contenida dentro de la resolución del programa a testear.
     -   Si no se selecciona ninguna, se cumplirá sí y solo sí la unificación del programa elegido y el de testear son iguales.
+    -   En caso de ser un test negativo (que debe de daro falso), estas opciones no afectan al resultado, solo va a ser verdadero sí y solo sí el programa a testear falla.
 
 3.  Cargar las consultas a la batería con los botones.
 

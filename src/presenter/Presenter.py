@@ -31,9 +31,6 @@ class AppPresenter():
             self.view.enable_mode_buttons()
         else:
             self.open_popup("Error", response[1])
-
-    def test_examples(self, file_path):
-        return (self.model.test_examples(file_path))
     
     def clean_examples(self):
         self.model.clean_examples()
@@ -82,13 +79,26 @@ class AppPresenter():
                 text = f"Test {test_number} - {query} - Test passed.\n"
             case FeedbackEnum.ERROR:
                 text = f"Test {test_number} - {query} - Test failed.\n{explanation}\n\n>Se esperaba:\n"
-                for expected_result in expected_results:
-                    text += f">>{expected_result}\n"
+                
+                if expected_results:
+                    if expected_results == [{}]:
+                        text += ">>true\n"
+                    else:
+                        for expected_result in expected_results:
+                            text += f">>{expected_result}\n"
+                else:
+                    text += ">>false\n"
+
                 text += "\n>Se obtuvo:\n"
                 
-                for result in results:
-                    text += f">>{result}\n"
-        
+                if results:
+                    if results == [{}]:
+                        text += ">>true\n"
+                    else:
+                        for result in results:
+                            text += f">>{result}\n"
+                else:
+                    text += ">>false\n"
         
         self.view.insert_example_to_test_text_box(text, result_code.value)
     

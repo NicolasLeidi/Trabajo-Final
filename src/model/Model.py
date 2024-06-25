@@ -57,14 +57,6 @@ class Model():
             self.prolog_interface.empty_examples_base()
             self.presenter.show_message("Error", "Error al cargar los ejemplos.")
     
-    def test_examples(self, file_path):
-        try:
-            return self.prolog_interface.test_examples(json.loads(FileHandler.read_text_file(file_path)))            
-        except Exception:
-            logging.warning("Error al correr las pruebas.")
-            self.presenter.show_message("Error", "Error al correr las pruebas.")
-            
-    
     def run_examples(self):
         try:
             return self.prolog_interface.test_examples()

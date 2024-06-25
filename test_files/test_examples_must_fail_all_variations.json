@@ -1,0 +1,6 @@
+[
+    ["this_must_fail(test).", [], 0, 0],
+    ["this_must_fail(test).", [], 1, 0],
+    ["this_must_fail(test).", [], 0, 1],
+    ["this_must_fail(test).", [], 1, 1]
+]

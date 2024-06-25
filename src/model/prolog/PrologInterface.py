@@ -22,7 +22,7 @@ class PrologInterface():
         try:
             prolog_result = self.prolog.query(query)
         except Exception:
-            return {}
+            return []
         return list(prolog_result)
     
     def create_example(self, example, ordered, first_only):
@@ -53,21 +53,32 @@ class PrologInterface():
     def test_examples(self):
         feedback = []
         for query, expected_result, ordered, first_only in self.examples_base:
-            feedback.append(self._run_example(query, expected_result, ordered, first_only))
+            feedback.append(self.__run_example(query, expected_result, ordered, first_only))
         return feedback
     
-    def _run_example(self, query, expected_result, is_ordered, is_first_only):
+    def __run_example(self, query, expected_result, is_ordered, is_first_only):
         result = self.query(query)
         
-        match (is_ordered, is_first_only):
-            case (1, 1):
-                return self.__run_example_ordered_and_first_only(query, result, expected_result)
-            case (1, 0):
-                return self.__run_example_ordered(query, result, expected_result)
-            case (0, 1):
-                return self.__run_example_first_only(query, result, expected_result)
-            case (0, 0):
-                return self.__run_example_base(query, result, expected_result)
+        if not expected_result:
+            return self.__run_example_negative_case(query, result)
+        else:
+            match (is_ordered, is_first_only):
+                case (1, 1):
+                    return self.__run_example_ordered_and_first_only(query, result, expected_result)
+                case (1, 0):
+                    return self.__run_example_ordered(query, result, expected_result)
+                case (0, 1):
+                    return self.__run_example_first_only(query, result, expected_result)
+                case (0, 0):
+                    return self.__run_example_base(query, result, expected_result)
+    
+    def __run_example_negative_case(self, query, result):
+        if not result:
+            return(query, FeedbackEnum.SUCCESS, result, [], "")
+        else:
+            explanation = "El predicado unifica cuando no lo debería hacer."
+            
+            return(query, FeedbackEnum.ERROR, result, [], explanation)
     
     def __run_example_ordered_and_first_only(self, query, result, expected_result):
         result_first_only = [result[0]]
