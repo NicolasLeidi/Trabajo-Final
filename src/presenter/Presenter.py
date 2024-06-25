@@ -21,8 +21,8 @@ class AppPresenter():
             self.view.clean_test_text_box()
             self.__update_loaded_examples_text_box()
     
-    def save_examples(self, file_path, examples, ordered, first_only):        
-        self.model.submit_examples(examples, file_path, ordered, first_only)
+    def save_examples(self, file_path):        
+        self.model.submit_examples(file_path)
 
     def load_knowledge_base(self, file_path):
         response = self.model.load_knowledge_base(file_path)

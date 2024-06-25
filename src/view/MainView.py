@@ -72,7 +72,7 @@ class MainView():
         if not file_path:
             return
         
-        self.presenter.save_examples(file_path, self.create_text_box.get("1.0",'end'), self.ordered.get(), self.first_only.get())
+        self.presenter.save_examples(file_path)
     
     def clean_examples(self):
         self.presenter.clean_examples()

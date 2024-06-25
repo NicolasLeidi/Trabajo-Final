@@ -32,15 +32,9 @@ class Model():
             self.presenter.show_message("Error", "Error al correr los ejemplos. Verifique la sintaxis de los ejemplos.")
             return (False, "Error")
             
-    def submit_examples(self, examples, file_path, ordered, first_only):        
-        if examples:
-            if self.add_examples(examples, ordered, first_only)[0]:
-                FileHandler.write_text_file(file_path, json.dumps(self.prolog_interface.get_examples()))
-                self.clean_examples()
-            else:
-                return (False)
-        else:
-            FileHandler.write_text_file(file_path, json.dumps(self.prolog_interface.get_examples()))            
+    def submit_examples(self, file_path):        
+        FileHandler.write_text_file(file_path, json.dumps(self.prolog_interface.get_examples()))
+        self.clean_examples()      
     
     def get_loaded_examples(self):
         return self.prolog_interface.get_examples()

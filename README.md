@@ -44,7 +44,7 @@ Para crear una batería de tests tiene que realizar:
 3.  Cargar las consultas a la batería con los botones.
 
     -   **Agregar**: coloca las consultas en la batería de tests.
-    -   **Guardar**: coloca las consultas en la batería de tests y permite guardarlo en un archivo.
+    -   **Guardar**: guarda la batería de tests en un archivo.
     -   **Deshacer**: elimina la última consulta de la batería de tests.
     -   **Limpiar**: elimina todas las consultas de la batería de tests.
 
