@@ -29,6 +29,7 @@ class AppPresenter():
         
         if response[0]:
             self.view.enable_mode_buttons()
+            self.view.insert_text_to_knowledge_base_text_box(response[1])
         else:
             self.open_popup("Error", response[1])
     

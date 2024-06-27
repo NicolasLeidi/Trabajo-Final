@@ -16,7 +16,7 @@ class Model():
         if text is not None:
             self.prolog_interface.set_knowledge_base(knowledge_base_path)
             self.prolog_interface.consult_knowledge_base()
-            return(True, "Base de conocimiento cargada")
+            return(True, text)
         else:
             logging.warning("Archivo no encontrado o no se pudo leer.")
             return(False, "Error")

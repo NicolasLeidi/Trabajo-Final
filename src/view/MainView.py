@@ -37,27 +37,26 @@ class MainView():
         self.creating_mode_button.config(state = "disabled")
         self.creating_mode_button.grid(row = 0, column = 3, pady = 2, sticky=E)
         
-        self.test_text_box = Text(middle_side, height=30, width=100)
-        self.test_text_box.config(state = "disabled")
-        self.test_text_box.grid(row = 0, column = 0, columnspan = 4, pady = 2)
+        self.knowledge_base_text_box = Text(middle_side, height=30, width=30)
+        self.knowledge_base_text_box.config(state = "disabled")
+        self.knowledge_base_text_box.configure(bg="gray")
+        self.knowledge_base_text_box.grid(row = 0, column = 0, rowspan=2, pady = 2)
         
-        self.create_text_box = Text(middle_side, height=14, width=100)
-        self.loaded_examples_text_box = Text(middle_side, height=14, width=100)
+        self.test_text_box = Text(middle_side, height=30, width=65)
+        self.test_text_box.config(state = "disabled")
+        self.test_text_box.grid(row = 0, column = 1, columnspan = 3, pady = 2)
+        
+        self.create_text_box = Text(middle_side, height=15, width=65)
+        self.loaded_examples_text_box = Text(middle_side, height=15, width=65)
         self.loaded_examples_text_box.config(state = "disabled")
         self.loaded_examples_text_box.configure(bg="gray")
         
         self.ordered_checkbox = tk.Checkbutton(lower_side, text="Sin Orden", variable= self.ordered)
-        
         self.first_only_checkbox = tk.Checkbutton(lower_side, text="Primer Resultado", variable= self.first_only)
-        
         self.run_tests_button = tk.Button(lower_side, text="Correr", width=20, command=lambda: self.test_solution())
-        
         self.add_tests_button = tk.Button(lower_side, text="Agregar", width=20, command=lambda: self.add_example())
-        
         self.save_tests_button = tk.Button(lower_side, text="Guardar", width=20, command=lambda: self.save_examples())
-        
         self.clean_examples_button = tk.Button(lower_side, text="Limpiar", width=20, command=lambda: self.clean_examples())
-        
         self.pop_examples_button = tk.Button(lower_side, text="Deshacer", width=20, command=lambda: self.pop_examples())
     
     def test_solution(self):
@@ -124,6 +123,11 @@ class MainView():
         self.loaded_examples_text_box.insert(END, text)
         self.loaded_examples_text_box.config(state = "disabled")
     
+    def insert_text_to_knowledge_base_text_box(self, text):
+        self.knowledge_base_text_box.config(state = "normal")
+        self.knowledge_base_text_box.insert(END, text)
+        self.knowledge_base_text_box.config(state = "disabled")
+    
     def set_test_text_tag_color(self, tag, color):
         self.test_text_box.tag_config(tag, background = color)
     
@@ -159,7 +163,7 @@ class MainView():
     
     def show_test_mode_widgets(self):
         self.run_tests_button.grid(row = 2, column = 1)
-        self.test_text_box.grid(row = 0, column = 0, columnspan = 4, pady = 2)
+        self.test_text_box.grid(row = 0, column = 1, columnspan = 3, pady = 2)
     
     def hide_test_mode_widgets(self):
         self.run_tests_button.grid_forget()
@@ -176,8 +180,8 @@ class MainView():
         self.loaded_examples_text_box.grid_forget()
     
     def show_create_mode_widgets(self):
-        self.create_text_box.grid(row = 0, column = 0, columnspan = 4, pady = 2)
-        self.loaded_examples_text_box.grid(row = 1, column = 0, columnspan = 4, pady = 2)
+        self.create_text_box.grid(row = 0, column = 1, columnspan = 3, pady = 0)
+        self.loaded_examples_text_box.grid(row = 1, column = 1, columnspan = 3, pady = 0)
         
         self.ordered_checkbox.grid(row = 0, column = 0, padx = 10)
         self.first_only_checkbox.grid(row = 0, column = 1, padx = 10)
