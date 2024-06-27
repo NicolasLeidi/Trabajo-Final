@@ -5,28 +5,26 @@ from tkinter import *
 class MainView():
     
     def __init__(self, root, presenter):
-        self.root = root
         self.presenter = presenter
         self.__ordered = IntVar()
         self.__first_only = IntVar()
-        self.__create_widgets()
-        self.__set_initial_dimensions()
+        self.__create_widgets(root)
 
-
-    def __create_widgets(self):
-        self.root.title("Nombre a colocar")
+    def __create_widgets(self, root):
+        root.title("Nombre a colocar")
+        root.geometry('{}x{}'.format(800, 600))
+        root.grid_rowconfigure(1, weight=1)
+        root.grid_columnconfigure(1, weight=1)
         
         # Creo, ubico y configuro frames
         
-        upper_side = Frame(self.root)
-        middle_side = Frame(self.root)
-        lower_side = Frame(self.root)
+        upper_side = Frame(root, bg="blue")
+        middle_side = Frame(root, bg="red")
+        lower_side = Frame(root, bg="green")
         
         upper_side.grid(row = 0, column = 0, columnspan = 4, padx = 10, pady = 5)
         middle_side.grid(row = 1, column = 0, columnspan = 4, padx = 10)
         lower_side.grid(row = 2, column = 0, columnspan = 4, padx = 10, pady = 5)
-        
-        upper_side.grid_columnconfigure(1, weight=1, minsize=150)
         
         # Creo widgets
         
@@ -102,12 +100,6 @@ class MainView():
     
     def __create_mode(self):
         self.presenter.enter_create_mode()
-    
-    def __set_initial_dimensions(self):
-        self.root.minsize(300, 565)
-        
-        for col in range(3):
-            self.root.grid_columnconfigure(col, minsize=100)
     
     def __show_test_mode_widgets(self):
         self.__run_tests_button.grid(row = 2, column = 1)
