@@ -90,16 +90,36 @@ class MainView():
         
         # Configuro widgets del frame superior
         
+        ToolTip(self.__submit_knowledge_base_button, msg="Carga la base de conocimiento, la cual será usada para realizar las pruebas.", delay=1.0)
+        ToolTip(self.__testing_mode_button, msg="Entra al modo prueba, en el cual permite correr una batería de tests sobre la base de conocimiento cargada.", delay=1.0)
+        ToolTip(self.__creating_mode_button, msg="Entra al modo creación, en el cual permite crear una batería de tests utilizando la base de conocimiento cargada para obtener los resultados esperados.", delay=1.0)
         self.__testing_mode_button.config(state = "disabled")
         self.__creating_mode_button.config(state = "disabled")
         
         # Configuro widgets del frame intermedio
         
+        ToolTip(self.__knowledge_base_text_box, msg="Base de conocimiento cargada, será usada para realizar pruebas.", delay=1.0)
         self.__knowledge_base_text_box.config(state = "disabled")
         self.__knowledge_base_text_box.configure(bg="gray")
+        
+        ToolTip(self.__test_text_box, msg="Batería de test cargada actualmente, la cual será ejecutada al presionar Correr.", delay=1.0)
         self.__test_text_box.config(state = "disabled")
+        
+        ToolTip(self.__create_text_box, msg="Aquí puede escribir queries que usarán el programa cargado para crear una batería de tests.", delay=1.0)
+        ToolTip(self.__loaded_examples_text_box, msg="Ejemplos cargados actualmente a la nueva batería de tests.", delay=1.0)
         self.__loaded_examples_text_box.config(state = "disabled")
         self.__loaded_examples_text_box.configure(bg="gray")
+        
+        # Configuro widgets del frame inferior
+        
+        ToolTip(run_tests_button, msg="Corre la batería de tests cargada actualmente sobre la base de conocimiento cargada.", delay=1.0)
+        
+        ToolTip(add_tests_button, msg="Agrega un ejemplo a la batería de tests cargada actualmente.", delay=1.0)
+        ToolTip(save_tests_button, msg="Guarda la batería de tests cargada actualmente.", delay=1.0)
+        ToolTip(clean_examples_button, msg="Limpia todos los ejemplos cargados actualmente.", delay=1.0)
+        ToolTip(pop_examples_button, msg="Deshace el último ejemplo cargado actualmente.", delay=1.0)
+        ToolTip(ordered_checkbox, msg="Cambia el comportamiento de la batería de tests, compara los conjuntos de resultados sin importar el orden.", delay=1.0)
+        ToolTip(first_only_checkbox, msg="Cambia el comportamiento de la batería de tests, solo compara la primera unificación.", delay=1.0)
         
         # Coloco widgets del frame superior
         
@@ -240,7 +260,7 @@ class MainView():
     
     def change_to_create_mode(self):
         self.__creating_mode_button.config(state = "disabled")
-        self.__testing_mode_button.config(text = "Modo de prueba")
+        self.__testing_mode_button.config(text = "Modo de Prueba")
         self.__hide_test_mode_widgets()
         self.__show_create_mode_widgets()
     
