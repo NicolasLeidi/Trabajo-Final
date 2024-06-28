@@ -18,7 +18,7 @@ class MainView():
         
         # Creo, ubico y configuro frames
         
-        upper_side_frame = Frame(root, bg="blue", width=800, height=50, pady=3)
+        upper_side_frame = Frame(root, bg="blue", width=800, height=50, pady=3, padx=10)
         middle_side_frame = Frame(root, bg="red", width=800, pady=3)
         lower_side_frame = Frame(root, bg="green", width=800, height=50, pady=3)
         
