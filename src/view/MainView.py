@@ -18,7 +18,7 @@ class MainView():
         root.geometry('{}x{}'.format(800, 600))
         root.grid_rowconfigure(1, weight=1)
         root.grid_columnconfigure(0, weight=1)
-        root.grid_columnconfigure(1, weight=1)
+        root.grid_columnconfigure(1, weight=2)
         
         # Creo los frames
         
@@ -51,7 +51,7 @@ class MainView():
         self.__middle_side_batch_creating_frame.grid_columnconfigure(1, weight=1)
         
         self.__lower_side_testing_frame.grid_rowconfigure(0, weight=1)
-        for i in range(3):
+        for i in range(4):
             self.__lower_side_testing_frame.grid_columnconfigure(i, weight=1)
         
         self.__lower_side_batch_creating_frame.grid_rowconfigure(0, weight=1)
@@ -80,6 +80,7 @@ class MainView():
         # Widgets del frame inferior
         
         run_tests_button = tk.Button(self.__lower_side_testing_frame, text="Correr", width=20, command=lambda: self.__test_solution())
+        self.__completed_tests_label = tk.Label(self.__lower_side_testing_frame, text="Tests completados: 0 de 0")
         
         ordered_checkbox = tk.Checkbutton(self.__lower_side_batch_creating_frame, text="Sin Orden", variable= self.__ordered)
         first_only_checkbox = tk.Checkbutton(self.__lower_side_batch_creating_frame, text="Primer Resultado", variable= self.__first_only)
@@ -143,6 +144,7 @@ class MainView():
         # Coloco widgets del frame inferior
         
         run_tests_button.grid(row = 0, column = 1)
+        self.__completed_tests_label.grid(row = 0, column = 2)
         
         ordered_checkbox.grid(row = 0, column = 0, padx = 10)
         first_only_checkbox.grid(row = 0, column = 1, padx = 10)
@@ -250,7 +252,10 @@ class MainView():
     def clean_loaded_examples_text_box(self):
         self.__loaded_examples_text_box.config(state = "normal")
         self.__loaded_examples_text_box.delete('1.0', END)    
-        
+    
+    def set_completed_test_feedback(self, completed = 0, total = 0):
+        self.__completed_tests_label.config(text = "Tests completados: " + str(completed) + " de " + str(total))
+
     def change_to_test_mode(self):
         self.__creating_mode_button.config(state = "normal")
         self.__test_text_box.config(state = "disabled")

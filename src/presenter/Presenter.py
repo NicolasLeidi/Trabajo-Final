@@ -67,10 +67,17 @@ class AppPresenter():
         results = self.model.run_examples()
         self.view.clean_test_text_box()
         test_number = 0
+        completed = 0
+        total = 0
         
         for [query, result_code, results, expected_results, explanation] in results:
             test_number += 1
+            if result_code == FeedbackEnum.SUCCESS:
+                completed += 1
+            total += 1
             self.send_example_to_view(query, test_number, result_code, explanation, expected_results, results)
+        
+        self.view.set_completed_test_feedback(completed, total)
     
     def send_example_to_view(self, query, test_number, result_code, explanation, expected_results, results):
         text = f"Test {test_number} - {query}\n"
