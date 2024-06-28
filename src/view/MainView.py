@@ -33,7 +33,6 @@ class MainView():
         self.__upper_side_frame.grid(row = 0, stick="ew", columnspan=2)
         self.__middle_side_knowledge_base_frame.grid(row = 1, column = 0, sticky="nsew")
         self.__middle_side_testing_frame.grid(row = 1, column = 1, sticky="nsew")
-        self.__lower_side_testing_frame.grid(row = 2, sticky="ew", columnspan=2)
         
         # Configuro los frames
         
@@ -73,13 +72,13 @@ class MainView():
         
         # Widgets del frame inferior
         
-        self.__run_tests_button = tk.Button(self.__lower_side_testing_frame, text="Correr", width=20, command=lambda: self.__test_solution())
-        self.__ordered_checkbox = tk.Checkbutton(self.__lower_side_batch_creating_frame, text="Sin Orden", variable= self.__ordered)
-        self.__first_only_checkbox = tk.Checkbutton(self.__lower_side_batch_creating_frame, text="Primer Resultado", variable= self.__first_only)
-        self.__add_tests_button = tk.Button(self.__lower_side_batch_creating_frame, text="Agregar", width=20, command=lambda: self.__add_example())
-        self.__save_tests_button = tk.Button(self.__lower_side_batch_creating_frame, text="Guardar", width=20, command=lambda: self.__save_examples())
-        self.__clean_examples_button = tk.Button(self.__lower_side_batch_creating_frame, text="Limpiar", width=20, command=lambda: self.__clean_examples())
-        self.__pop_examples_button = tk.Button(self.__lower_side_batch_creating_frame, text="Deshacer", width=20, command=lambda: self.__pop_examples())
+        run_tests_button = tk.Button(self.__lower_side_testing_frame, text="Correr", width=20, command=lambda: self.__test_solution())
+        ordered_checkbox = tk.Checkbutton(self.__lower_side_batch_creating_frame, text="Sin Orden", variable= self.__ordered)
+        first_only_checkbox = tk.Checkbutton(self.__lower_side_batch_creating_frame, text="Primer Resultado", variable= self.__first_only)
+        add_tests_button = tk.Button(self.__lower_side_batch_creating_frame, text="Agregar", width=20, command=lambda: self.__add_example(self.__create_text_box))
+        save_tests_button = tk.Button(self.__lower_side_batch_creating_frame, text="Guardar", width=20, command=lambda: self.__save_examples())
+        clean_examples_button = tk.Button(self.__lower_side_batch_creating_frame, text="Limpiar", width=20, command=lambda: self.__clean_examples())
+        pop_examples_button = tk.Button(self.__lower_side_batch_creating_frame, text="Deshacer", width=20, command=lambda: self.__pop_examples())
         
         # Configuro widgets del frame superior
         
@@ -109,19 +108,22 @@ class MainView():
         
         # Coloco widgets del frame inferior
         
-        self.__ordered_checkbox.grid(row = 0, column = 0, padx = 10)
-        self.__first_only_checkbox.grid(row = 0, column = 1, padx = 10)
-        self.__add_tests_button.grid(row = 0, column = 2, padx = 10)
-        self.__pop_examples_button.grid(row = 0, column = 3, padx = 10)
+        ordered_checkbox.grid(row = 0, column = 0, padx = 10)
+        first_only_checkbox.grid(row = 0, column = 1, padx = 10)
+        add_tests_button.grid(row = 0, column = 2, padx = 10)
+        pop_examples_button.grid(row = 0, column = 3, padx = 10)
         
-        self.__clean_examples_button.grid(row = 1, column = 0, padx = 10)
-        self.__save_tests_button.grid(row = 1, column = 3, padx = 10)
+        clean_examples_button.grid(row = 1, column = 0, padx = 10)
+        save_tests_button.grid(row = 1, column = 3, padx = 10)
+        
+        run_tests_button.grid(row = 0, column = 1)
         
     def __test_solution(self):
         self.presenter.run_examples()
         
-    def __add_example(self):        
-        self.presenter.add_examples(self.__create_text_box.get("1.0",'end'), self.__ordered.get(), self.__first_only.get())
+    def __add_example(self, text_box):
+        if not text_box.compare("end-1c", "==", "1.0"): 
+            self.presenter.add_examples(text_box.get("1.0",'end'), self.__ordered.get(), self.__first_only.get())
     
     def __save_examples(self):
         file_path = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("JSON files", "*.json")])
@@ -159,11 +161,11 @@ class MainView():
     
     def __show_test_mode_widgets(self):
         self.__middle_side_testing_frame.grid(row = 1, column = 1, sticky="nsew")
-        self.__run_tests_button.grid(row = 0, column = 1)
+        self.__lower_side_testing_frame.grid(row = 2, sticky="ew", columnspan=2)
     
     def __hide_test_mode_widgets(self):
         self.__middle_side_testing_frame.grid_forget()
-        self.__run_tests_button.grid_forget()
+        self.__lower_side_testing_frame.grid_forget()
     
     def __hide_create_mode_widgets(self):
         self.__middle_side_batch_creating_frame.grid_forget()
