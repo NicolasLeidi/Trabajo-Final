@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import * 
+from tktooltip import ToolTip
 
 class MainView():
     
@@ -65,14 +66,21 @@ class MainView():
         
         # Widgets del frame intermedio
         
+        knowledge_base_label = tk.Label(self.__middle_side_knowledge_base_frame, text="Base de Conocimiento")
         self.__knowledge_base_text_box = Text(self.__middle_side_knowledge_base_frame)
+        
+        test_label = tk.Label(self.__middle_side_testing_frame, text="Batería de Tests")
         self.__test_text_box = Text(self.__middle_side_testing_frame)
+        
+        create_label = tk.Label(self.__middle_side_batch_creating_frame, text="Crear Ejemplo")
         self.__create_text_box = Text(self.__middle_side_batch_creating_frame, height=15, width=65)
+        loaded_examples_label = tk.Label(self.__middle_side_batch_creating_frame, text="Ejemplos Cargados")
         self.__loaded_examples_text_box = Text(self.__middle_side_batch_creating_frame, height=15, width=65)
         
         # Widgets del frame inferior
         
         run_tests_button = tk.Button(self.__lower_side_testing_frame, text="Correr", width=20, command=lambda: self.__test_solution())
+        
         ordered_checkbox = tk.Checkbutton(self.__lower_side_batch_creating_frame, text="Sin Orden", variable= self.__ordered)
         first_only_checkbox = tk.Checkbutton(self.__lower_side_batch_creating_frame, text="Primer Resultado", variable= self.__first_only)
         add_tests_button = tk.Button(self.__lower_side_batch_creating_frame, text="Agregar", width=20, command=lambda: self.__add_example(self.__create_text_box))
@@ -101,23 +109,28 @@ class MainView():
         
         # Coloco widgets del frame intermedio
         
-        self.__knowledge_base_text_box.place(relheight=1, relwidth=1)
-        self.__test_text_box.place(relheight=1, relwidth=1)
-        self.__create_text_box.place(relheight=0.5, relwidth=1)
-        self.__loaded_examples_text_box.place(rely=0.5, relheight=0.5, relwidth=1)
+        knowledge_base_label.place(relheight=0.05, relwidth=1)
+        self.__knowledge_base_text_box.place(rely=0.05,relheight=0.95, relwidth=1)
+        
+        test_label.place(relheight=0.05, relwidth=1)
+        self.__test_text_box.place(rely=0.05, relheight=0.95, relwidth=1)
+        
+        create_label.place(relheight=0.05, relwidth=1)
+        self.__create_text_box.place(rely=0.05, relheight=0.45, relwidth=1)
+        loaded_examples_label.place(rely=0.5, relheight=0.05, relwidth=1)
+        self.__loaded_examples_text_box.place(rely=0.55, relheight=0.45, relwidth=1)
         
         # Coloco widgets del frame inferior
+        
+        run_tests_button.grid(row = 0, column = 1)
         
         ordered_checkbox.grid(row = 0, column = 0, padx = 10)
         first_only_checkbox.grid(row = 0, column = 1, padx = 10)
         add_tests_button.grid(row = 0, column = 2, padx = 10)
         pop_examples_button.grid(row = 0, column = 3, padx = 10)
-        
         clean_examples_button.grid(row = 1, column = 0, padx = 10)
         save_tests_button.grid(row = 1, column = 3, padx = 10)
-        
-        run_tests_button.grid(row = 0, column = 1)
-        
+
     def __test_solution(self):
         self.presenter.run_examples()
         
