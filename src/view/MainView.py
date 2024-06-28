@@ -17,6 +17,7 @@ class MainView():
         root.geometry('{}x{}'.format(800, 600))
         root.grid_rowconfigure(1, weight=1)
         root.grid_columnconfigure(0, weight=1)
+        root.grid_columnconfigure(1, weight=1)
         
         # Creo los frames
         
