@@ -60,21 +60,27 @@ class MainView():
         self.__clean_examples_button = tk.Button(lower_side_frame, text="Limpiar", width=20, command=lambda: self.__clean_examples())
         self.__pop_examples_button = tk.Button(lower_side_frame, text="Deshacer", width=20, command=lambda: self.__pop_examples())
         
-        # Configuro widgets
+        # Configuro widgets del frame superior
         
         self.__testing_mode_button.config(state = "disabled")
         self.__creating_mode_button.config(state = "disabled")
+        
+        # Configuro widgets del frame intermedio
+        
         self.__knowledge_base_text_box.config(state = "disabled")
         self.__knowledge_base_text_box.configure(bg="gray")
         self.__test_text_box.config(state = "disabled")
         self.__loaded_examples_text_box.config(state = "disabled")
         self.__loaded_examples_text_box.configure(bg="gray")
         
-        # Coloco widgets
+        # Coloco widgets del frame superior
         
         self.__submit_knowledge_base_button.grid(row = 0, column = 0, pady = 2)
         self.__testing_mode_button.grid(row = 0, column = 2, pady = 2, padx = 10)
         self.__creating_mode_button.grid(row = 0, column = 3, pady = 2)
+        
+        # Coloco widgets del frame intermedio
+        
         self.__knowledge_base_text_box.grid(row = 0, column = 0, rowspan=2, pady = 2)
         self.__test_text_box.grid(row = 0, column = 1, columnspan = 3, pady = 2)
         
