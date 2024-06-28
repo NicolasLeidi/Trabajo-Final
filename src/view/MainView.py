@@ -14,34 +14,51 @@ class MainView():
         root.title("Nombre a colocar")
         root.geometry('{}x{}'.format(800, 600))
         root.grid_rowconfigure(1, weight=1)
-        root.grid_columnconfigure(1, weight=1)
+        root.grid_columnconfigure(0, weight=1)
         
         # Creo, ubico y configuro frames
         
-        upper_side = Frame(root, bg="blue")
-        middle_side = Frame(root, bg="red")
-        lower_side = Frame(root, bg="green")
+        upper_side_frame = Frame(root, bg="blue", width=800, height=50, pady=3)
+        middle_side_frame = Frame(root, bg="red", width=800, pady=3)
+        lower_side_frame = Frame(root, bg="green", width=800, height=50, pady=3)
         
-        upper_side.grid(row = 0, column = 0, columnspan = 4, padx = 10, pady = 5)
-        middle_side.grid(row = 1, column = 0, columnspan = 4, padx = 10)
-        lower_side.grid(row = 2, column = 0, columnspan = 4, padx = 10, pady = 5)
+        upper_side_frame.grid(row = 0, stick="ew")
+        middle_side_frame.grid(row = 1, sticky="nsew")
+        lower_side_frame.grid(row = 2, sticky="ew")
         
-        # Creo widgets
+        upper_side_frame.grid_rowconfigure(0, weight=1)
+        upper_side_frame.grid_columnconfigure(1, weight=1)
         
-        self.__submit_knowledge_base_button = tk.Button(upper_side, text="Cargar Base de Conocimiento", command=lambda: self.__load_knowledge_base())
-        self.__testing_mode_button = tk.Button(upper_side, text="Modo de Prueba", width=20, command=lambda: self.__test_mode())
-        self.__creating_mode_button = tk.Button(upper_side, text="Modo de Creación", width=20, command=lambda: self.__create_mode())
-        self.__knowledge_base_text_box = Text(middle_side, height=30, width=30)
-        self.__test_text_box = Text(middle_side, height=30, width=65)
-        self.__create_text_box = Text(middle_side, height=15, width=65)
-        self.__loaded_examples_text_box = Text(middle_side, height=15, width=65)
-        self.__ordered_checkbox = tk.Checkbutton(lower_side, text="Sin Orden", variable= self.__ordered)
-        self.__first_only_checkbox = tk.Checkbutton(lower_side, text="Primer Resultado", variable= self.__first_only)
-        self.__run_tests_button = tk.Button(lower_side, text="Correr", width=20, command=lambda: self.__test_solution())
-        self.__add_tests_button = tk.Button(lower_side, text="Agregar", width=20, command=lambda: self.__add_example())
-        self.__save_tests_button = tk.Button(lower_side, text="Guardar", width=20, command=lambda: self.__save_examples())
-        self.__clean_examples_button = tk.Button(lower_side, text="Limpiar", width=20, command=lambda: self.__clean_examples())
-        self.__pop_examples_button = tk.Button(lower_side, text="Deshacer", width=20, command=lambda: self.__pop_examples())
+        middle_side_frame.grid_rowconfigure(0, weight=1)
+        middle_side_frame.grid_columnconfigure(0, weight=1)
+        middle_side_frame.grid_columnconfigure(1, weight=1)
+        
+        lower_side_frame.grid_rowconfigure(0, weight=1)
+        for i in range(3):
+            lower_side_frame.grid_columnconfigure(i, weight=1)
+        
+        # Widgets del frame superior
+        
+        self.__submit_knowledge_base_button = tk.Button(upper_side_frame, text="Cargar Base de Conocimiento", command=lambda: self.__load_knowledge_base())
+        self.__testing_mode_button = tk.Button(upper_side_frame, text="Modo de Prueba", width=20, command=lambda: self.__test_mode())
+        self.__creating_mode_button = tk.Button(upper_side_frame, text="Modo de Creación", width=20, command=lambda: self.__create_mode())
+        
+        # Widgets del frame intermedio
+        
+        self.__knowledge_base_text_box = Text(middle_side_frame, height=30, width=30)
+        self.__test_text_box = Text(middle_side_frame, height=30, width=65)
+        self.__create_text_box = Text(middle_side_frame, height=15, width=65)
+        self.__loaded_examples_text_box = Text(middle_side_frame, height=15, width=65)
+        
+        # Widgets del frame inferior
+        
+        self.__ordered_checkbox = tk.Checkbutton(lower_side_frame, text="Sin Orden", variable= self.__ordered)
+        self.__first_only_checkbox = tk.Checkbutton(lower_side_frame, text="Primer Resultado", variable= self.__first_only)
+        self.__run_tests_button = tk.Button(lower_side_frame, text="Correr", width=20, command=lambda: self.__test_solution())
+        self.__add_tests_button = tk.Button(lower_side_frame, text="Agregar", width=20, command=lambda: self.__add_example())
+        self.__save_tests_button = tk.Button(lower_side_frame, text="Guardar", width=20, command=lambda: self.__save_examples())
+        self.__clean_examples_button = tk.Button(lower_side_frame, text="Limpiar", width=20, command=lambda: self.__clean_examples())
+        self.__pop_examples_button = tk.Button(lower_side_frame, text="Deshacer", width=20, command=lambda: self.__pop_examples())
         
         # Configuro widgets
         
@@ -55,9 +72,9 @@ class MainView():
         
         # Coloco widgets
         
-        self.__submit_knowledge_base_button.grid(row = 0, column = 0, pady = 2, sticky=W)
-        self.__testing_mode_button.grid(row = 0, column = 2, pady = 2, padx = 10, sticky=E)
-        self.__creating_mode_button.grid(row = 0, column = 3, pady = 2, sticky=E)
+        self.__submit_knowledge_base_button.grid(row = 0, column = 0, pady = 2)
+        self.__testing_mode_button.grid(row = 0, column = 2, pady = 2, padx = 10)
+        self.__creating_mode_button.grid(row = 0, column = 3, pady = 2)
         self.__knowledge_base_text_box.grid(row = 0, column = 0, rowspan=2, pady = 2)
         self.__test_text_box.grid(row = 0, column = 1, columnspan = 3, pady = 2)
         
