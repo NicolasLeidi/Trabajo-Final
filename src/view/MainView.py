@@ -19,7 +19,7 @@ class MainView():
         # Creo, ubico y configuro frames
         
         upper_side_frame = Frame(root, bg="blue", width=800, height=50, pady=3, padx=10)
-        middle_side_frame = Frame(root, bg="red", width=800, pady=3)
+        middle_side_frame = Frame(root, bg="red", width=800, pady=3, padx=5)
         lower_side_frame = Frame(root, bg="green", width=800, height=50, pady=3)
         
         upper_side_frame.grid(row = 0, stick="ew")
@@ -45,8 +45,8 @@ class MainView():
         
         # Widgets del frame intermedio
         
-        self.__knowledge_base_text_box = Text(middle_side_frame, height=30, width=30)
-        self.__test_text_box = Text(middle_side_frame, height=30, width=65)
+        self.__knowledge_base_text_box = Text(middle_side_frame)
+        self.__test_text_box = Text(middle_side_frame)
         self.__create_text_box = Text(middle_side_frame, height=15, width=65)
         self.__loaded_examples_text_box = Text(middle_side_frame, height=15, width=65)
         
@@ -81,8 +81,8 @@ class MainView():
         
         # Coloco widgets del frame intermedio
         
-        self.__knowledge_base_text_box.grid(row = 0, column = 0, rowspan=2, pady = 2)
-        self.__test_text_box.grid(row = 0, column = 1, columnspan = 3, pady = 2)
+        self.__knowledge_base_text_box.place(relheight=1, x=-1, relwidth=0.4)
+        self.__test_text_box.place(relx=0.4, x=1, relheight=1, relwidth=0.6)
         
     def __test_solution(self):
         self.presenter.run_examples()
@@ -125,12 +125,12 @@ class MainView():
         self.presenter.enter_create_mode()
     
     def __show_test_mode_widgets(self):
-        self.__run_tests_button.grid(row = 2, column = 1)
-        self.__test_text_box.grid(row = 0, column = 1, columnspan = 3, pady = 2)
+        self.__run_tests_button.grid(row = 0, column = 1)
+        self.__test_text_box.place(relx=0.4, x=1, relheight=1, relwidth=0.6)
     
     def __hide_test_mode_widgets(self):
         self.__run_tests_button.grid_forget()
-        self.__test_text_box.grid_forget()
+        self.__test_text_box.place_forget()
     
     def __hide_create_mode_widgets(self):
         self.__ordered_checkbox.grid_forget()
@@ -139,12 +139,12 @@ class MainView():
         self.__pop_examples_button.grid_forget()
         self.__clean_examples_button.grid_forget()
         self.__save_tests_button.grid_forget()
-        self.__create_text_box.grid_forget()
-        self.__loaded_examples_text_box.grid_forget()
+        self.__create_text_box.place_forget()
+        self.__loaded_examples_text_box.place_forget()
     
     def __show_create_mode_widgets(self):
-        self.__create_text_box.grid(row = 0, column = 1, columnspan = 3, pady = 0)
-        self.__loaded_examples_text_box.grid(row = 1, column = 1, columnspan = 3, pady = 0)
+        self.__create_text_box.place(relx=0.4, x=1, relheight=0.5, relwidth=0.6)
+        self.__loaded_examples_text_box.place(relx=0.4, rely=0.5, x=1, relheight=0.5, relwidth=0.6)
         
         self.__ordered_checkbox.grid(row = 0, column = 0, padx = 10)
         self.__first_only_checkbox.grid(row = 0, column = 1, padx = 10)
