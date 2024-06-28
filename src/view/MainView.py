@@ -25,14 +25,15 @@ class MainView():
         self.__middle_side_knowledge_base_frame = Frame(root, bg="red", width=320, pady=3, padx=5)
         self.__middle_side_testing_frame = Frame(root, bg="pink", width=480, pady=3, padx=5)
         self.__middle_side_batch_creating_frame = Frame(root, bg="pink", width=480, pady=3, padx=5)
-        self.__lower_side_frame = Frame(root, bg="green", width=800, height=50, pady=3)
+        self.__lower_side_testing_frame = Frame(root, bg="green", width=800, height=50, pady=3)
+        self.__lower_side_batch_creating_frame = Frame(root, bg="green", width=800, height=50, pady=3)
         
         # Ubico los frames
         
         self.__upper_side_frame.grid(row = 0, stick="ew", columnspan=2)
         self.__middle_side_knowledge_base_frame.grid(row = 1, column = 0, sticky="nsew")
         self.__middle_side_testing_frame.grid(row = 1, column = 1, sticky="nsew")
-        self.__lower_side_frame.grid(row = 2, sticky="ew", columnspan=2)
+        self.__lower_side_testing_frame.grid(row = 2, sticky="ew", columnspan=2)
         
         # Configuro los frames
         
@@ -49,9 +50,13 @@ class MainView():
         self.__middle_side_batch_creating_frame.grid_columnconfigure(0, weight=1)
         self.__middle_side_batch_creating_frame.grid_columnconfigure(1, weight=1)
         
-        self.__lower_side_frame.grid_rowconfigure(0, weight=1)
+        self.__lower_side_testing_frame.grid_rowconfigure(0, weight=1)
         for i in range(3):
-            self.__lower_side_frame.grid_columnconfigure(i, weight=1)
+            self.__lower_side_testing_frame.grid_columnconfigure(i, weight=1)
+        
+        self.__lower_side_batch_creating_frame.grid_rowconfigure(0, weight=1)
+        for i in range(3):
+            self.__lower_side_batch_creating_frame.grid_columnconfigure(i, weight=1)
         
         # Widgets del frame superior
         
@@ -68,13 +73,13 @@ class MainView():
         
         # Widgets del frame inferior
         
-        self.__ordered_checkbox = tk.Checkbutton(self.__lower_side_frame, text="Sin Orden", variable= self.__ordered)
-        self.__first_only_checkbox = tk.Checkbutton(self.__lower_side_frame, text="Primer Resultado", variable= self.__first_only)
-        self.__run_tests_button = tk.Button(self.__lower_side_frame, text="Correr", width=20, command=lambda: self.__test_solution())
-        self.__add_tests_button = tk.Button(self.__lower_side_frame, text="Agregar", width=20, command=lambda: self.__add_example())
-        self.__save_tests_button = tk.Button(self.__lower_side_frame, text="Guardar", width=20, command=lambda: self.__save_examples())
-        self.__clean_examples_button = tk.Button(self.__lower_side_frame, text="Limpiar", width=20, command=lambda: self.__clean_examples())
-        self.__pop_examples_button = tk.Button(self.__lower_side_frame, text="Deshacer", width=20, command=lambda: self.__pop_examples())
+        self.__run_tests_button = tk.Button(self.__lower_side_testing_frame, text="Correr", width=20, command=lambda: self.__test_solution())
+        self.__ordered_checkbox = tk.Checkbutton(self.__lower_side_batch_creating_frame, text="Sin Orden", variable= self.__ordered)
+        self.__first_only_checkbox = tk.Checkbutton(self.__lower_side_batch_creating_frame, text="Primer Resultado", variable= self.__first_only)
+        self.__add_tests_button = tk.Button(self.__lower_side_batch_creating_frame, text="Agregar", width=20, command=lambda: self.__add_example())
+        self.__save_tests_button = tk.Button(self.__lower_side_batch_creating_frame, text="Guardar", width=20, command=lambda: self.__save_examples())
+        self.__clean_examples_button = tk.Button(self.__lower_side_batch_creating_frame, text="Limpiar", width=20, command=lambda: self.__clean_examples())
+        self.__pop_examples_button = tk.Button(self.__lower_side_batch_creating_frame, text="Deshacer", width=20, command=lambda: self.__pop_examples())
         
         # Configuro widgets del frame superior
         
@@ -103,6 +108,14 @@ class MainView():
         self.__loaded_examples_text_box.place(rely=0.5, relheight=0.5, relwidth=1)
         
         # Coloco widgets del frame inferior
+        
+        self.__ordered_checkbox.grid(row = 0, column = 0, padx = 10)
+        self.__first_only_checkbox.grid(row = 0, column = 1, padx = 10)
+        self.__add_tests_button.grid(row = 0, column = 2, padx = 10)
+        self.__pop_examples_button.grid(row = 0, column = 3, padx = 10)
+        
+        self.__clean_examples_button.grid(row = 1, column = 0, padx = 10)
+        self.__save_tests_button.grid(row = 1, column = 3, padx = 10)
         
     def __test_solution(self):
         self.presenter.run_examples()
@@ -154,24 +167,11 @@ class MainView():
     
     def __hide_create_mode_widgets(self):
         self.__middle_side_batch_creating_frame.grid_forget()
-        
-        self.__ordered_checkbox.grid_forget()
-        self.__first_only_checkbox.grid_forget()
-        self.__add_tests_button.grid_forget()
-        self.__pop_examples_button.grid_forget()
-        self.__clean_examples_button.grid_forget()
-        self.__save_tests_button.grid_forget()
+        self.__lower_side_batch_creating_frame.grid_forget()
     
     def __show_create_mode_widgets(self):
         self.__middle_side_batch_creating_frame.grid(row = 1, column = 1, sticky="nsew")
-        
-        self.__ordered_checkbox.grid(row = 0, column = 0, padx = 10)
-        self.__first_only_checkbox.grid(row = 0, column = 1, padx = 10)
-        self.__add_tests_button.grid(row = 0, column = 2, padx = 10)
-        self.__pop_examples_button.grid(row = 0, column = 3, padx = 10)
-        
-        self.__clean_examples_button.grid(row = 1, column = 0, padx = 10)
-        self.__save_tests_button.grid(row = 1, column = 3, padx = 10)
+        self.__lower_side_batch_creating_frame.grid(row = 2, sticky="ew", columnspan=2)
     
     def open_popup(self, type, message):
         popup = tk.Tk()
