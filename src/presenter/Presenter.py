@@ -5,7 +5,7 @@ class AppPresenter():
     
     def __init__(self, model):
         self.model = model
-        self.modes = Enum('Mode', ['Testing', 'Creating', 'NotSelected'])
+        self.modes = Enum('Mode', ['Testing', 'Batch_Creating', 'Manual_Creating', 'NotSelected'])
         self.mode = self.modes.NotSelected
 
     def bind_view(self, view):
@@ -53,8 +53,15 @@ class AppPresenter():
             
         self.view.change_to_test_mode()
     
-    def enter_create_mode(self):
-        self.mode = self.modes.Creating
+    def enter_batch_create_mode(self):
+        self.mode = self.modes.Batch_Creating
+        self.model.clean_examples()
+        
+        self.view.clean_test_text_box()
+        self.view.change_to_create_mode()
+    
+    def enter_manual_create_mode(self):
+        self.mode = self.modes.Manual_Creating
         self.model.clean_examples()
         
         self.view.clean_test_text_box()
