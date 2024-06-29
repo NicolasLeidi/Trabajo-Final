@@ -9,6 +9,7 @@ Creación de batería de testing de prolog automatizado y herramienta de verific
 -   Python 3.6 o superior
 -   SWI-Prolog 8.2 o superior
 -   La librería `pyswip` es necesaria
+-   La librería `tkinter-tooltip` es necesaria
 
 ## Utilización
 
