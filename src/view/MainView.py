@@ -17,6 +17,7 @@ class MainView():
         root.title("Nombre a colocar")
         root.geometry('{}x{}'.format(800, 600))
         root.grid_rowconfigure(1, weight=1)
+        root.grid_rowconfigure(2, weight=1)
         root.grid_columnconfigure(0, weight=1)
         root.grid_columnconfigure(1, weight=2)
         
@@ -26,14 +27,16 @@ class MainView():
         self.__middle_side_knowledge_base_frame = Frame(root, bg="red", width=320, pady=3, padx=5)
         self.__middle_side_testing_frame = Frame(root, bg="pink", width=480, pady=3, padx=5)
         self.__middle_side_batch_creating_frame = Frame(root, bg="pink", width=480, pady=3, padx=5)
+        self.__middle_side_manual_creating_frame = Frame(root, bg="pink", width=480, pady=3, padx=5)
+        self.__middle_side_loaded_examples_frame = Frame(root, bg="pink", width=480, pady=3, padx=5)
         self.__lower_side_testing_frame = Frame(root, bg="green", width=800, height=50, pady=3)
         self.__lower_side_batch_creating_frame = Frame(root, bg="green", width=800, height=50, pady=3)
         
         # Ubico los frames
         
-        self.__upper_side_frame.grid(row = 0, stick="ew", columnspan=2)
-        self.__middle_side_knowledge_base_frame.grid(row = 1, column = 0, sticky="nsew")
-        self.__middle_side_testing_frame.grid(row = 1, column = 1, sticky="nsew")
+        self.__upper_side_frame.grid(row = 0, stick="ew", columnspan = 2)
+        self.__middle_side_knowledge_base_frame.grid(row = 1, column = 0, rowspan = 2, sticky="nsew")
+        self.__middle_side_testing_frame.grid(row = 1, column = 1, rowspan = 2, sticky="nsew")
         
         # Configuro los frames
         
@@ -49,6 +52,13 @@ class MainView():
         self.__middle_side_batch_creating_frame.grid_rowconfigure(0, weight=1)
         self.__middle_side_batch_creating_frame.grid_columnconfigure(0, weight=1)
         self.__middle_side_batch_creating_frame.grid_columnconfigure(1, weight=1)
+        
+        self.__middle_side_manual_creating_frame.grid_rowconfigure(0, weight=1)
+        for i in range(4):
+            self.__middle_side_manual_creating_frame.grid_columnconfigure(i, weight=1)
+        
+        self.__middle_side_loaded_examples_frame.grid_rowconfigure(0, weight=1)
+        self.__middle_side_loaded_examples_frame.grid_columnconfigure(0, weight=1)
         
         self.__lower_side_testing_frame.grid_rowconfigure(0, weight=1)
         for i in range(4):
@@ -72,10 +82,10 @@ class MainView():
         test_label = tk.Label(self.__middle_side_testing_frame, text="Batería de Tests")
         self.__test_text_box = Text(self.__middle_side_testing_frame)
         
-        create_label = tk.Label(self.__middle_side_batch_creating_frame, text="Crear Ejemplo")
-        self.__create_text_box = Text(self.__middle_side_batch_creating_frame, height=15, width=65)
-        loaded_examples_label = tk.Label(self.__middle_side_batch_creating_frame, text="Ejemplos Cargados")
-        self.__loaded_examples_text_box = Text(self.__middle_side_batch_creating_frame, height=15, width=65)
+        batch_create_label = tk.Label(self.__middle_side_batch_creating_frame, text="Crear Ejemplo")
+        self.__batch_create_text_box = Text(self.__middle_side_batch_creating_frame, height=15, width=65)
+        loaded_examples_label = tk.Label(self.__middle_side_loaded_examples_frame, text="Ejemplos Cargados")
+        self.__loaded_examples_text_box = Text(self.__middle_side_loaded_examples_frame, height=15, width=65)
         
         # Widgets del frame inferior
         
@@ -84,7 +94,7 @@ class MainView():
         
         ordered_checkbox = tk.Checkbutton(self.__lower_side_batch_creating_frame, text="Sin Orden", variable= self.__ordered)
         first_only_checkbox = tk.Checkbutton(self.__lower_side_batch_creating_frame, text="Primer Resultado", variable= self.__first_only)
-        add_tests_button = tk.Button(self.__lower_side_batch_creating_frame, text="Agregar", width=20, command=lambda: self.__add_example(self.__create_text_box))
+        add_tests_button = tk.Button(self.__lower_side_batch_creating_frame, text="Agregar", width=20, command=lambda: self.__add_example(self.__batch_create_text_box))
         save_tests_button = tk.Button(self.__lower_side_batch_creating_frame, text="Guardar", width=20, command=lambda: self.__save_examples())
         clean_examples_button = tk.Button(self.__lower_side_batch_creating_frame, text="Limpiar", width=20, command=lambda: self.__clean_examples())
         pop_examples_button = tk.Button(self.__lower_side_batch_creating_frame, text="Deshacer", width=20, command=lambda: self.__pop_examples())
@@ -106,7 +116,7 @@ class MainView():
         ToolTip(self.__test_text_box, msg="Batería de test cargada actualmente, la cual será ejecutada al presionar Correr.", delay=1.0)
         self.__test_text_box.config(state = "disabled")
         
-        ToolTip(self.__create_text_box, msg="Aquí puede escribir queries que usarán el programa cargado para crear una batería de tests.", delay=1.0)
+        ToolTip(self.__batch_create_text_box, msg="Aquí puede escribir queries que usarán el programa cargado para crear una batería de tests.", delay=1.0)
         ToolTip(self.__loaded_examples_text_box, msg="Ejemplos cargados actualmente a la nueva batería de tests.", delay=1.0)
         self.__loaded_examples_text_box.config(state = "disabled")
         self.__loaded_examples_text_box.configure(bg="gray")
@@ -136,10 +146,10 @@ class MainView():
         test_label.place(relheight=0.05, relwidth=1)
         self.__test_text_box.place(rely=0.05, relheight=0.95, relwidth=1)
         
-        create_label.place(relheight=0.05, relwidth=1)
-        self.__create_text_box.place(rely=0.05, relheight=0.45, relwidth=1)
-        loaded_examples_label.place(rely=0.5, relheight=0.05, relwidth=1)
-        self.__loaded_examples_text_box.place(rely=0.55, relheight=0.45, relwidth=1)
+        batch_create_label.place(relheight=0.1, relwidth=1)
+        self.__batch_create_text_box.place(rely=0.1, relheight=0.9, relwidth=1)
+        loaded_examples_label.place(relheight=0.1, relwidth=1)
+        self.__loaded_examples_text_box.place(rely=0.1, relheight=0.9, relwidth=1)
         
         # Coloco widgets del frame inferior
         
@@ -195,8 +205,8 @@ class MainView():
         self.presenter.enter_create_mode()
     
     def __show_test_mode_widgets(self):
-        self.__middle_side_testing_frame.grid(row = 1, column = 1, sticky="nsew")
-        self.__lower_side_testing_frame.grid(row = 2, sticky="ew", columnspan=2)
+        self.__middle_side_testing_frame.grid(row = 1, column = 1, rowspan = 2, sticky="nsew")
+        self.__lower_side_testing_frame.grid(row = 3, sticky="ew", columnspan = 2)
     
     def __hide_test_mode_widgets(self):
         self.__middle_side_testing_frame.grid_forget()
@@ -204,11 +214,13 @@ class MainView():
     
     def __hide_create_mode_widgets(self):
         self.__middle_side_batch_creating_frame.grid_forget()
+        self.__middle_side_loaded_examples_frame.grid_forget()
         self.__lower_side_batch_creating_frame.grid_forget()
     
     def __show_create_mode_widgets(self):
         self.__middle_side_batch_creating_frame.grid(row = 1, column = 1, sticky="nsew")
-        self.__lower_side_batch_creating_frame.grid(row = 2, sticky="ew", columnspan=2)
+        self.__middle_side_loaded_examples_frame.grid(row = 2, column = 1, sticky="nsew")
+        self.__lower_side_batch_creating_frame.grid(row = 3, sticky="ew", columnspan = 2)
     
     def open_popup(self, type, message):
         popup = tk.Tk()
@@ -247,7 +259,7 @@ class MainView():
         self.__test_text_box.delete('1.0', END)
     
     def clean_create_text_box(self):
-        self.__create_text_box.delete('1.0', END)
+        self.__batch_create_text_box.delete('1.0', END)
         
     def clean_loaded_examples_text_box(self):
         self.__loaded_examples_text_box.config(state = "normal")
