@@ -127,7 +127,7 @@ class MainView():
         ToolTip(self.__batch_create_text_box, msg="Aquí puede escribir queries que usarán el programa cargado para crear una batería de tests.", delay=1.0)
         
         ToolTip(self.__manual_create_query_text_box, msg="Aquí puede colocar el query a probar. Limitado a una query por prueba.", delay=1.0)
-        ToolTip(self.__manual_create_expected_result_text_box, msg="Aquí tiene que colocar el resultado esperado de la query de arriba. Respetar sintaxis:\nVariable : Valor, múltiples variables separadas con comas. Ej: X : [1, 2], Y : 3\nSi hay múltiples resultados, cada uno debe estar dentro de llaves \{\}", delay=1.0)
+        ToolTip(self.__manual_create_expected_result_text_box, msg="Aquí tiene que colocar el resultado esperado de la query de arriba. Respetar sintaxis:\nVariable : Valor, múltiples variables separadas con comas. Ej: X : [1, 2], Y : 3\nSi hay múltiples resultados, cada uno debe estar dentro de llaves {}", delay=1.0)
         
         ToolTip(self.__loaded_examples_text_box, msg="Ejemplos cargados actualmente a la nueva batería de tests.", delay=1.0)
         self.__loaded_examples_text_box.config(state = "disabled")
