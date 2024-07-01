@@ -1,5 +1,6 @@
 from enum import Enum
 from utils.FeedbackEnum import FeedbackEnum
+from utils.StringHandler import StringHandler
 
 class AppPresenter():
     
@@ -16,10 +17,45 @@ class AppPresenter():
         self.view.set_test_text_tag_color( FeedbackEnum.ERROR.value, "#FF8686" )
         self.view.set_test_text_tag_color( FeedbackEnum.SUCCESS.value, "#99FF99" )
     
-    def add_examples(self, examples, ordered, first_only):
+    def is_testing_mode(self):
+        return self.mode == self.modes.Testing
+    
+    def is_batch_mode(self):
+        return self.mode == self.modes.Batch_Creating
+    
+    def is_manual_mode(self):
+        return self.mode == self.modes.Manual_Creating
+    
+    def add_batch_examples(self, examples, ordered, first_only):
         if self.model.add_examples(examples, ordered, first_only)[0]:
-            self.view.clean_test_text_box()
             self.__update_loaded_examples_text_box()
+    
+    def add_manual_example(self, example, expected_unformatted_results, ordered, first_only):
+        expected_result = []
+        if expected_unformatted_results.lower() == "true":
+            expected_result = [{}]
+        elif expected_unformatted_results.lower() == "false":
+            expected_result = []
+        else:
+            try:
+                expected_result = []
+                results = expected_unformatted_results.split('\n')
+                
+                # La última va a ser siempre una lista vacía que hay que ignorar
+                
+                for result in results[:-1]:
+                    result_to_add = {}
+                    variables = result.split(';')
+                    for variable in variables:
+                        name, value = variable.split(':')
+                        result_to_add[name] = StringHandler.unstringify(value)
+                    expected_result.append(result_to_add)
+            except Exception:
+                self.view.open_popup("Error", "Formato incorrecto de resultados esperados.")
+                return None
+        
+        self.model.add_manual_example(example[:-1], expected_result, ordered, first_only)
+        self.__update_loaded_examples_text_box()
     
     def save_examples(self, file_path):        
         self.model.submit_examples(file_path)
@@ -58,14 +94,14 @@ class AppPresenter():
         self.model.clean_examples()
         
         self.view.clean_test_text_box()
-        self.view.change_to_create_mode()
+        self.view.change_to_batch_create_mode()
     
     def enter_manual_create_mode(self):
         self.mode = self.modes.Manual_Creating
         self.model.clean_examples()
         
         self.view.clean_test_text_box()
-        self.view.change_to_create_mode()
+        self.view.change_to_manual_create_mode()
     
     def open_popup(self, type, message):
         self.view.open_popup(type, message)

@@ -31,6 +31,9 @@ class Model():
             logging.warning("Error al correr los ejemplos.")
             self.presenter.show_message("Error", "Error al correr los ejemplos. Verifique la sintaxis de los ejemplos.")
             return (False, "Error")
+    
+    def add_manual_example(self, example, expected_result, ordered, first_only):
+        self.prolog_interface.add_example_to_base([example, expected_result, ordered, first_only])
             
     def submit_examples(self, file_path):        
         FileHandler.write_text_file(file_path, json.dumps(self.prolog_interface.get_examples()))

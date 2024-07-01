@@ -5,19 +5,21 @@ class ListOfDictsComparer:
 
     @staticmethod
     def equal_set(list1, list2):
-        sorted_list1 = sorted([ListOfDictsComparer.__dict_to_sorted_tuple(item) if isinstance(item, dict) else item for item in list1])
-        sorted_list2 = sorted([ListOfDictsComparer.__dict_to_sorted_tuple(item) if isinstance(item, dict) else item for item in list2])
+        if len(list1) != len(list2):
+            return False
         
+        for item in list1:
+            if item not in list2:
+                return False
+
+        return True
+
         return sorted_list1 == sorted_list2
     
     @staticmethod
     def includes(list1, list2):
-        sorted_list1 = sorted([ListOfDictsComparer.__dict_to_sorted_tuple(item) if isinstance(item, dict) else item for item in list1])
-        sorted_list2 = sorted([ListOfDictsComparer.__dict_to_sorted_tuple(item) if isinstance(item, dict) else item for item in list2])
-        
-        return all(item in sorted_list1 for item in sorted_list2)
+        for item in list2:
+            if item not in list1:
+                return False
 
-    @staticmethod
-    def __dict_to_sorted_tuple(d):
-        # Transforma los diccionarios a tuplas ordenadas
-        return tuple(sorted(d.items()))
+        return True
