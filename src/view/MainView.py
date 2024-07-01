@@ -188,6 +188,12 @@ class MainView():
 
     def __test_solution(self):
         self.presenter.run_examples()
+    
+    def __clean_tests(self):
+        self.presenter.clean_tests()
+    
+    def __pop_test(self):
+        pass
         
     def __add_example(self, batch_text_box, manual_query_text_box, manual_expected_result_text_box):
         if self.presenter.is_batch_mode():
@@ -298,6 +304,7 @@ class MainView():
     def clean_test_text_box(self):
         self.__test_text_box.config(state = "normal")
         self.__test_text_box.delete('1.0', END)
+        self.__test_text_box.config(state = "disabled")
     
     def clean_create_text_box(self):
         self.__batch_create_text_box.delete('1.0', END)

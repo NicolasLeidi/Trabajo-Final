@@ -120,6 +120,10 @@ class AppPresenter():
         
         self.view.set_completed_test_feedback(completed, total)
     
+    def clean_tests(self):
+        self.model.clean_examples()
+        self.view.clean_test_text_box()
+    
     def send_example_to_view(self, query, test_number, result_code, explanation, expected_results, results):
         text = f"Test {test_number} - {query}\n"
         
@@ -138,12 +142,12 @@ class AppPresenter():
         text = ""
         if results:
             if results == [{}]:
-                text += ">>true\n"
+                text += ">>True\n"
             else:
                 for result in results:
                     text += f">>{result}\n"
         else:
-            text += ">>false\n"
+            text += ">>False\n"
         
         return text
     
