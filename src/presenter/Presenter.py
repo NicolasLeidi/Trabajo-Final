@@ -81,27 +81,25 @@ class AppPresenter():
         self.view.clean_test_text_box()
          
         response = self.model.load_examples(file_path)
-        
-        self.mode = self.modes.Testing
                
         for example in response:
             self.view.insert_example_to_test_text_box(str(example[0]) + "\n")
             
         self.view.change_to_test_mode()
+        
+        self.mode = self.modes.Testing
     
     def enter_batch_create_mode(self):
-        self.mode = self.modes.Batch_Creating
         self.model.clean_examples()
-        
         self.view.clean_test_text_box()
         self.view.change_to_batch_create_mode()
+        self.mode = self.modes.Batch_Creating
     
     def enter_manual_create_mode(self):
-        self.mode = self.modes.Manual_Creating
         self.model.clean_examples()
-        
         self.view.clean_test_text_box()
         self.view.change_to_manual_create_mode()
+        self.mode = self.modes.Manual_Creating
     
     def open_popup(self, type, message):
         self.view.open_popup(type, message)

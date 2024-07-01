@@ -61,7 +61,7 @@ class MainView():
         self.__middle_side_loaded_examples_frame.grid_columnconfigure(0, weight=1)
         
         self.__lower_side_testing_frame.grid_rowconfigure(0, weight=1)
-        for i in range(4):
+        for i in range(6):
             self.__lower_side_testing_frame.grid_columnconfigure(i, weight=1)
         
         self.__lower_side_batch_creating_frame.grid_rowconfigure(0, weight=1)
@@ -97,6 +97,8 @@ class MainView():
         # Widgets del frame inferior
         
         run_tests_button = tk.Button(self.__lower_side_testing_frame, text="Correr", width=20, command=lambda: self.__test_solution())
+        clean_tests_button = tk.Button(self.__lower_side_testing_frame, text="Limpiar", width=20, command=lambda: self.__clean_tests())
+        pop_test_button = tk.Button(self.__lower_side_testing_frame, text="Remover", width=20, command=lambda: self.__pop_test())
         self.__completed_tests_label = tk.Label(self.__lower_side_testing_frame, text="Tests completados: 0 de 0")
         
         ordered_checkbox = tk.Checkbutton(self.__lower_side_batch_creating_frame, text="Sin Orden", variable= self.__ordered)
@@ -173,7 +175,9 @@ class MainView():
         # Coloco widgets del frame inferior
         
         run_tests_button.grid(row = 0, column = 1)
-        self.__completed_tests_label.grid(row = 0, column = 2)
+        clean_tests_button.grid(row = 0, column = 2)
+        pop_test_button.grid(row = 0, column = 3)
+        self.__completed_tests_label.grid(row = 0, column = 4)
         
         ordered_checkbox.grid(row = 0, column = 0, padx = 10)
         first_only_checkbox.grid(row = 0, column = 1, padx = 10)
@@ -233,7 +237,7 @@ class MainView():
     
     def __show_test_mode_widgets(self):
         self.__middle_side_testing_frame.grid(row = 1, column = 1, rowspan = 2, sticky="nsew")
-        self.__lower_side_testing_frame.grid(row = 3, sticky="ew", columnspan = 2)
+        self.__lower_side_testing_frame.grid(row = 3, sticky="ew", columnspan = 5)
     
     def __hide_test_mode_widgets(self):
         self.__middle_side_testing_frame.grid_forget()
@@ -323,7 +327,8 @@ class MainView():
         self.__show_batch_create_mode_widgets()
     
     def change_to_manual_create_mode(self):
-        self.__batch_creating_mode_button.config(state = "normal")
+        if self.presenter.is_batch_mode():
+            self.__batch_creating_mode_button.config(state = "normal")
         self.__manual_creating_mode_button.config(state = "disabled")
         self.__testing_mode_button.config(text = "Modo de Prueba")
         self.__hide_test_mode_widgets()
