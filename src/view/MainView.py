@@ -307,6 +307,7 @@ class MainView():
 
     def change_to_test_mode(self):
         self.__batch_creating_mode_button.config(state = "normal")
+        self.__manual_creating_mode_button.config(state = "normal")
         self.__test_text_box.config(state = "disabled")
         self.__testing_mode_button.config(text = "Cambiar ejemplos")
         self.__hide_batch_create_mode_widgets()
