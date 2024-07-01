@@ -46,8 +46,6 @@ class Model():
         self.prolog_interface.empty_examples_base()
         
     def load_examples(self, file_path):
-        self.prolog_interface.empty_examples_base()
-        
         examples = json.loads(FileHandler.read_text_file(file_path))
         
         # Hay que recuperar los ejemplos y devolverlos sin correrlos
