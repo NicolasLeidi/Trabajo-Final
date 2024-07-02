@@ -6,8 +6,8 @@ class AppPresenter():
     
     def __init__(self, model):
         self.model = model
-        self.modes = Enum('Mode', ['Testing', 'Batch_Creating', 'Manual_Creating', 'NotSelected'])
-        self.mode = self.modes.NotSelected
+        self.modes = Enum('Mode', ['Testing', 'Showing_Results', 'Batch_Creating', 'Manual_Creating', 'Not_Selected'])
+        self.mode = self.modes.Not_Selected
         self.selected_test_line = None
 
     def bind_view(self, view):
@@ -78,16 +78,10 @@ class AppPresenter():
         self.model.pop_examples()
         self.__update_loaded_examples_text_box()
     
-    def enter_test_mode(self, file_path):      
-        self.view.clean_test_text_box()
-         
-        response = self.model.load_examples(file_path)
-               
-        for example in response:
-            self.view.insert_example_to_test_text_box(str(example[0]) + "\n")
-        
+    def enter_test_mode(self, file_path):
+        self.model.load_examples(file_path)
+        self.__update_test_text_box()
         self.view.change_to_test_mode()
-        
         self.mode = self.modes.Testing
     
     def enter_batch_create_mode(self):
@@ -118,6 +112,8 @@ class AppPresenter():
                 completed += 1
             total += 1
             self.send_example_to_view(query, test_number, result_code, explanation, expected_results, results)
+        
+        self.mode = self.modes.Showing_Results
         
         self.view.set_completed_test_feedback(completed, total)
     
@@ -158,10 +154,13 @@ class AppPresenter():
     def __update_test_text_box(self):
         self.view.clean_test_text_box()
          
-        response = self.model.get_loaded_examples()
+        examples = self.model.get_loaded_examples()
                
-        for example in response:
+        # Para no agregar la ultima linea vacia
+        for example in examples[:-1]:
             self.view.insert_example_to_test_text_box(str(example[0]) + "\n")
+        if examples[-1]:
+            self.view.insert_example_to_test_text_box(str(examples[-1][0]))
     
     def __update_loaded_examples_text_box(self):
         self.view.clean_loaded_examples_text_box()
@@ -172,11 +171,12 @@ class AppPresenter():
         if self.mode == self.modes.Testing:
             # Transforma la coordenada del evento al indice de la linea
             line = int(text.index(f"@{event.x},{event.y}").split(".")[0]) - 1
-            print(line)
             self.selected_test_line = line
     
     def pop_test(self):
         if self.mode == self.modes.Testing and self.selected_test_line is not None:
             self.model.pop_test(self.selected_test_line)
+        elif self.mode == self.modes.Showing_Results:
+            self.mode = self.modes.Testing
             
-            self.__update_test_text_box()
+        self.__update_test_text_box()
