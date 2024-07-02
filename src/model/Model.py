@@ -70,3 +70,6 @@ class Model():
     
     def pop_examples(self):
         self.prolog_interface.pop_example_from_base()
+    
+    def pop_test(self, index):
+        self.prolog_interface.pop_example_from_base(index)

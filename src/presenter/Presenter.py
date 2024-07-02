@@ -8,6 +8,7 @@ class AppPresenter():
         self.model = model
         self.modes = Enum('Mode', ['Testing', 'Batch_Creating', 'Manual_Creating', 'NotSelected'])
         self.mode = self.modes.NotSelected
+        self.selected_test_line = None
 
     def bind_view(self, view):
         self.view = view 
@@ -84,7 +85,7 @@ class AppPresenter():
                
         for example in response:
             self.view.insert_example_to_test_text_box(str(example[0]) + "\n")
-            
+        
         self.view.change_to_test_mode()
         
         self.mode = self.modes.Testing
@@ -154,7 +155,28 @@ class AppPresenter():
     def show_message(self, type, message):
         self.view.open_popup(type, message)
     
+    def __update_test_text_box(self):
+        self.view.clean_test_text_box()
+         
+        response = self.model.get_loaded_examples()
+               
+        for example in response:
+            self.view.insert_example_to_test_text_box(str(example[0]) + "\n")
+    
     def __update_loaded_examples_text_box(self):
         self.view.clean_loaded_examples_text_box()
         for example in self.model.get_loaded_examples():
             self.view.insert_example_to_loaded_examples_text_box(str(example[0]) + "\n")
+    
+    def handle_test_text_box_click(self, text, event):
+        if self.mode == self.modes.Testing:
+            # Transforma la coordenada del evento al indice de la linea
+            line = int(text.index(f"@{event.x},{event.y}").split(".")[0]) - 1
+            print(line)
+            self.selected_test_line = line
+    
+    def pop_test(self):
+        if self.mode == self.modes.Testing and self.selected_test_line is not None:
+            self.model.pop_test(self.selected_test_line)
+            
+            self.__update_test_text_box()

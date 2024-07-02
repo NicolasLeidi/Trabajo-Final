@@ -123,6 +123,7 @@ class MainView():
         self.__knowledge_base_text_box.config(state = "disabled")
         self.__knowledge_base_text_box.configure(bg="gray")
         
+        self.__test_text_box.bind("<Button 1>", self.__handle_test_text_box_click)
         ToolTip(self.__test_text_box, msg="Batería de test cargada actualmente, la cual será ejecutada al presionar Correr.", delay=1.0)
         self.__test_text_box.config(state = "disabled")
         
@@ -186,6 +187,9 @@ class MainView():
         clean_examples_button.grid(row = 1, column = 0, padx = 10)
         save_tests_button.grid(row = 1, column = 3, padx = 10)
 
+    def __handle_test_text_box_click(self, event):
+        self.presenter.handle_test_text_box_click(self.__test_text_box, event)
+    
     def __test_solution(self):
         self.presenter.run_examples()
     
@@ -193,7 +197,7 @@ class MainView():
         self.presenter.clean_tests()
     
     def __pop_test(self):
-        pass
+        self.presenter.pop_test()
         
     def __add_example(self, batch_text_box, manual_query_text_box, manual_expected_result_text_box):
         if self.presenter.is_batch_mode():
