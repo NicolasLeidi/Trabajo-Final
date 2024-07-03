@@ -1,8 +1,10 @@
 from tkinter import filedialog
 from tkinter import * 
 from tktooltip import ToolTip
+from view.components.frames.BatchCreatingFrame import BatchCreatingFrame
 from view.components.frames.HeaderFrame import HeaderFrame
 from view.components.frames.KnowledgeBaseFrame import KnowledgeBaseFrame
+from view.components.frames.ManualCreatingFrame import ManualCreatingFrame
 from view.components.frames.TestingFrame import TestingFrame
 
 class MainView():
@@ -28,8 +30,8 @@ class MainView():
         self.__upper_side_frame = HeaderFrame(root, bg="blue", width=800, height=50, pady=3, padx=10, functions=(self.__load_knowledge_base, self.__test_mode, self.__batch_create_mode, self.__manual_create_mode))
         self.__middle_side_knowledge_base_frame = KnowledgeBaseFrame(root, bg="red", width=320, pady=3, padx=5)
         self.__middle_side_testing_frame = TestingFrame(root, bg="pink", width=480, pady=3, padx=5)
-        self.__middle_side_batch_creating_frame = Frame(root, bg="orange", width=480, pady=3, padx=5)
-        self.__middle_side_manual_creating_frame = Frame(root, bg="yellow", width=480, pady=3, padx=5)
+        self.__middle_side_batch_creating_frame = BatchCreatingFrame(root, bg="orange", width=480, pady=3, padx=5)
+        self.__middle_side_manual_creating_frame = ManualCreatingFrame(root, bg="yellow", width=480, pady=3, padx=5)
         self.__middle_side_loaded_examples_frame = Frame(root, bg="purple", width=480, pady=3, padx=5)
         self.__lower_side_testing_frame = Frame(root, bg="green", width=800, height=50, pady=3)
         self.__lower_side_batch_creating_frame = Frame(root, bg="cyan", width=800, height=50, pady=3)
@@ -42,13 +44,6 @@ class MainView():
         
         # Configuro los frames
         
-        self.__middle_side_batch_creating_frame.grid_rowconfigure(0, weight=1)
-        self.__middle_side_batch_creating_frame.grid_columnconfigure(0, weight=1)
-        self.__middle_side_batch_creating_frame.grid_columnconfigure(1, weight=1)
-        
-        self.__middle_side_manual_creating_frame.grid_rowconfigure(0, weight=1)
-        for i in range(4):
-            self.__middle_side_manual_creating_frame.grid_columnconfigure(i, weight=1)
         
         self.__middle_side_loaded_examples_frame.grid_rowconfigure(0, weight=1)
         self.__middle_side_loaded_examples_frame.grid_columnconfigure(0, weight=1)
@@ -63,14 +58,6 @@ class MainView():
         
         # Widgets del frame intermedio
         
-        batch_create_label = Label(self.__middle_side_batch_creating_frame, text="Crear Ejemplo")
-        self.__batch_create_text_box = Text(self.__middle_side_batch_creating_frame, height=15, width=65)
-        
-        manual_create_query_label = Label(self.__middle_side_manual_creating_frame, text="Crear Query de Ejemplo")
-        self.__manual_create_query_text_box = Text(self.__middle_side_manual_creating_frame)
-        manual_create_expected_result_label = Label(self.__middle_side_manual_creating_frame, text="Resultado Esperado")
-        self.__manual_create_expected_result_text_box = Text(self.__middle_side_manual_creating_frame)
-        
         loaded_examples_label = Label(self.__middle_side_loaded_examples_frame, text="Ejemplos Cargados")
         self.__loaded_examples_text_box = Text(self.__middle_side_loaded_examples_frame, height=15, width=65)
         
@@ -83,7 +70,7 @@ class MainView():
         
         ordered_checkbox = Checkbutton(self.__lower_side_batch_creating_frame, text="Sin Orden", variable= self.__ordered)
         first_only_checkbox = Checkbutton(self.__lower_side_batch_creating_frame, text="Primer Resultado", variable= self.__first_only)
-        add_tests_button = Button(self.__lower_side_batch_creating_frame, text="Agregar", width=20, command=lambda: self.__add_example(self.__batch_create_text_box, self.__manual_create_query_text_box, self.__manual_create_expected_result_text_box))
+        add_tests_button = Button(self.__lower_side_batch_creating_frame, text="Agregar", width=20, command=lambda: self.__add_example())
         save_tests_button = Button(self.__lower_side_batch_creating_frame, text="Guardar", width=20, command=lambda: self.__save_examples())
         clean_examples_button = Button(self.__lower_side_batch_creating_frame, text="Limpiar", width=20, command=lambda: self.__clean_examples())
         pop_examples_button = Button(self.__lower_side_batch_creating_frame, text="Deshacer", width=20, command=lambda: self.__pop_examples())
@@ -92,10 +79,6 @@ class MainView():
         
         self.__middle_side_testing_frame.test_text_box.bind("<Button 1>", self.__handle_test_text_box_click)
         
-        ToolTip(self.__batch_create_text_box, msg="Aquí puede escribir queries que usarán el programa cargado para crear una batería de tests.", delay=1.0)
-        
-        ToolTip(self.__manual_create_query_text_box, msg="Aquí puede colocar el query a probar. Limitado a una query por prueba.", delay=1.0)
-        ToolTip(self.__manual_create_expected_result_text_box, msg="Aquí tiene que colocar el resultado esperado de la query de arriba. Respetar sintaxis:\nVariable : Valor, múltiples variables separadas con punto y coma en el orden que aparecen. Ej: X : [1, 2]; Y : 3\nSi hay múltiples resultados, cada uno debe estar en diferentes lineas separadas por un enter. Ej:\nX: 1\nX: 2\nUn resultado True o False simplemente se escribe True o False.", delay=1.0)
         
         ToolTip(self.__loaded_examples_text_box, msg="Ejemplos cargados actualmente a la nueva batería de tests.", delay=1.0)
         self.__loaded_examples_text_box.config(state = "disabled")
@@ -113,14 +96,6 @@ class MainView():
         ToolTip(first_only_checkbox, msg="Cambia el comportamiento de la batería de tests, solo compara la primera unificación.", delay=1.0)
         
         # Coloco widgets del frame intermedio
-        
-        batch_create_label.place(relheight=0.1, relwidth=1)
-        self.__batch_create_text_box.place(rely=0.1, relheight=0.9, relwidth=1)
-        
-        manual_create_query_label.place(relheight=0.05, relwidth=1)
-        self.__manual_create_query_text_box.place(rely=0.05, relheight=0.45, relwidth=1)
-        manual_create_expected_result_label.place(rely=0.5, relheight=0.05, relwidth=1)
-        self.__manual_create_expected_result_text_box.place(rely=0.55, relheight=0.45, relwidth=1)
         
         loaded_examples_label.place(relheight=0.1, relwidth=1)
         self.__loaded_examples_text_box.place(rely=0.1, relheight=0.9, relwidth=1)
@@ -151,14 +126,14 @@ class MainView():
     def __pop_test(self):
         self.presenter.pop_test()
         
-    def __add_example(self, batch_text_box, manual_query_text_box, manual_expected_result_text_box):
+    def __add_example(self):
         if self.presenter.is_batch_mode():
-            if not batch_text_box.compare("end-1c", "==", "1.0"): 
-                self.presenter.add_examples(batch_text_box.get("1.0",'end'), self.__ordered.get(), self.__first_only.get())
+            if not self.__middle_side_batch_creating_frame.batch_create_text_box.compare("end-1c", "==", "1.0"): 
+                self.presenter.add_batch_examples(self.__middle_side_batch_creating_frame.batch_create_text_box.get("1.0",'end'), self.__ordered.get(), self.__first_only.get())
         else:
             if self.presenter.is_manual_mode():
-                if not manual_query_text_box.compare("end-1c", "==", "1.0") and not manual_expected_result_text_box.compare("end-1c", "==", "1.0"): 
-                    self.presenter.add_manual_example(manual_query_text_box.get("1.0",'end'), manual_expected_result_text_box.get("1.0",'end'), self.__ordered.get(), self.__first_only.get())
+                if not self.__middle_side_manual_creating_frame.manual_create_query_text_box.compare("end-1c", "==", "1.0") and not self.__middle_side_manual_creating_frame.manual_create_expected_result_text_box.compare("end-1c", "==", "1.0"): 
+                    self.presenter.add_manual_example(self.__middle_side_manual_creating_frame.manual_create_query_text_box.get("1.0",'end'), self.__middle_side_manual_creating_frame.manual_create_expected_result_text_box.get("1.0",'end'), self.__ordered.get(), self.__first_only.get())
     
     def __save_examples(self):
         file_path = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("JSON files", "*.json")])

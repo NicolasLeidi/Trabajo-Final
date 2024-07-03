@@ -36,13 +36,12 @@ class PrologInterface():
     def empty_examples_base(self):
         self.examples_base = []
     
-    def pop_example_from_base(self):
+    def pop_example_from_base(self, index = -1):
         if self.examples_base:
-            return self.examples_base.pop()
-    
-    def pop_example_from_base(self, index):
-        if self.examples_base:
-            return self.examples_base.pop(index)
+            if index == -1:
+                return self.examples_base.pop()
+            else:
+                return self.examples_base.pop(index)
     
     def add_example_to_base(self, example_with_result):
         example = example_with_result[0]
