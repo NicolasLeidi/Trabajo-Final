@@ -2,6 +2,7 @@ from tkinter import filedialog
 from tkinter import * 
 from tktooltip import ToolTip
 from view.components.frames.BatchCreatingFrame import BatchCreatingFrame
+from view.components.frames.FooterCreatingFrame import FooterCreatingFrame
 from view.components.frames.FooterTestingFrame import FooterTestingFrame
 from view.components.frames.HeaderFrame import HeaderFrame
 from view.components.frames.KnowledgeBaseFrame import KnowledgeBaseFrame
@@ -36,7 +37,7 @@ class MainView():
         self.__middle_side_manual_creating_frame = ManualCreatingFrame(root, bg="yellow", width=480, pady=3, padx=5)
         self.__middle_side_loaded_examples_frame = LoadedExamplesFrame(root, bg="purple", width=480, pady=3, padx=5)
         self.__lower_side_testing_frame = FooterTestingFrame(root, bg="green", width=800, height=50, pady=3, functions=(self.__test_solution, self.__clean_tests, self.__pop_test))
-        self.__lower_side_batch_creating_frame = Frame(root, bg="cyan", width=800, height=50, pady=3)
+        self.__lower_side_batch_creating_frame = FooterCreatingFrame(root, bg="cyan", width=800, height=50, pady=3, variables=(self.__ordered, self.__first_only), functions=(self.__add_example, self.__save_examples, self.__clean_examples, self.__pop_examples))
         
         # Ubico los frames
         
@@ -44,42 +45,9 @@ class MainView():
         self.__middle_side_knowledge_base_frame.grid(row = 1, column = 0, rowspan = 2, sticky="nsew")
         self.__middle_side_testing_frame.grid(row = 1, column = 1, rowspan = 2, sticky="nsew")
         
-        # Configuro los frames
-        
-        self.__lower_side_batch_creating_frame.grid_rowconfigure(0, weight=1)
-        for i in range(3):
-            self.__lower_side_batch_creating_frame.grid_columnconfigure(i, weight=1)
-        
-        # Widgets del frame inferior
-        
-        ordered_checkbox = Checkbutton(self.__lower_side_batch_creating_frame, text="Sin Orden", variable= self.__ordered)
-        first_only_checkbox = Checkbutton(self.__lower_side_batch_creating_frame, text="Primer Resultado", variable= self.__first_only)
-        add_tests_button = Button(self.__lower_side_batch_creating_frame, text="Agregar", width=20, command=lambda: self.__add_example())
-        save_tests_button = Button(self.__lower_side_batch_creating_frame, text="Guardar", width=20, command=lambda: self.__save_examples())
-        clean_examples_button = Button(self.__lower_side_batch_creating_frame, text="Limpiar", width=20, command=lambda: self.__clean_examples())
-        pop_examples_button = Button(self.__lower_side_batch_creating_frame, text="Deshacer", width=20, command=lambda: self.__pop_examples())
-        
         # Configuro widgets del frame intermedio
         
         self.__middle_side_testing_frame.test_text_box.bind("<Button 1>", self.__handle_test_text_box_click)
-        
-        # Configuro widgets del frame inferior
-        
-        ToolTip(add_tests_button, msg="Agrega un ejemplo a la batería de tests cargada actualmente.", delay=1.0)
-        ToolTip(save_tests_button, msg="Guarda la batería de tests cargada actualmente.", delay=1.0)
-        ToolTip(clean_examples_button, msg="Limpia todos los ejemplos cargados actualmente.", delay=1.0)
-        ToolTip(pop_examples_button, msg="Deshace el último ejemplo cargado actualmente.", delay=1.0)
-        ToolTip(ordered_checkbox, msg="Cambia el comportamiento de la batería de tests, compara los conjuntos de resultados sin importar el orden.", delay=1.0)
-        ToolTip(first_only_checkbox, msg="Cambia el comportamiento de la batería de tests, solo compara la primera unificación.", delay=1.0)
-        
-        # Coloco widgets del frame inferior
-        
-        ordered_checkbox.grid(row = 0, column = 0, padx = 10)
-        first_only_checkbox.grid(row = 0, column = 1, padx = 10)
-        add_tests_button.grid(row = 0, column = 2, padx = 10)
-        pop_examples_button.grid(row = 0, column = 3, padx = 10)
-        clean_examples_button.grid(row = 1, column = 0, padx = 10)
-        save_tests_button.grid(row = 1, column = 3, padx = 10)
 
     def __handle_test_text_box_click(self, event):
         self.presenter.handle_test_text_box_click(self.__middle_side_testing_frame.test_text_box, event)
