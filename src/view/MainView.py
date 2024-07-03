@@ -2,6 +2,7 @@ from tkinter import filedialog
 from tkinter import * 
 from tktooltip import ToolTip
 from view.components.frames.BatchCreatingFrame import BatchCreatingFrame
+from view.components.frames.FooterTestingFrame import FooterTestingFrame
 from view.components.frames.HeaderFrame import HeaderFrame
 from view.components.frames.KnowledgeBaseFrame import KnowledgeBaseFrame
 from view.components.frames.LoadedExamplesFrame import LoadedExamplesFrame
@@ -34,7 +35,7 @@ class MainView():
         self.__middle_side_batch_creating_frame = BatchCreatingFrame(root, bg="orange", width=480, pady=3, padx=5)
         self.__middle_side_manual_creating_frame = ManualCreatingFrame(root, bg="yellow", width=480, pady=3, padx=5)
         self.__middle_side_loaded_examples_frame = LoadedExamplesFrame(root, bg="purple", width=480, pady=3, padx=5)
-        self.__lower_side_testing_frame = Frame(root, bg="green", width=800, height=50, pady=3)
+        self.__lower_side_testing_frame = FooterTestingFrame(root, bg="green", width=800, height=50, pady=3, functions=(self.__test_solution, self.__clean_tests, self.__pop_test))
         self.__lower_side_batch_creating_frame = Frame(root, bg="cyan", width=800, height=50, pady=3)
         
         # Ubico los frames
@@ -45,20 +46,11 @@ class MainView():
         
         # Configuro los frames
         
-        self.__lower_side_testing_frame.grid_rowconfigure(0, weight=1)
-        for i in range(6):
-            self.__lower_side_testing_frame.grid_columnconfigure(i, weight=1)
-        
         self.__lower_side_batch_creating_frame.grid_rowconfigure(0, weight=1)
         for i in range(3):
             self.__lower_side_batch_creating_frame.grid_columnconfigure(i, weight=1)
         
         # Widgets del frame inferior
-        
-        run_tests_button = Button(self.__lower_side_testing_frame, text="Correr", width=20, command=lambda: self.__test_solution())
-        clean_tests_button = Button(self.__lower_side_testing_frame, text="Limpiar", width=20, command=lambda: self.__clean_tests())
-        pop_test_button = Button(self.__lower_side_testing_frame, text="Remover", width=20, command=lambda: self.__pop_test())
-        self.__completed_tests_label = Label(self.__lower_side_testing_frame, text="Tests completados: 0 de 0")
         
         ordered_checkbox = Checkbutton(self.__lower_side_batch_creating_frame, text="Sin Orden", variable= self.__ordered)
         first_only_checkbox = Checkbutton(self.__lower_side_batch_creating_frame, text="Primer Resultado", variable= self.__first_only)
@@ -73,8 +65,6 @@ class MainView():
         
         # Configuro widgets del frame inferior
         
-        ToolTip(run_tests_button, msg="Corre la batería de tests cargada actualmente sobre la base de conocimiento cargada.", delay=1.0)
-        
         ToolTip(add_tests_button, msg="Agrega un ejemplo a la batería de tests cargada actualmente.", delay=1.0)
         ToolTip(save_tests_button, msg="Guarda la batería de tests cargada actualmente.", delay=1.0)
         ToolTip(clean_examples_button, msg="Limpia todos los ejemplos cargados actualmente.", delay=1.0)
@@ -83,11 +73,6 @@ class MainView():
         ToolTip(first_only_checkbox, msg="Cambia el comportamiento de la batería de tests, solo compara la primera unificación.", delay=1.0)
         
         # Coloco widgets del frame inferior
-        
-        run_tests_button.grid(row = 0, column = 1)
-        clean_tests_button.grid(row = 0, column = 2)
-        pop_test_button.grid(row = 0, column = 3)
-        self.__completed_tests_label.grid(row = 0, column = 4)
         
         ordered_checkbox.grid(row = 0, column = 0, padx = 10)
         first_only_checkbox.grid(row = 0, column = 1, padx = 10)
@@ -219,7 +204,7 @@ class MainView():
         self.__middle_side_loaded_examples_frame.clean_loaded_examples_text_box()
     
     def set_completed_test_feedback(self, completed = 0, total = 0):
-        self.__completed_tests_label.config(text = "Tests completados: " + str(completed) + " de " + str(total))
+        self.__lower_side_testing_frame.completed_tests_label.config(text = "Tests completados: " + str(completed) + " de " + str(total))
 
     def change_to_test_mode(self):
         self.__upper_side_frame.batch_creating_mode_button.config(state = "normal")
