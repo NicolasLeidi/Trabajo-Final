@@ -4,6 +4,7 @@ from tktooltip import ToolTip
 from view.components.frames.BatchCreatingFrame import BatchCreatingFrame
 from view.components.frames.HeaderFrame import HeaderFrame
 from view.components.frames.KnowledgeBaseFrame import KnowledgeBaseFrame
+from view.components.frames.LoadedExamplesFrame import LoadedExamplesFrame
 from view.components.frames.ManualCreatingFrame import ManualCreatingFrame
 from view.components.frames.TestingFrame import TestingFrame
 
@@ -32,7 +33,7 @@ class MainView():
         self.__middle_side_testing_frame = TestingFrame(root, bg="pink", width=480, pady=3, padx=5)
         self.__middle_side_batch_creating_frame = BatchCreatingFrame(root, bg="orange", width=480, pady=3, padx=5)
         self.__middle_side_manual_creating_frame = ManualCreatingFrame(root, bg="yellow", width=480, pady=3, padx=5)
-        self.__middle_side_loaded_examples_frame = Frame(root, bg="purple", width=480, pady=3, padx=5)
+        self.__middle_side_loaded_examples_frame = LoadedExamplesFrame(root, bg="purple", width=480, pady=3, padx=5)
         self.__lower_side_testing_frame = Frame(root, bg="green", width=800, height=50, pady=3)
         self.__lower_side_batch_creating_frame = Frame(root, bg="cyan", width=800, height=50, pady=3)
         
@@ -44,10 +45,6 @@ class MainView():
         
         # Configuro los frames
         
-        
-        self.__middle_side_loaded_examples_frame.grid_rowconfigure(0, weight=1)
-        self.__middle_side_loaded_examples_frame.grid_columnconfigure(0, weight=1)
-        
         self.__lower_side_testing_frame.grid_rowconfigure(0, weight=1)
         for i in range(6):
             self.__lower_side_testing_frame.grid_columnconfigure(i, weight=1)
@@ -55,11 +52,6 @@ class MainView():
         self.__lower_side_batch_creating_frame.grid_rowconfigure(0, weight=1)
         for i in range(3):
             self.__lower_side_batch_creating_frame.grid_columnconfigure(i, weight=1)
-        
-        # Widgets del frame intermedio
-        
-        loaded_examples_label = Label(self.__middle_side_loaded_examples_frame, text="Ejemplos Cargados")
-        self.__loaded_examples_text_box = Text(self.__middle_side_loaded_examples_frame, height=15, width=65)
         
         # Widgets del frame inferior
         
@@ -79,11 +71,6 @@ class MainView():
         
         self.__middle_side_testing_frame.test_text_box.bind("<Button 1>", self.__handle_test_text_box_click)
         
-        
-        ToolTip(self.__loaded_examples_text_box, msg="Ejemplos cargados actualmente a la nueva batería de tests.", delay=1.0)
-        self.__loaded_examples_text_box.config(state = "disabled")
-        self.__loaded_examples_text_box.configure(bg="gray")
-        
         # Configuro widgets del frame inferior
         
         ToolTip(run_tests_button, msg="Corre la batería de tests cargada actualmente sobre la base de conocimiento cargada.", delay=1.0)
@@ -94,11 +81,6 @@ class MainView():
         ToolTip(pop_examples_button, msg="Deshace el último ejemplo cargado actualmente.", delay=1.0)
         ToolTip(ordered_checkbox, msg="Cambia el comportamiento de la batería de tests, compara los conjuntos de resultados sin importar el orden.", delay=1.0)
         ToolTip(first_only_checkbox, msg="Cambia el comportamiento de la batería de tests, solo compara la primera unificación.", delay=1.0)
-        
-        # Coloco widgets del frame intermedio
-        
-        loaded_examples_label.place(relheight=0.1, relwidth=1)
-        self.__loaded_examples_text_box.place(rely=0.1, relheight=0.9, relwidth=1)
         
         # Coloco widgets del frame inferior
         
@@ -219,9 +201,7 @@ class MainView():
         self.__middle_side_testing_frame.test_text_box.tag_add(tag, line_number_to_str, line_number_to_str + "+" + str(len(text.split("\n")) - 1) + "lines")
     
     def insert_example_to_loaded_examples_text_box(self, text):
-        self.__loaded_examples_text_box.config(state = "normal")
-        self.__loaded_examples_text_box.insert(END, text)
-        self.__loaded_examples_text_box.config(state = "disabled")
+        self.__middle_side_loaded_examples_frame.insert_loaded_examples_text_box(text)
     
     def insert_text_to_knowledge_base_text_box(self, text):
         self.__middle_side_knowledge_base_frame.insert_knowledge_base_text_box(text)
@@ -233,17 +213,16 @@ class MainView():
         self.__middle_side_testing_frame.clean_test_text_box()
     
     def clean_create_text_box(self):
-        self.__batch_create_text_box.delete('1.0', END)
+        self.__middle_side_batch_creating_frame.clean_batch_create_text_box()
         
     def clean_loaded_examples_text_box(self):
-        self.__loaded_examples_text_box.config(state = "normal")
-        self.__loaded_examples_text_box.delete('1.0', END)    
+        self.__middle_side_loaded_examples_frame.clean_loaded_examples_text_box()
     
     def set_completed_test_feedback(self, completed = 0, total = 0):
         self.__completed_tests_label.config(text = "Tests completados: " + str(completed) + " de " + str(total))
 
     def change_to_test_mode(self):
-        self.__upper_side_frame.batch_creating_mode_button.config(state = "disabled")
+        self.__upper_side_frame.batch_creating_mode_button.config(state = "normal")
         self.__upper_side_frame.manual_creating_mode_button.config(state = "normal")
         self.__upper_side_frame.testing_mode_button.config(text = "Agregar Ejemplos")
         self.__hide_batch_create_mode_widgets()
