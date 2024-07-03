@@ -1,9 +1,9 @@
-import tkinter as tk
 from tkinter import filedialog
 from tkinter import * 
 from tktooltip import ToolTip
 from view.components.frames.HeaderFrame import HeaderFrame
 from view.components.frames.KnowledgeBaseFrame import KnowledgeBaseFrame
+from view.components.frames.TestingFrame import TestingFrame
 
 class MainView():
     
@@ -27,7 +27,7 @@ class MainView():
         
         self.__upper_side_frame = HeaderFrame(root, bg="blue", width=800, height=50, pady=3, padx=10, functions=(self.__load_knowledge_base, self.__test_mode, self.__batch_create_mode, self.__manual_create_mode))
         self.__middle_side_knowledge_base_frame = KnowledgeBaseFrame(root, bg="red", width=320, pady=3, padx=5)
-        self.__middle_side_testing_frame = Frame(root, bg="pink", width=480, pady=3, padx=5)
+        self.__middle_side_testing_frame = TestingFrame(root, bg="pink", width=480, pady=3, padx=5)
         self.__middle_side_batch_creating_frame = Frame(root, bg="orange", width=480, pady=3, padx=5)
         self.__middle_side_manual_creating_frame = Frame(root, bg="yellow", width=480, pady=3, padx=5)
         self.__middle_side_loaded_examples_frame = Frame(root, bg="purple", width=480, pady=3, padx=5)
@@ -41,9 +41,6 @@ class MainView():
         self.__middle_side_testing_frame.grid(row = 1, column = 1, rowspan = 2, sticky="nsew")
         
         # Configuro los frames
-        
-        self.__middle_side_testing_frame.grid_rowconfigure(0, weight=1)
-        self.__middle_side_testing_frame.grid_columnconfigure(0, weight=1)
         
         self.__middle_side_batch_creating_frame.grid_rowconfigure(0, weight=1)
         self.__middle_side_batch_creating_frame.grid_columnconfigure(0, weight=1)
@@ -66,39 +63,34 @@ class MainView():
         
         # Widgets del frame intermedio
         
-        test_label = tk.Label(self.__middle_side_testing_frame, text="Batería de Tests")
-        self.__test_text_box = Text(self.__middle_side_testing_frame)
-        
-        batch_create_label = tk.Label(self.__middle_side_batch_creating_frame, text="Crear Ejemplo")
+        batch_create_label = Label(self.__middle_side_batch_creating_frame, text="Crear Ejemplo")
         self.__batch_create_text_box = Text(self.__middle_side_batch_creating_frame, height=15, width=65)
         
-        manual_create_query_label = tk.Label(self.__middle_side_manual_creating_frame, text="Crear Query de Ejemplo")
+        manual_create_query_label = Label(self.__middle_side_manual_creating_frame, text="Crear Query de Ejemplo")
         self.__manual_create_query_text_box = Text(self.__middle_side_manual_creating_frame)
-        manual_create_expected_result_label = tk.Label(self.__middle_side_manual_creating_frame, text="Resultado Esperado")
+        manual_create_expected_result_label = Label(self.__middle_side_manual_creating_frame, text="Resultado Esperado")
         self.__manual_create_expected_result_text_box = Text(self.__middle_side_manual_creating_frame)
         
-        loaded_examples_label = tk.Label(self.__middle_side_loaded_examples_frame, text="Ejemplos Cargados")
+        loaded_examples_label = Label(self.__middle_side_loaded_examples_frame, text="Ejemplos Cargados")
         self.__loaded_examples_text_box = Text(self.__middle_side_loaded_examples_frame, height=15, width=65)
         
         # Widgets del frame inferior
         
-        run_tests_button = tk.Button(self.__lower_side_testing_frame, text="Correr", width=20, command=lambda: self.__test_solution())
-        clean_tests_button = tk.Button(self.__lower_side_testing_frame, text="Limpiar", width=20, command=lambda: self.__clean_tests())
-        pop_test_button = tk.Button(self.__lower_side_testing_frame, text="Remover", width=20, command=lambda: self.__pop_test())
-        self.__completed_tests_label = tk.Label(self.__lower_side_testing_frame, text="Tests completados: 0 de 0")
+        run_tests_button = Button(self.__lower_side_testing_frame, text="Correr", width=20, command=lambda: self.__test_solution())
+        clean_tests_button = Button(self.__lower_side_testing_frame, text="Limpiar", width=20, command=lambda: self.__clean_tests())
+        pop_test_button = Button(self.__lower_side_testing_frame, text="Remover", width=20, command=lambda: self.__pop_test())
+        self.__completed_tests_label = Label(self.__lower_side_testing_frame, text="Tests completados: 0 de 0")
         
-        ordered_checkbox = tk.Checkbutton(self.__lower_side_batch_creating_frame, text="Sin Orden", variable= self.__ordered)
-        first_only_checkbox = tk.Checkbutton(self.__lower_side_batch_creating_frame, text="Primer Resultado", variable= self.__first_only)
-        add_tests_button = tk.Button(self.__lower_side_batch_creating_frame, text="Agregar", width=20, command=lambda: self.__add_example(self.__batch_create_text_box, self.__manual_create_query_text_box, self.__manual_create_expected_result_text_box))
-        save_tests_button = tk.Button(self.__lower_side_batch_creating_frame, text="Guardar", width=20, command=lambda: self.__save_examples())
-        clean_examples_button = tk.Button(self.__lower_side_batch_creating_frame, text="Limpiar", width=20, command=lambda: self.__clean_examples())
-        pop_examples_button = tk.Button(self.__lower_side_batch_creating_frame, text="Deshacer", width=20, command=lambda: self.__pop_examples())
+        ordered_checkbox = Checkbutton(self.__lower_side_batch_creating_frame, text="Sin Orden", variable= self.__ordered)
+        first_only_checkbox = Checkbutton(self.__lower_side_batch_creating_frame, text="Primer Resultado", variable= self.__first_only)
+        add_tests_button = Button(self.__lower_side_batch_creating_frame, text="Agregar", width=20, command=lambda: self.__add_example(self.__batch_create_text_box, self.__manual_create_query_text_box, self.__manual_create_expected_result_text_box))
+        save_tests_button = Button(self.__lower_side_batch_creating_frame, text="Guardar", width=20, command=lambda: self.__save_examples())
+        clean_examples_button = Button(self.__lower_side_batch_creating_frame, text="Limpiar", width=20, command=lambda: self.__clean_examples())
+        pop_examples_button = Button(self.__lower_side_batch_creating_frame, text="Deshacer", width=20, command=lambda: self.__pop_examples())
         
         # Configuro widgets del frame intermedio
         
-        self.__test_text_box.bind("<Button 1>", self.__handle_test_text_box_click)
-        ToolTip(self.__test_text_box, msg="Batería de test cargada actualmente, la cual será ejecutada al presionar Correr.", delay=1.0)
-        self.__test_text_box.config(state = "disabled")
+        self.__middle_side_testing_frame.test_text_box.bind("<Button 1>", self.__handle_test_text_box_click)
         
         ToolTip(self.__batch_create_text_box, msg="Aquí puede escribir queries que usarán el programa cargado para crear una batería de tests.", delay=1.0)
         
@@ -121,9 +113,6 @@ class MainView():
         ToolTip(first_only_checkbox, msg="Cambia el comportamiento de la batería de tests, solo compara la primera unificación.", delay=1.0)
         
         # Coloco widgets del frame intermedio
-        
-        test_label.place(relheight=0.05, relwidth=1)
-        self.__test_text_box.place(rely=0.05, relheight=0.95, relwidth=1)
         
         batch_create_label.place(relheight=0.1, relwidth=1)
         self.__batch_create_text_box.place(rely=0.1, relheight=0.9, relwidth=1)
@@ -151,7 +140,7 @@ class MainView():
         save_tests_button.grid(row = 1, column = 3, padx = 10)
 
     def __handle_test_text_box_click(self, event):
-        self.presenter.handle_test_text_box_click(self.__test_text_box, event)
+        self.presenter.handle_test_text_box_click(self.__middle_side_testing_frame.test_text_box, event)
     
     def __test_solution(self):
         self.presenter.run_examples()
@@ -237,23 +226,22 @@ class MainView():
         self.__lower_side_batch_creating_frame.grid(row = 3, sticky="ew", columnspan = 2)
     
     def open_popup(self, type, message):
-        popup = tk.Tk()
+        popup = Tk()
         popup.wm_title(type)
-        label = tk.Label(popup, text=message)
+        label = Label(popup, text=message)
         label.pack(side="top", fill="x", pady=10)
-        ok_button = tk.Button(popup, text="Ok", command=popup.destroy)
+        ok_button = Button(popup, text="Ok", command=popup.destroy)
         ok_button.pack()
     
     def insert_example_to_test_text_box(self, text, tag = 0):
-        self.__test_text_box.config(state = "normal")
-        line_number = self.__test_text_box.index('end-1c').split('.')[0]
+        line_number = self.__middle_side_testing_frame.test_text_box.index('end-1c').split('.')[0]
         line_number_to_str = str(line_number) + ".0"
 
-        self.__test_text_box.insert(END, text)
+        self.__middle_side_testing_frame.insert_test_text_box(text)
                 
         # Coloreo una cantidad de lineas igual a la cantidad de lineas que ocupó la respuesta
         
-        self.__test_text_box.tag_add(tag, line_number_to_str, line_number_to_str + "+" + str(len(text.split("\n")) - 1) + "lines")
+        self.__middle_side_testing_frame.test_text_box.tag_add(tag, line_number_to_str, line_number_to_str + "+" + str(len(text.split("\n")) - 1) + "lines")
     
     def insert_example_to_loaded_examples_text_box(self, text):
         self.__loaded_examples_text_box.config(state = "normal")
@@ -264,12 +252,10 @@ class MainView():
         self.__middle_side_knowledge_base_frame.insert_knowledge_base_text_box(text)
     
     def set_test_text_tag_color(self, tag, color):
-        self.__test_text_box.tag_config(tag, background = color)
+        self.__middle_side_testing_frame.test_text_box.tag_config(tag, background = color)
     
     def clean_test_text_box(self):
-        self.__test_text_box.config(state = "normal")
-        self.__test_text_box.delete('1.0', END)
-        self.__test_text_box.config(state = "disabled")
+        self.__middle_side_testing_frame.clean_test_text_box()
     
     def clean_create_text_box(self):
         self.__batch_create_text_box.delete('1.0', END)
@@ -282,32 +268,32 @@ class MainView():
         self.__completed_tests_label.config(text = "Tests completados: " + str(completed) + " de " + str(total))
 
     def change_to_test_mode(self):
-        self.__upper_side_frame.config_batch_creating_mode_button(state = "disabled")
-        self.__upper_side_frame.config_manual_creating_mode_button(state = "normal")
-        self.__upper_side_frame.config_testing_mode_button(text = "Agregar Ejemplos")
+        self.__upper_side_frame.batch_creating_mode_button.config(state = "disabled")
+        self.__upper_side_frame.manual_creating_mode_button.config(state = "normal")
+        self.__upper_side_frame.testing_mode_button.config(text = "Agregar Ejemplos")
         self.__hide_batch_create_mode_widgets()
         self.__hide_manual_create_mode_widgets()
         self.__show_test_mode_widgets()
     
     def change_to_batch_create_mode(self):
-        self.__upper_side_frame.config_batch_creating_mode_button(state = "disabled")
-        self.__upper_side_frame.config_manual_creating_mode_button(state = "normal")
-        self.__upper_side_frame.config_testing_mode_button(text = "Modo de Prueba")
+        self.__upper_side_frame.batch_creating_mode_button.config(state = "disabled")
+        self.__upper_side_frame.manual_creating_mode_button.config(state = "normal")
+        self.__upper_side_frame.testing_mode_button.config(text = "Modo de Prueba")
         self.__hide_test_mode_widgets()
         self.__hide_manual_create_mode_widgets()
         self.__show_batch_create_mode_widgets()
     
     def change_to_manual_create_mode(self):
         if self.presenter.is_batch_mode():
-            self.__upper_side_frame.config_batch_creating_mode_button(state = "normal")
-        self.__upper_side_frame.config_manual_creating_mode_button(state = "disabled")
-        self.__upper_side_frame.config_testing_mode_button(text = "Modo de Prueba")
+            self.__upper_side_frame.batch_creating_mode_button.config(state = "normal")
+        self.__upper_side_frame.manual_creating_mode_button.config(state = "disabled")
+        self.__upper_side_frame.testing_mode_button.config(text = "Modo de Prueba")
         self.__hide_test_mode_widgets()
         self.__hide_batch_create_mode_widgets()
         self.__show_manual_create_mode_widgets()
     
     def enable_mode_buttons(self):
-        self.__upper_side_frame.config_testing_mode_button(state = "normal")
-        self.__upper_side_frame.config_batch_creating_mode_button(state = "normal")
-        self.__upper_side_frame.config_submit_knowledge_base_button(state = "disabled")
+        self.__upper_side_frame.testing_mode_button.config(state = "normal")
+        self.__upper_side_frame.batch_creating_mode_button.config(state = "normal")
+        self.__upper_side_frame.submit_knowledge_base_button.config(state = "disabled")
         
