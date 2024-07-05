@@ -36,8 +36,7 @@ class Model():
         self.prolog_interface.add_example_to_base([example, expected_result, ordered, first_only])
             
     def submit_examples(self, file_path):        
-        FileHandler.write_text_file(file_path, json.dumps(self.prolog_interface.get_examples()))
-        self.clean_examples()      
+        FileHandler.write_text_file(file_path, json.dumps(self.prolog_interface.get_examples()))    
     
     def get_loaded_examples(self):
         return self.prolog_interface.get_examples()
@@ -45,14 +44,13 @@ class Model():
     def clean_examples(self):
         self.prolog_interface.empty_examples_base()
         
-    def load_examples(self, file_path):
-        examples = json.loads(FileHandler.read_text_file(file_path))
-        
+    def load_examples(self, file_paths):
         # Hay que recuperar los ejemplos y devolverlos sin correrlos
         try:
-            for example in examples:
-                self.prolog_interface.add_example_to_base(example)
-            
+            for file_path in file_paths:
+                examples = json.loads(FileHandler.read_text_file(file_path))
+                for example in examples:
+                    self.prolog_interface.add_example_to_base(example)
             return(self.prolog_interface.get_examples())
         except Exception:
             self.prolog_interface.empty_examples_base()
@@ -63,7 +61,7 @@ class Model():
             return self.prolog_interface.test_examples()
         except Exception:
             logging.warning("Error al correr las pruebas.")
-            self.presenter.show_message("Error", "Error al correr las pruebas.")
+            self.presenter.show_message("Error", "Error al correr las pruebas. La sintaxis de los casos de prueba es incorrecta.")
     
     def clean_examples(self):
         self.prolog_interface.empty_examples_base()
