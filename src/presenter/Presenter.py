@@ -1,15 +1,10 @@
+from abc import ABC
 from enum import Enum
 from utils.FeedbackEnum import FeedbackEnum
 from utils.StringHandler import StringHandler
 
-class AppPresenter():
+class AppPresenter(ABC):
     
-    def __init__(self, model):
-        self.model = model
-        self.modes = Enum('Mode', ['Testing', 'Showing_Results', 'Batch_Creating', 'Manual_Creating', 'Not_Selected'])
-        self.mode = self.modes.Not_Selected
-        self.selected_test_line = None
-
     def bind_view(self, view):
         self.view = view 
         
@@ -21,15 +16,12 @@ class AppPresenter():
     def is_testing_mode(self):
         return self.mode == self.modes.Testing
     
-    def is_batch_mode(self):
-        return self.mode == self.modes.Batch_Creating
-    
     def is_manual_mode(self):
         return self.mode == self.modes.Manual_Creating
     
     def add_batch_examples(self, examples, ordered, first_only):
         if self.model.add_examples(examples, ordered, first_only)[0]:
-            self.__update_loaded_examples_text_box()
+            self._update_loaded_examples_text_box()
     
     def add_manual_example(self, example, expected_unformatted_results, ordered, first_only):
         expected_result = []
@@ -56,7 +48,7 @@ class AppPresenter():
                 return None
         
         self.model.add_manual_example(example[:-1], expected_result, ordered, first_only)
-        self.__update_loaded_examples_text_box()
+        self._update_loaded_examples_text_box()
     
     def save_examples(self, file_path):        
         self.model.submit_examples(file_path)
@@ -76,19 +68,13 @@ class AppPresenter():
     
     def pop_examples(self):
         self.model.pop_examples()
-        self.__update_loaded_examples_text_box()
+        self._update_loaded_examples_text_box()
     
     def enter_test_mode(self, file_path):
         self.model.load_examples(file_path)
-        self.__update_test_text_box()
+        self._update_test_text_box()
         self.view.change_to_test_mode()
         self.mode = self.modes.Testing
-    
-    def enter_batch_create_mode(self):
-        self.model.clean_examples()
-        self.view.clean_test_text_box()
-        self.view.change_to_batch_create_mode()
-        self.mode = self.modes.Batch_Creating
     
     def enter_manual_create_mode(self):
         self.model.clean_examples()
@@ -129,13 +115,13 @@ class AppPresenter():
                 text = f"Test {test_number} - {query} - Test passed.\n"
             case FeedbackEnum.ERROR:
                 text = f"Test {test_number} - {query} - Test failed.\n{explanation}\n\n>Se esperaba:\n"
-                text += self.__result_formatter(expected_results)
+                text += self._result_formatter(expected_results)
                 text += "\n>Se obtuvo:\n"
-                text += self.__result_formatter(results)
+                text += self._result_formatter(results)
         
         self.view.insert_example_to_test_text_box(text, result_code.value)
     
-    def __result_formatter(self, results):
+    def _result_formatter(self, results):
         text = ""
         if results:
             if results == [{}]:
@@ -151,7 +137,7 @@ class AppPresenter():
     def show_message(self, type, message):
         self.view.open_popup(type, message)
     
-    def __update_test_text_box(self):
+    def _update_test_text_box(self):
         self.view.clean_test_text_box()
          
         examples = self.model.get_loaded_examples()
@@ -162,7 +148,7 @@ class AppPresenter():
         if examples[-1]:
             self.view.insert_example_to_test_text_box(str(examples[-1][0]))
     
-    def __update_loaded_examples_text_box(self):
+    def _update_loaded_examples_text_box(self):
         self.view.clean_loaded_examples_text_box()
         for example in self.model.get_loaded_examples():
             self.view.insert_example_to_loaded_examples_text_box(str(example[0]) + "\n")
@@ -179,4 +165,4 @@ class AppPresenter():
         elif self.mode == self.modes.Showing_Results:
             self.mode = self.modes.Testing
             
-        self.__update_test_text_box()
+        self._update_test_text_box()

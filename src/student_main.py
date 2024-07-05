@@ -1,14 +1,14 @@
 import tkinter as tk
 from model.Model import Model
-from view.MainView import MainView
-from presenter.Presenter import AppPresenter
+from presenter.StudentPresenter import StudentPresenter
+from view.StudentView import StudentView
 
 def main():
     root = tk.Tk()
 
     model = Model()
-    presenter = AppPresenter(model)
-    view = MainView(root, presenter)
+    presenter = StudentPresenter(model)
+    view = StudentView(root, presenter)
     
     presenter.bind_view(view)
     model.bind_presenter(presenter)
