@@ -27,6 +27,7 @@ class StringHandler:
     
     @staticmethod
     def unstringify(data):
+        data = data.strip()
         if data.isnumeric():
             return int(data)
         elif data[0] == '[' and data[-1] == ']':
