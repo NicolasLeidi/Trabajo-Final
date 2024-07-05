@@ -16,6 +16,7 @@ class TeacherPresenter(AppPresenter):
     
     def enter_batch_create_mode(self):
         self.model.clean_examples()
+        self._update_loaded_examples_text_box()
         self.view.clean_test_text_box()
         self.view.change_to_batch_create_mode()
         self.mode = self.modes.Batch_Creating
