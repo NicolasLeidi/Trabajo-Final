@@ -14,7 +14,7 @@ class FooterTestingFrame(Frame):
         self.run_tests_button = Button(self, text="Correr", width=20, command=lambda: functions[0]())
         self.clean_tests_button = Button(self, text="Limpiar", width=20, command=lambda: functions[1]())
         self.pop_test_button = Button(self, text="Remover", width=20, command=lambda: functions[2]())
-        self.completed_tests_label = Label(self, text="Tests completados: 0 de 0")
+        self.completed_tests_label = Label(self, text="Tests exitosos: 0 de 0")
         
         ToolTip(self.run_tests_button, msg="Corre la batería de tests cargada actualmente sobre la base de conocimiento cargada.", delay=1.0)
         

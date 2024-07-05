@@ -125,7 +125,7 @@ class View(ABC):
         self._middle_side_loaded_examples_frame.clean_loaded_examples_text_box()
     
     def set_completed_test_feedback(self, completed = 0, total = 0):
-        self._lower_side_testing_frame.completed_tests_label.config(text = "Tests completados: " + str(completed) + " de " + str(total))
+        self._lower_side_testing_frame.completed_tests_label.config(text = "Tests exitosos: " + str(completed) + " de " + str(total))
 
     def change_to_test_mode(self):
         self._upper_side_frame.manual_creating_mode_button.config(state = "normal")

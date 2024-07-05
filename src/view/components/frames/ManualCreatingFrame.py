@@ -11,9 +11,9 @@ class ManualCreatingFrame(Frame):
         self.__create_widgets()
     
     def __create_widgets(self):
-        self.manual_create_query_label = Label(self, text="Crear Query de Ejemplo")
+        self.manual_create_query_label = Label(self, text="Crear Query de Caso de Prueba")
         self.manual_create_query_text_box = Text(self)
-        self.manual_create_expected_result_label = Label(self, text="Resultado Esperado")
+        self.manual_create_expected_result_label = Label(self, text="Resultado Esperado del Caso de Prueba")
         self.manual_create_expected_result_text_box = Text(self)
         
         ToolTip(self.manual_create_query_text_box, msg="Aquí puede colocar el query a probar. Limitado a una query por prueba.", delay=1.0)

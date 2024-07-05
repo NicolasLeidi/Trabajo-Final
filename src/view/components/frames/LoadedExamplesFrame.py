@@ -10,7 +10,7 @@ class LoadedExamplesFrame(Frame):
         self.__create_widgets()
     
     def __create_widgets(self):
-        self.loaded_examples_label = Label(self, text="Ejemplos Cargados")
+        self.loaded_examples_label = Label(self, text="Ejemplos Cargados en la Batería de Pruebas")
         self.loaded_examples_text_box = Text(self, height=15, width=65)
         
         ToolTip(self.loaded_examples_text_box, msg="Ejemplos cargados actualmente a la nueva batería de tests.", delay=1.0)
