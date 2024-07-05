@@ -60,7 +60,7 @@ class View(ABC):
         
     def _test_mode(self):
         # Para entrar al modo de testeo, primero se debe cargar una batería de tests válida
-        file_path = filedialog.askopenfilename(filetypes=[("Batería de test", "*.json")], multiple = True)
+        file_path = filedialog.askopenfilenames(filetypes=[("Batería de test", "*.json")])
         
         if not file_path:
             return
