@@ -1,7 +1,5 @@
 from enum import Enum
 from presenter.Presenter import AppPresenter
-from utils.FeedbackEnum import FeedbackEnum
-from utils.StringHandler import StringHandler
 
 class TeacherPresenter(AppPresenter):
     
