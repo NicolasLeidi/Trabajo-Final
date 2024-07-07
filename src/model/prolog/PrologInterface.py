@@ -129,7 +129,5 @@ class PrologInterface():
     
     def unification(self, first, second):
         query = str(first) + " = " + str(second)
-        print(query)
         result = self.query(query)
-        print(result)
-        print(result == [{}])
+        return result == [{}]

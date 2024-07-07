@@ -18,4 +18,3 @@ class TeacherPresenter(AppPresenter):
         self.view.clean_test_text_box()
         self.view.change_to_batch_create_mode()
         self.mode = self.modes.Batch_Creating
-    

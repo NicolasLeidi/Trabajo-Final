@@ -41,7 +41,7 @@ class AppPresenter(ABC):
                     variables = result.split(';')
                     for variable in variables:
                         name, value = variable.split(':')
-                        result_to_add[name] = StringHandler.unstringify(value)
+                        result_to_add[name.strip()] = StringHandler.unstringify(value)
                     expected_result.append(result_to_add)
             except Exception:
                 self.view.open_popup("Error", "Formato incorrecto de resultados esperados.")
