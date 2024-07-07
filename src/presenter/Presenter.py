@@ -1,5 +1,4 @@
 from abc import ABC
-from enum import Enum
 from utils.FeedbackEnum import FeedbackEnum
 from utils.StringHandler import StringHandler
 
@@ -18,37 +17,49 @@ class AppPresenter(ABC):
     
     def is_manual_mode(self):
         return self.mode == self.modes.Manual_Creating
+
+    def is_showing_results_mode(self):
+        return self.mode == self.modes.Showing_Results
     
     def add_batch_examples(self, examples, ordered, first_only):
         if self.model.add_examples(examples, ordered, first_only)[0]:
             self._update_loaded_examples_text_box()
     
     def add_manual_example(self, example, expected_unformatted_results, ordered, first_only):
-        expected_result = []
-        if expected_unformatted_results.lower() == "true":
-            expected_result = [{}]
-        elif expected_unformatted_results.lower() == "false":
+        if StringHandler.check_brackets_are_balanced(example) and StringHandler.check_brackets_are_balanced(expected_unformatted_results):
             expected_result = []
-        else:
-            try:
+            
+            # Remuevo el salto de línea y espacios del final
+            
+            expected_unformatted_results = expected_unformatted_results.strip('\n')
+            expected_unformatted_results = expected_unformatted_results.strip()
+            
+            if expected_unformatted_results.lower() == "true":
+                expected_result = [{}]
+            elif expected_unformatted_results.lower() == "false":
                 expected_result = []
-                results = expected_unformatted_results.split('\n')
-                
-                # La última va a ser siempre una lista vacía que hay que ignorar
-                
-                for result in results[:-1]:
-                    result_to_add = {}
-                    variables = result.split(';')
-                    for variable in variables:
-                        name, value = variable.split(':')
-                        result_to_add[name.strip()] = StringHandler.unstringify(value)
-                    expected_result.append(result_to_add)
-            except Exception:
-                self.view.open_popup("Error", "Formato incorrecto de resultados esperados.")
-                return None
-        
-        self.model.add_manual_example(example[:-1], expected_result, ordered, first_only)
-        self._update_loaded_examples_text_box()
+            else:
+                try:
+                    expected_result = []
+                    results = expected_unformatted_results.split('\n')
+                    
+                    # La última va a ser siempre una lista vacía que hay que ignorar
+                    
+                    for result in results:
+                        result_to_add = {}
+                        variables = result.split(';')
+                        for variable in variables:
+                            name, value = variable.split(':')
+                            result_to_add[name.strip()] = StringHandler.unstringify(value)
+                        expected_result.append(result_to_add)
+                except Exception:
+                    self.view.open_popup("Error", "Formato incorrecto de resultados esperados.")
+                    return None
+            
+            self.model.add_manual_example(example[:-1], expected_result, ordered, first_only)
+            self._update_loaded_examples_text_box()
+        else:
+            self.view.open_popup("Error", "Formato incorrecto. Paréntesis o llaves no balanceadas.")
     
     def save_examples(self, file_path):        
         self.model.submit_examples(file_path)
@@ -71,6 +82,8 @@ class AppPresenter(ABC):
         self._update_loaded_examples_text_box()
     
     def enter_test_mode(self, file_path):
+        if not (self.is_testing_mode() or self.is_showing_results_mode()):
+            self.model.clean_examples()
         self.model.load_examples(file_path)
         self._update_test_text_box()
         self.view.change_to_test_mode()
