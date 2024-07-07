@@ -134,6 +134,7 @@ class AppPresenter(ABC):
                 text += self._result_formatter(results)
         
         self.view.insert_example_to_test_text_box(text, result_code.value)
+        self.view.insert_example_to_test_text_box("\n", FeedbackEnum.NONE)
     
     def _result_formatter(self, results):
         text = ""
