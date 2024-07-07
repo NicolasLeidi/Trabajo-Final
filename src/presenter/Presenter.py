@@ -177,6 +177,7 @@ class AppPresenter(ABC):
     def pop_test(self):
         if self.mode == self.modes.Testing and self.selected_test_line is not None:
             self.model.pop_test(self.selected_test_line)
+            self.selected_test_line = None
         elif self.mode == self.modes.Showing_Results:
             self.mode = self.modes.Testing
             
