@@ -168,11 +168,8 @@ class AppPresenter(ABC):
         for example in self.model.get_loaded_examples():
             self.view.insert_example_to_loaded_examples_text_box(str(example[0]) + "\n")
     
-    def handle_test_text_box_click(self, text, event):
-        if self.mode == self.modes.Testing:
-            # Transforma la coordenada del evento al indice de la linea
-            line = int(text.index(f"@{event.x},{event.y}").split(".")[0]) - 1
-            self.selected_test_line = line
+    def handle_test_text_box_click(self, line):
+        self.selected_test_line = line - 1
     
     def pop_test(self):
         if self.mode == self.modes.Testing and self.selected_test_line is not None:

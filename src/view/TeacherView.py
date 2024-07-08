@@ -21,7 +21,7 @@ class TeacherView(View):
     def __create_widgets(self, root):
         self._upper_side_frame = TeacherHeaderFrame(root, bg="blue", width=800, height=50, pady=3, padx=10, functions=(self._load_knowledge_base, self._test_mode, self._batch_create_mode, self._manual_create_mode))
         self._middle_side_knowledge_base_frame = KnowledgeBaseFrame(root, bg="red", width=320, pady=3, padx=5)
-        self._middle_side_testing_frame = TestingFrame(root, bg="pink", width=480, pady=3, padx=5)
+        self._middle_side_testing_frame = TestingFrame(root, bg="pink", width=480, pady=3, padx=5, functions=(self._handle_test_text_box_click))
         self._middle_side_batch_creating_frame = BatchCreatingFrame(root, bg="orange", width=480, pady=3, padx=5)
         self._middle_side_manual_creating_frame = ManualCreatingFrame(root, bg="yellow", width=480, pady=3, padx=5)
         self._middle_side_loaded_examples_frame = LoadedExamplesFrame(root, bg="purple", width=480, pady=3, padx=5)
@@ -33,10 +33,6 @@ class TeacherView(View):
         self._upper_side_frame.grid(row = 0, stick="ew", columnspan = 2)
         self._middle_side_knowledge_base_frame.grid(row = 1, column = 0, rowspan = 2, sticky="nsew")
         self._middle_side_testing_frame.grid(row = 1, column = 1, rowspan = 2, sticky="nsew")
-        
-        # Configuro widgets del frame intermedio
-        
-        self._middle_side_testing_frame.test_text_box.bind("<Button 1>", self._handle_test_text_box_click)
     
     def _add_example(self):
         if self.presenter.is_batch_mode():

@@ -1,13 +1,5 @@
 from tkinter import filedialog
-from tkinter import * 
-from view.components.frames.BatchCreatingFrame import BatchCreatingFrame
-from view.components.frames.FooterCreatingFrame import FooterCreatingFrame
-from view.components.frames.FooterTestingFrame import FooterTestingFrame
-from view.components.frames.HeaderFrame import HeaderFrame
-from view.components.frames.KnowledgeBaseFrame import KnowledgeBaseFrame
-from view.components.frames.LoadedExamplesFrame import LoadedExamplesFrame
-from view.components.frames.ManualCreatingFrame import ManualCreatingFrame
-from view.components.frames.TestingFrame import TestingFrame
+from tkinter import *
 from abc import ABC, abstractmethod
 
 class View(ABC):
@@ -20,8 +12,8 @@ class View(ABC):
         root.grid_columnconfigure(0, weight=1)
         root.grid_columnconfigure(1, weight=2)
 
-    def _handle_test_text_box_click(self, event):
-        self.presenter.handle_test_text_box_click(self._middle_side_testing_frame.test_text_box, event)
+    def _handle_test_text_box_click(self, line):
+        self.presenter.handle_test_text_box_click(line)
     
     def _test_solution(self):
         self.presenter.run_examples()
@@ -104,7 +96,7 @@ class View(ABC):
         line_number_to_str = str(line_number) + ".0"
 
         self._middle_side_testing_frame.insert_test_text_box(text)
-                
+        
         # Coloreo una cantidad de lineas igual a la cantidad de lineas que ocupó la respuesta
         
         self._middle_side_testing_frame.test_text_box.tag_add(tag, line_number_to_str, line_number_to_str + "+" + str(len(text.split("\n")) - 1) + "lines")
@@ -148,4 +140,3 @@ class View(ABC):
     def enable_mode_buttons(self):
         self._upper_side_frame.testing_mode_button.config(state = "normal")
         self._upper_side_frame.submit_knowledge_base_button.config(state = "disabled")
-        
