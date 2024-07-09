@@ -5,6 +5,13 @@ from model.prolog.PrologInterface import PrologInterface
 from utils.FeedbackEnum import FeedbackEnum
 from utils.FileHandler import FileHandler
 
+def process_battery_test_folder(path):
+    for files in os.listdir(path):
+        # Agarro solo los archivos .json, ya que las baterías de tests se guardan en archivos .json
+        if files.endswith(".json"):
+            # Como el file handler requiere un path al archivo, uno el path al directorio acon el nombre del archivo
+            process_battery_test(os.path.join(path, files))
+    
 def process_battery_test(path):
     examples = json.loads(FileHandler.read_text_file(path))
     try:
@@ -30,6 +37,7 @@ knowledge_base_path = knowledge_base_path.replace("\\", "/")
 if not os.path.exists(knowledge_base_path):
     sys.exit(f"Base de conocimiento no encontrada en: {knowledge_base_path}")
 
+# Cargar la base de conocimiento y luego consultarla
 prolog_interface.set_knowledge_base(knowledge_base_path)
 prolog_interface.consult_knowledge_base()
 
@@ -38,7 +46,11 @@ for path in battery_test_paths:
         print(f"Archivo o carpeta de batería de test no encontrada: {path}")
         continue
     
-    process_battery_test(path)
+    # Si es un archivo, cargo el archivo, si es una carpeta, proceso los archivos dentro de esa carpeta
+    if os.path.isfile(path):
+        process_battery_test(path)
+    elif os.path.isdir(path):
+        process_battery_test_folder(path)
 
 
 try:
@@ -52,7 +64,7 @@ try:
             completed_tests += 1
         else:
             print(f"Test {query} - {result_code.name} - {explanation}\nSe esperaba:\n{expected_results}\nSe obtuvo:\n{results}\n")
-    print(f"Test completados: {completed_tests}/{total_tests}")
+    print(f"Test exitosos: {completed_tests}/{total_tests}")
 except Exception:
     print("Error al correr las pruebas. La sintaxis de los casos de prueba es incorrecta.")
     sys.exit()
