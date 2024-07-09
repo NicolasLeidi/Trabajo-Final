@@ -31,12 +31,13 @@ class PrologInterface():
             self.examples_base.append([example, result, ordered, first_only])
         else:
             self.empty_examples_base()
-            raise PrologSyntaxException("La sintaxis de los ejemplos no es correcta.")
+            raise PrologSyntaxException("La sintaxis de los ejemplos no es correcta. Los paréntesis o llaves no están balanceados.")
     
     def empty_examples_base(self):
         self.examples_base = []
     
     def pop_example_from_base(self, index = -1):
+        # Si no se recibe un index, se elimina el último elemento de la batería
         if self.examples_base:
             if index == -1:
                 return self.examples_base.pop()

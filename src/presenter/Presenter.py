@@ -47,7 +47,7 @@ class AppPresenter(ABC):
                     
                     for result in results:
                         result_to_add = {}
-                        variables = result.split(';')
+                        variables = result.split('&')
                         for variable in variables:
                             name, value = variable.split(':')
                             result_to_add[name.strip()] = StringHandler.unstringify(value)
@@ -67,6 +67,7 @@ class AppPresenter(ABC):
     def load_knowledge_base(self, file_path):
         response = self.model.load_knowledge_base(file_path)
         
+        # Si la respuesta es True, se habilitan los botones de modo. Si no, se muestra el error.
         if response[0]:
             self.view.enable_mode_buttons()
             self.view.insert_text_to_knowledge_base_text_box(response[1])
