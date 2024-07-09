@@ -51,7 +51,7 @@ class View(ABC):
         self.presenter.load_knowledge_base(file_path)
         
     def _test_mode(self):
-        # Para entrar al modo de testeo, primero se debe cargar una batería de tests válida
+        # Loads a test file and updates the test text box
         file_path = filedialog.askopenfilenames(filetypes=[("Batería de test", "*.json")])
         
         if not file_path:
@@ -84,6 +84,13 @@ class View(ABC):
         self._lower_side_batch_creating_frame.grid(row = 3, sticky="ew", columnspan = 2)
     
     def open_popup(self, type, message):
+        """
+        Opens a popup window with the given type and message.
+
+        Parameters:
+            type (str): The title of the popup window.
+            message (str): The message to display in the popup window.
+        """
         popup = Tk()
         popup.wm_title(type)
         label = Label(popup, text=message)
@@ -92,51 +99,95 @@ class View(ABC):
         ok_button.pack()
     
     def insert_example_to_test_text_box(self, text, tag = 0):
+        """
+        Inserts the given text into the test text box and colors the corresponding lines.
+
+        Parameters:
+            text (str): The text to be inserted.
+            tag (int, optional): The tag to be applied to the inserted text. Defaults to 0.
+        """
         line_number = self._middle_side_testing_frame.test_text_box.index('end-1c').split('.')[0]
         line_number_to_str = str(line_number) + ".0"
 
         self._middle_side_testing_frame.insert_test_text_box(text)
         
-        # Coloreo una cantidad de lineas igual a la cantidad de lineas que ocupó la respuesta
+        # Color a number of lines equal to the number of lines that the result has
         
         self._middle_side_testing_frame.test_text_box.tag_add(tag, line_number_to_str, line_number_to_str + "+" + str(len(text.split("\n")) - 1) + "lines")
     
     def insert_example_to_loaded_examples_text_box(self, text):
+        """
+        Inserts the given text into the loaded examples text box.
+
+        Parameters:
+            text (str): The text to be inserted.
+        """
         self._middle_side_loaded_examples_frame.insert_loaded_examples_text_box(text)
     
     def insert_text_to_knowledge_base_text_box(self, text):
+        """
+        Inserts the given text into the knowledge base text box.
+
+        Parameters:
+            text (str): The text to be inserted.
+        """
         self._middle_side_knowledge_base_frame.insert_knowledge_base_text_box(text)
     
     def set_test_text_tag_color(self, tag, color):
+        """
+        Sets the background color for the specified tag in the test text box.
+
+        Parameters:
+            tag: The tag to be configured.
+            color: The background color to set for the tag.
+        """
         self._middle_side_testing_frame.test_text_box.tag_config(tag, background = color)
     
     def clean_test_text_box(self):
+        """
+        Cleans the test text box of the testing frame.
+        """
         self._middle_side_testing_frame.clean_test_text_box()
         
     def clean_loaded_examples_text_box(self):
+        """
+        Cleans the loaded examples text box of the loaded examples frame.
+        """
         self._middle_side_loaded_examples_frame.clean_loaded_examples_text_box()
     
     def set_completed_test_feedback(self, completed = 0, total = 0):
+        """
+        Sets the completed test feedback in the lower side testing frame.
+
+        Parameters:
+            completed (int): The number of completed tests. Defaults to 0.
+            total (int): The total number of tests. Defaults to 0.
+        """
         self._lower_side_testing_frame.completed_tests_label.config(text = "Tests exitosos: " + str(completed) + " de " + str(total))
 
     def change_to_test_mode(self):
+        """
+        Change the view to test mode.
+
+        This function sets the state of the manual creating mode button to "normal" and updates the text of the testing mode button to "Agregar Ejemplos". It then hides the manual create mode widgets and shows the test mode widgets.
+        """
         self._upper_side_frame.manual_creating_mode_button.config(state = "normal")
         self._upper_side_frame.testing_mode_button.config(text = "Agregar Ejemplos")
         self._hide_manual_create_mode_widgets()
         self._show_test_mode_widgets()
     
-    def change_to_batch_create_mode(self):
-        self._upper_side_frame.manual_creating_mode_button.config(state = "normal")
-        self._upper_side_frame.testing_mode_button.config(text = "Modo de Prueba")
-        self._hide_test_mode_widgets()
-        self._hide_manual_create_mode_widgets()
-    
     def change_to_manual_create_mode(self):
+        """
+        Changes the view to manual create mode by disabling the manual creating mode button, updating the text of the testing mode button to "Modo de Prueba", hiding the test mode widgets, and showing the manual create mode widgets.
+        """
         self._upper_side_frame.manual_creating_mode_button.config(state = "disabled")
         self._upper_side_frame.testing_mode_button.config(text = "Modo de Prueba")
         self._hide_test_mode_widgets()
         self._show_manual_create_mode_widgets()
     
     def enable_mode_buttons(self):
+        """
+        Enables the mode buttons by setting the state of the testing mode button to "normal" and the submit knowledge base button to "disabled".
+        """
         self._upper_side_frame.testing_mode_button.config(state = "normal")
         self._upper_side_frame.submit_knowledge_base_button.config(state = "disabled")

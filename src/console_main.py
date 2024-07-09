@@ -7,9 +7,9 @@ from utils.FileHandler import FileHandler
 
 def process_battery_test_folder(path):
     for files in os.listdir(path):
-        # Agarro solo los archivos .json, ya que las baterías de tests se guardan en archivos .json
+        # The test batteries are only in the json files.
         if files.endswith(".json"):
-            # Como el file handler requiere un path al archivo, uno el path al directorio acon el nombre del archivo
+            # Rebuild the filepath to the file and send it to process_battery_test for processing.
             process_battery_test(os.path.join(path, files))
     
 def process_battery_test(path):
@@ -31,13 +31,13 @@ battery_test_paths = sys.argv[2:]
 
 prolog_interface = PrologInterface()
 
-# Reemplazar \ por / por requerimiento de pyswip
+# pyswip requires / to be used in the filepath instead of \
 knowledge_base_path = knowledge_base_path.replace("\\", "/")
 
 if not os.path.exists(knowledge_base_path):
     sys.exit(f"Base de conocimiento no encontrada en: {knowledge_base_path}")
 
-# Cargar la base de conocimiento y luego consultarla
+# Load the knowledge base and consult it.
 prolog_interface.set_knowledge_base(knowledge_base_path)
 prolog_interface.consult_knowledge_base()
 
@@ -46,7 +46,7 @@ for path in battery_test_paths:
         print(f"Archivo o carpeta de batería de test no encontrada: {path}")
         continue
     
-    # Si es un archivo, cargo el archivo, si es una carpeta, proceso los archivos dentro de esa carpeta
+    # Process the battery test if it's a file, if it is a directory, process all the files in the directory.
     if os.path.isfile(path):
         process_battery_test(path)
     elif os.path.isdir(path):

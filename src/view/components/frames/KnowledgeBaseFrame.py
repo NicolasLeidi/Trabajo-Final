@@ -21,11 +21,20 @@ class KnowledgeBaseFrame(Frame):
         self.knowledge_base_text_box.place(rely=0.05,relheight=0.95, relwidth=1)
     
     def insert_knowledge_base_text_box(self, text):
+        """
+        Inserts the given text into the knowledge base text box.
+
+        Args:
+            text (str): The text to be inserted.
+        """
         self.knowledge_base_text_box.config(state = "normal")
         self.knowledge_base_text_box.insert(END, text)
         self.knowledge_base_text_box.config(state = "disabled")
     
     def clean_knowledge_base_text_box(self):
+        """
+        Cleans the knowledge base text box by resetting its content and disabling editing.
+        """
         self.knowledge_base_text_box.config(state = "normal")
         self.knowledge_base_text_box.delete('1.0', END)
         self.knowledge_base_text_box.config(state = "disabled")

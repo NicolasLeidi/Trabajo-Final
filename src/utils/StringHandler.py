@@ -27,6 +27,17 @@ class StringHandler:
     
     @staticmethod
     def unstringify(data):
+        """
+        Converts a string representation of a value into its corresponding Python object, between int, list or a string.
+
+        Args:
+            data (str): The string representation of the value.
+
+        Returns:
+            Union[int, list, str]: The converted value. If the string is a numeric value, it is converted to an integer.
+            If the string is a list in the format '[element1, element2, ...]', the elements are converted to their
+            corresponding Python objects. If the string is not a numeric value or a list, it is returned as is.
+        """
         data = data.strip()
         if data.isnumeric():
             return int(data)

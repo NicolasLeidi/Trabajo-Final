@@ -31,11 +31,20 @@ class TestingFrame(Frame):
         self.test_text_box.tag_config("highlight", background="yellow")
     
     def insert_test_text_box(self, text):
+        """
+        Inserts the given text into the test text box.
+
+        Parameters:
+            text (str): The text to be inserted.
+        """
         self.test_text_box.config(state = "normal")
         self.test_text_box.insert(END, text)
         self.test_text_box.config(state = "disabled")
     
     def clean_test_text_box(self):
+        """
+        Cleans the test text box of the testing frame.
+        """
         self.test_text_box.config(state = "normal")
         self.test_text_box.delete('1.0', END)
         self.test_text_box.config(state = "disabled")

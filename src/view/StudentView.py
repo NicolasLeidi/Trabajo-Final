@@ -26,7 +26,7 @@ class StudentView(View):
         self._lower_side_testing_frame = FooterTestingFrame(root, bg="green", width=800, height=50, pady=3, functions=(self._test_solution, self._clean_tests, self._pop_test))
         self._lower_side_batch_creating_frame = FooterCreatingFrame(root, bg="cyan", width=800, height=50, pady=3, variables=(self._ordered, self._first_only), functions=(self._add_example, self._save_examples, self._clean_examples, self._pop_examples))
         
-        # Ubico los frames
+        # Place the frames in their respective places
         
         self._upper_side_frame.grid(row = 0, stick="ew", columnspan = 2)
         self._middle_side_knowledge_base_frame.grid(row = 1, column = 0, rowspan = 2, sticky="nsew")

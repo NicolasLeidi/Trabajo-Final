@@ -28,13 +28,14 @@ class TeacherView(View):
         self._lower_side_testing_frame = FooterTestingFrame(root, bg="green", width=800, height=50, pady=3, functions=(self._test_solution, self._clean_tests, self._pop_test))
         self._lower_side_batch_creating_frame = FooterCreatingFrame(root, bg="cyan", width=800, height=50, pady=3, variables=(self._ordered, self._first_only), functions=(self._add_example, self._save_examples, self._clean_examples, self._pop_examples))
         
-        # Ubico los frames
+        # Place the frames in their respective places
         
         self._upper_side_frame.grid(row = 0, stick="ew", columnspan = 2)
         self._middle_side_knowledge_base_frame.grid(row = 1, column = 0, rowspan = 2, sticky="nsew")
         self._middle_side_testing_frame.grid(row = 1, column = 1, rowspan = 2, sticky="nsew")
     
     def _add_example(self):
+        # If the user is creating a batch of tests, it calls the corresponding method of the presenter instead
         if self.presenter.is_batch_mode():
             if not self._middle_side_batch_creating_frame.batch_create_text_box.compare("end-1c", "==", "1.0"): 
                 self.presenter.add_batch_examples(self._middle_side_batch_creating_frame.batch_create_text_box.get("1.0",'end'), self._ordered.get(), self._first_only.get())
@@ -44,6 +45,11 @@ class TeacherView(View):
                     self.presenter.add_manual_example(self._middle_side_manual_creating_frame.manual_create_query_text_box.get("1.0",'end'), self._middle_side_manual_creating_frame.manual_create_expected_result_text_box.get("1.0",'end'), self._ordered.get(), self._first_only.get())
     
     def change_to_test_mode(self):
+        """
+        Changes the view to test mode.
+
+        This function sets the state of the batch creating mode button to "normal" and the manual creating mode button to "normal". It also updates the text of the testing mode button to "Agregar Ejemplos". It then hides the batch create mode widgets and manual create mode widgets, and shows the test mode widgets.
+        """
         self._upper_side_frame.batch_creating_mode_button.config(state = "normal")
         self._upper_side_frame.manual_creating_mode_button.config(state = "normal")
         self._upper_side_frame.testing_mode_button.config(text = "Agregar Ejemplos")
@@ -52,6 +58,9 @@ class TeacherView(View):
         self._show_test_mode_widgets()
     
     def change_to_batch_create_mode(self):
+        """
+        Changes the view to batch create mode by disabling the batch creating mode button, enabling the manual creating mode button, updating the text of the testing mode button to "Modo de Prueba", hiding the test mode widgets, and showing the batch create mode widgets.
+        """
         self._upper_side_frame.batch_creating_mode_button.config(state = "disabled")
         self._upper_side_frame.manual_creating_mode_button.config(state = "normal")
         self._upper_side_frame.testing_mode_button.config(text = "Modo de Prueba")
@@ -60,6 +69,11 @@ class TeacherView(View):
         self._show_batch_create_mode_widgets()
     
     def change_to_manual_create_mode(self):
+        """
+        Changes the view to manual create mode if not in batch mode.
+        Disables the manual creating mode button, updates the text of the testing mode button to "Modo de Prueba",
+        hides the test mode widgets, and shows the manual create mode widgets.
+        """
         if self.presenter.is_batch_mode():
             self._upper_side_frame.batch_creating_mode_button.config(state = "normal")
         self._upper_side_frame.manual_creating_mode_button.config(state = "disabled")
@@ -69,6 +83,9 @@ class TeacherView(View):
         self._show_manual_create_mode_widgets()
     
     def enable_mode_buttons(self):
+        """
+        Enables the mode buttons by setting the state of the testing mode button to "normal", the batch creating mode button to "normal", and the submit knowledge base button to "disabled".
+        """
         self._upper_side_frame.testing_mode_button.config(state = "normal")
         self._upper_side_frame.batch_creating_mode_button.config(state = "normal")
         self._upper_side_frame.submit_knowledge_base_button.config(state = "disabled")
@@ -84,4 +101,7 @@ class TeacherView(View):
         self._lower_side_batch_creating_frame.grid(row = 3, sticky="ew", columnspan = 2)
     
     def clean_create_text_box(self):
+        """
+        Clean the create text box in the middle side batch creating frame.
+        """
         self._middle_side_batch_creating_frame.clean_batch_create_text_box()

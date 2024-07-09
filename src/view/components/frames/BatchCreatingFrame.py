@@ -20,4 +20,7 @@ class BatchCreatingFrame(Frame):
         self.batch_create_text_box.place(rely=0.1, relheight=0.9, relwidth=1)
     
     def clean_batch_create_text_box(self):
+        """
+        Clean the batch create text box by deleting all its content.
+        """
         self.batch_create_text_box.delete('1.0', END)
