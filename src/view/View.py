@@ -57,7 +57,7 @@ class View(ABC):
         if not file_path:
             return
         
-        self.presenter.enter_test_mode(file_path)
+        self.presenter.load_test_file(file_path)
     
     def _batch_create_mode(self):
         self.presenter.enter_batch_create_mode()

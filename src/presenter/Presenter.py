@@ -82,7 +82,8 @@ class AppPresenter(ABC):
         self.model.pop_examples()
         self._update_loaded_examples_text_box()
     
-    def enter_test_mode(self, file_path):
+    def load_test_file(self, file_path):
+        # Si no se encuentra ya mostrando ejemplos, entonces limpia los ejemplos cargados por el usuario
         if not (self.is_testing_mode() or self.is_showing_results_mode()):
             self.model.clean_examples()
         self.model.load_examples(file_path)
