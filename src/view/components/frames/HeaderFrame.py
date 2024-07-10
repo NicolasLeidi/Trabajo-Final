@@ -11,12 +11,12 @@ class HeaderFrame(Frame):
     
     def _create_widgets(self, functions):
         self.submit_knowledge_base_button = Button(self, text="Cargar Base de Conocimiento", command=lambda: functions[0]())
-        self.testing_mode_button = Button(self, text="Modo de Prueba", width=20, command=lambda: functions[1]())
-        self.manual_creating_mode_button = Button(self, text="Creación Manual", width=20, command=lambda: functions[2]())
+        self.testing_mode_button = Button(self, text="Probar", width=20, command=lambda: functions[1]())
+        self.manual_creating_mode_button = Button(self, text="Crear Tests", width=20, command=lambda: functions[2]())
         
         ToolTip(self.submit_knowledge_base_button, msg="Carga la base de conocimiento, la cual será usada para realizar las pruebas.", delay=1.0)
-        ToolTip(self.testing_mode_button, msg="Entra al modo prueba, en el cual permite correr una batería de tests sobre la base de conocimiento cargada.", delay=1.0)
-        ToolTip(self.manual_creating_mode_button, msg="Entra al modo de creación manualmente, en el cual permite colocar queries y sus resultados esperados para armar una batería de tests.", delay=1.0)
+        ToolTip(self.testing_mode_button, msg="Permite correr una batería de tests sobre la base de conocimiento cargada.", delay=1.0)
+        ToolTip(self.manual_creating_mode_button, msg="Permite colocar queries y sus resultados esperados para armar una batería de tests para su futuro uso.", delay=1.0)
         self.testing_mode_button.config(state = "disabled")
         
         self.submit_knowledge_base_button.grid(row = 0, column = 0, pady = 2)
