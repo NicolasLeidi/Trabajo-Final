@@ -23,7 +23,7 @@ class FooterCreatingFrame(Frame):
         ToolTip(self.clean_examples_button, msg="Limpia todos los ejemplos cargados actualmente.", delay=1.0)
         ToolTip(self.pop_examples_button, msg="Deshace el último ejemplo cargado actualmente.", delay=1.0)
         ToolTip(self.ordered_checkbox, msg="Define el comportamiento de la query ingresada, compara los conjuntos de resultados sin importar el orden.", delay=1.0)
-        ToolTip(self.first_only_checkbox, msg="Define el comportamiento de la query ingresada, solo compara la primera unificación.", delay=1.0)
+        ToolTip(self.first_only_checkbox, msg="Define el comportamiento de la query ingresada, solo compara el primer conjunto de unificaciones con el de la respuesta del programa.", delay=1.0)
         
         self.ordered_checkbox.grid(row = 0, column = 0, padx = 10)
         self.first_only_checkbox.grid(row = 0, column = 1, padx = 10)
