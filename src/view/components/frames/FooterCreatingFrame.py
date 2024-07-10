@@ -18,12 +18,12 @@ class FooterCreatingFrame(Frame):
         self.clean_examples_button = Button(self, text="Limpiar", width=20, command=lambda: functions[2]())
         self.pop_examples_button = Button(self, text="Deshacer", width=20, command=lambda: functions[3]())
         
-        ToolTip(self.add_tests_button, msg="Agrega un ejemplo a la batería de tests cargada actualmente.", delay=1.0)
+        ToolTip(self.add_tests_button, msg="Agrega el query con el resultado correspondiente a la batería de tests cargada actualmente.", delay=1.0)
         ToolTip(self.save_tests_button, msg="Guarda la batería de tests cargada actualmente.", delay=1.0)
         ToolTip(self.clean_examples_button, msg="Limpia todos los ejemplos cargados actualmente.", delay=1.0)
         ToolTip(self.pop_examples_button, msg="Deshace el último ejemplo cargado actualmente.", delay=1.0)
-        ToolTip(self.ordered_checkbox, msg="Cambia el comportamiento de la batería de tests, compara los conjuntos de resultados sin importar el orden.", delay=1.0)
-        ToolTip(self.first_only_checkbox, msg="Cambia el comportamiento de la batería de tests, solo compara la primera unificación.", delay=1.0)
+        ToolTip(self.ordered_checkbox, msg="Define el comportamiento de la query ingresada, compara los conjuntos de resultados sin importar el orden.", delay=1.0)
+        ToolTip(self.first_only_checkbox, msg="Define el comportamiento de la query ingresada, solo compara la primera unificación.", delay=1.0)
         
         self.ordered_checkbox.grid(row = 0, column = 0, padx = 10)
         self.first_only_checkbox.grid(row = 0, column = 1, padx = 10)

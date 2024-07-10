@@ -17,6 +17,9 @@ class FooterTestingFrame(Frame):
         self.completed_tests_label = Label(self, text="Tests exitosos: 0 de 0")
         
         ToolTip(self.run_tests_button, msg="Corre la batería de tests cargada actualmente sobre la base de conocimiento cargada.", delay=1.0)
+        ToolTip(self.clean_tests_button, msg="Limpia la batería de tests cargada actualmente.", delay=1.0)
+        ToolTip(self.pop_test_button, msg="Elimina el test seleccionado de la batería de tests a correr.", delay=1.0)
+        ToolTip(self.completed_tests_label, msg="Muestra la cantidad de tests exitosos sobre la cantidad de tests totales en la batería de tests cargada actualmente.", delay=1.0)
         
         self.run_tests_button.grid(row = 0, column = 1)
         self.clean_tests_button.grid(row = 0, column = 2)
