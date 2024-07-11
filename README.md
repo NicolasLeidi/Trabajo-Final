@@ -1,4 +1,4 @@
-# Proyecto Trabajo Final - Ingeniería para Sistemas de Información - Nicolás Leidi
+# SwipTesting - Proyecto Trabajo Final - Ingeniería para Sistemas de Información - Nicolás Leidi
 
 ## Introducción
 

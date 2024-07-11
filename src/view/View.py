@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 class View(ABC):
 
     def _base_window_dimension(self, root):
-        root.title("Nombre a colocar")
+        root.title("SwipTesting")
         root.geometry('{}x{}'.format(800, 600))
         root.grid_rowconfigure(1, weight=1)
         root.grid_rowconfigure(2, weight=1)
