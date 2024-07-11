@@ -68,6 +68,7 @@ class View(ABC):
     def _show_test_mode_widgets(self):
         self._middle_side_testing_frame.grid(row = 1, column = 1, rowspan = 2, sticky="nsew")
         self._lower_side_testing_frame.grid(row = 3, sticky="ew", columnspan = 5)
+        self._lower_side_testing_frame.show_tests()
     
     def _hide_test_mode_widgets(self):
         self._middle_side_testing_frame.grid_forget()
@@ -168,13 +169,20 @@ class View(ABC):
     def change_to_test_mode(self):
         """
         Change the view to test mode.
-
-        This function sets the state of the manual creating mode button to "normal" and updates the text of the testing mode button to "Agregar Ejemplos". It then hides the manual create mode widgets and shows the test mode widgets.
         """
         self._upper_side_frame.manual_creating_mode_button.config(state = "normal")
         self._upper_side_frame.testing_mode_button.config(text = "Agregar Ejemplos")
         self._hide_manual_create_mode_widgets()
         self._show_test_mode_widgets()
+    
+    def change_to_showing_results_mode(self):
+        """
+        Change the view to show results mode.
+        """
+        self._upper_side_frame.manual_creating_mode_button.config(state = "normal")
+        self._upper_side_frame.testing_mode_button.config(text = "Agregar Ejemplos")
+        self._hide_manual_create_mode_widgets()
+        self._lower_side_testing_frame.show_results()
     
     def change_to_manual_create_mode(self):
         """

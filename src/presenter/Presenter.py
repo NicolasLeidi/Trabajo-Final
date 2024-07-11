@@ -206,6 +206,7 @@ class AppPresenter(ABC):
             self.send_example_to_view(query, test_number, result_code, explanation, expected_results, results)
         
         self.mode = self.modes.Showing_Results
+        self.view.change_to_showing_results_mode()
         
         self.view.set_completed_test_feedback(completed, total)
     
@@ -307,5 +308,6 @@ class AppPresenter(ABC):
             self.selected_test_line = None
         elif self.mode == self.modes.Showing_Results:
             self.mode = self.modes.Testing
+            self.view.change_to_test_mode()
             
         self._update_test_text_box()

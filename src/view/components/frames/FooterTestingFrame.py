@@ -25,3 +25,11 @@ class FooterTestingFrame(Frame):
         self.clean_tests_button.grid(row = 0, column = 2)
         self.pop_test_button.grid(row = 0, column = 3)
         self.completed_tests_label.grid(row = 0, column = 4)
+    
+    def show_results(self):
+        self.pop_test_button.config(text="Volver")
+        ToolTip(self.pop_test_button, msg="Volver a la batería de tests.", delay=1.0)
+    
+    def show_tests(self):
+        self.pop_test_button.config(text="Remover")
+        ToolTip(self.pop_test_button, msg="Elimina el test seleccionado de la batería de tests a correr.", delay=1.0)
