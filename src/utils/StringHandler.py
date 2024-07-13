@@ -1,4 +1,5 @@
 import ast
+import json
 
 class StringHandler:
     
@@ -52,3 +53,25 @@ class StringHandler:
             return transformed_list
         else:
             return data
+
+    @staticmethod
+    def replace_byte_strings(lst):
+        """
+        Replaces byte strings in a list with their corresponding string representation.
+
+        Args:
+            lst (list): A list of items, where some items may be byte strings.
+
+        Returns:
+            list: A new list with the same items as the input list, but with byte strings replaced by their string representation.
+        """
+        new_lst = []
+        for item in lst:
+            if isinstance(item, bytes):
+                # Decode bytes to string, replace single quotes with double quotes, and then encode back to bytes
+                decoded_item = item.decode('utf-8')
+                replaced_item = '"' + decoded_item + '"'
+                new_lst.append(replaced_item)
+            else:
+                new_lst.append(item)
+        return new_lst

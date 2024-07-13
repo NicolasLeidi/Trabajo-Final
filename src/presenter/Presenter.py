@@ -54,6 +54,8 @@ class AppPresenter(ABC):
         Returns:
             None
         """
+        examples = examples.strip("\n")
+        examples = examples.strip()
         if self.model.add_examples(examples, ordered, first_only)[0]:
             self._update_loaded_examples_text_box()
     
