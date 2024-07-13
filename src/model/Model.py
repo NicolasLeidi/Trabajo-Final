@@ -74,7 +74,10 @@ class Model():
         Parameters:
             file_path (str): The path to the file where the examples will be submitted.
         """
-        FileHandler.write_text_file(file_path, json.dumps(self.prolog_interface.get_examples()))    
+        try:
+            FileHandler.write_text_file(file_path, json.dumps(self.prolog_interface.get_examples()))    
+        except TypeError:
+            self.presenter.show_message("Error", "Error al cargar los ejemplos. No se permiten resultados con identificadores únicos de PROLOG.")
     
     def get_loaded_examples(self):
         """
