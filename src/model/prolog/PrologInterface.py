@@ -37,8 +37,14 @@ class PrologInterface():
         Returns:
             list: A list of the results of the query. [{}] represents a true and [] a false.
         """
+        prolog_result = []
         try:
-            prolog_result = self.prolog.query(query)
+            results = self.prolog.query(query)
+            if results == [] or results == [{}]:
+                prolog_result = results
+            else:
+                for result in results:
+                    prolog_result.append(StringHandler.replace_byte_strings(result))
         except Exception:
             return []
         return list(prolog_result)

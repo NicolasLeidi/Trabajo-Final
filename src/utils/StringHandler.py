@@ -55,23 +55,23 @@ class StringHandler:
             return data
 
     @staticmethod
-    def replace_byte_strings(lst):
+    def replace_byte_strings(dict):
         """
-        Replaces byte strings in a list with their corresponding string representation.
+        Replaces byte strings in the values of a dictionary with their corresponding string representation.
 
         Args:
-            lst (list): A list of items, where some items may be byte strings.
+            dict (dictionary): A dictionary, where some values may be byte strings.
 
         Returns:
-            list: A new list with the same items as the input list, but with byte strings replaced by their string representation.
+            dictionary: A new dictionary with the same items as the input dictionary, but with byte strings replaced by their string representation.
         """
-        new_lst = []
-        for item in lst:
-            if isinstance(item, bytes):
-                # Decode bytes to string, replace single quotes with double quotes, and then encode back to bytes
-                decoded_item = item.decode('utf-8')
+        new_dict = {}
+        for key, value in dict.items():
+            if isinstance(value, bytes):
+                # Decode bytes to string, replace single quotes with double quotes
+                decoded_item = value.decode('utf-8')
                 replaced_item = '"' + decoded_item + '"'
-                new_lst.append(replaced_item)
+                new_dict[key] = replaced_item
             else:
-                new_lst.append(item)
-        return new_lst
+                new_dict[key] = value
+        return new_dict
