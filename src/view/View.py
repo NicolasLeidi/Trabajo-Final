@@ -189,7 +189,7 @@ class View(ABC):
         Changes the view to manual create mode by disabling the manual creating mode button, updating the text of the testing mode button to "Modo de Prueba", hiding the test mode widgets, and showing the manual create mode widgets.
         """
         self._upper_side_frame.manual_creating_mode_button.config(state = "disabled")
-        self._upper_side_frame.testing_mode_button.config(text = "Modo de Prueba")
+        self._upper_side_frame.testing_mode_button.config(text = "Probar")
         self._hide_test_mode_widgets()
         self._show_manual_create_mode_widgets()
     
