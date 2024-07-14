@@ -163,7 +163,7 @@ class PrologInterface():
     def __run_example_ordered_and_first_only(self, query, result, expected_result):
         result_first_only = [result[0]]
         expected_result_first_only = [expected_result[0]]
-        if ListOfDictsComparer.equals(result_first_only, expected_result_first_only, comparator=self.identical):
+        if ListOfDictsComparer.equals(result_first_only, expected_result_first_only, comparator=self.__identical_values):
             return(query, FeedbackEnum.SUCCESS, result, expected_result_first_only, "")
         else:
             explanation = "La primera respuesta devuelta no coincide con la esperada."
@@ -171,19 +171,19 @@ class PrologInterface():
             return(query, FeedbackEnum.ERROR, result_first_only, expected_result_first_only, explanation),
     
     def __run_example_ordered(self, query, result, expected_result):
-        if ListOfDictsComparer.equal_set(result, expected_result, comparator=self.identical):
+        if ListOfDictsComparer.equal_set(result, expected_result, comparator=self.__identical_values):
             return(query, FeedbackEnum.SUCCESS, result, expected_result, "")
         else:
             explanation = "Las respuestas devueltas no coinciden con las esperadas."
             
-            if ListOfDictsComparer.includes(result, expected_result, comparator=self.identical):
+            if ListOfDictsComparer.includes(result, expected_result, comparator=self.__identical_values):
                 explanation = "Las respuestas devueltas tienen la respuesta esperada, pero también devuelve respuestas adicionales."
             
             return(query, FeedbackEnum.ERROR, result, expected_result, explanation)
     
     def __run_example_first_only(self, query, result, expected_result):
         expected_result_first_only = [expected_result[0]]
-        if ListOfDictsComparer.includes(result, expected_result_first_only, comparator=self.identical):
+        if ListOfDictsComparer.includes(result, expected_result_first_only, comparator=self.__identical_values):
             return(query, FeedbackEnum.SUCCESS, result, expected_result_first_only, "")
         else:
             explanation = "La respuesta esperada no se encuentra entre las devueltas."
@@ -191,30 +191,24 @@ class PrologInterface():
             return(query, FeedbackEnum.ERROR, result, expected_result_first_only, explanation)
     
     def __run_example_base(self, query, result, expected_result):
-        if ListOfDictsComparer.equals(result, expected_result, comparator=self.identical):
+        if ListOfDictsComparer.equals(result, expected_result, comparator=self.__identical_values):
             return(query, FeedbackEnum.SUCCESS, result, expected_result, "")
         else:
             explanation = "Las respuestas devueltas no coinciden con las esperadas."
             
-            if ListOfDictsComparer.includes(result, expected_result, comparator=self.identical):
+            if ListOfDictsComparer.includes(result, expected_result, comparator=self.__identical_values):
                 explanation = "Las respuestas devueltas tienen la respuesta esperada, pero también devuelve respuestas adicionales."
             
-            if ListOfDictsComparer.equal_set(result, expected_result, comparator=self.identical):
+            if ListOfDictsComparer.equal_set(result, expected_result, comparator=self.__identical_values):
                 explanation = "Las respuestas devueltas no están en el orden correcto."
             
             return(query, FeedbackEnum.ERROR, result, expected_result, explanation)
     
-    def identical(self, first, second):
-        """
-        Checks if two given terms are identical in the Prolog engine.
-
-        Parameters:
-            first (term): The first term to compare.
-            second (term): The second term to compare.
-
-        Returns:
-            bool: True if the terms are identical, False otherwise.
-        """
-        query = str(first) + " = " + str(second)
+    def __identical_values(self, first, second):
+        if isinstance(first, str) and not first[1] == "'" and not first[-1] == "'":
+            first = "'" + first + "'"
+        if isinstance(second, str) and not second[1] == "'" and not second[-1] == "'":
+            second = "'" + second + "'"
+        query = str(first) + " == " + str(second)
         result = self.query(query)
-        return result == [{}]
+        return not (result == [])
