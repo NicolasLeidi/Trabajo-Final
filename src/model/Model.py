@@ -77,7 +77,7 @@ class Model():
         try:
             FileHandler.write_text_file(file_path, json.dumps(self.prolog_interface.get_examples()))    
         except TypeError:
-            self.presenter.show_message("Error", "Error al cargar los ejemplos. No se permiten resultados con identificadores únicos de PROLOG.")
+            self.presenter.show_message("Error", "Error al cargar los ejemplos.")
     
     def get_loaded_examples(self):
         """

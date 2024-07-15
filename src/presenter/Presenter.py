@@ -102,7 +102,14 @@ class AppPresenter(ABC):
                         variables = result.split('&')
                         for variable in variables:
                             name, value = variable.split(':')
-                            result_to_add[name.strip()] = StringHandler.unstringify(value)
+                            unstringified = StringHandler.unstringify(value)
+                            
+                            # If the value starts with underscore, it means it's a free variable that needs to be replaced with None
+                            
+                            if (unstringified[0] == '_'):
+                                unstringified = None
+                            
+                            result_to_add[name.strip()] = unstringified
                         expected_result.append(result_to_add)
                 except Exception:
                     self.view.open_popup("Error", "Formato incorrecto de resultados esperados.")

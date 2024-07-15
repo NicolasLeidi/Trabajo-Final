@@ -53,29 +53,3 @@ class StringHandler:
             return transformed_list
         else:
             return data
-
-    @staticmethod
-    def replace_byte_strings(item):
-        """
-        Replaces byte strings in the values of a dictionary with their corresponding string representation.
-        This function can handle arbitrarily deep nested lists and dictionaries.
-
-        Args:
-            item (any): A dictionary, list or string, where some values may be byte strings.
-
-        Returns:
-            any: A new dictionary, list, or other data structure with byte strings replaced by their string representation.
-        """
-        if isinstance(item, dict):
-            new_dict = {}
-            for key, value in item.items():
-                new_dict[key] = StringHandler.replace_byte_strings(value)
-            return new_dict
-        elif isinstance(item, list):
-            return [StringHandler.replace_byte_strings(element) for element in item]
-        elif isinstance(item, bytes):
-            # Decode bytes to string, replace single quotes with double quotes
-            decoded_item = item.decode('utf-8')
-            return '"' + decoded_item + '"'
-        else:
-            return item

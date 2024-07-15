@@ -1,5 +1,6 @@
 from pyswip.core import *
 from pyswip.prolog import Prolog
+from pyswip.easy import Variable
 from model.exception.PrologSyntaxException import PrologSyntaxException
 from utils.FeedbackEnum import FeedbackEnum
 from utils.ListOfDictsComparer import ListOfDictsComparer
@@ -44,7 +45,7 @@ class PrologInterface():
                 prolog_result = results
             else:
                 for result in results:
-                    prolog_result.append(StringHandler.replace_byte_strings(result))
+                    prolog_result.append(self.__clean_results(result))
         except Exception:
             return []
         return list(prolog_result)
@@ -134,12 +135,19 @@ class PrologInterface():
         feedback = []
         for query, expected_result, ordered, first_only in self.examples_base:
             feedback.append(self.__run_example(query, expected_result, ordered, first_only))
-        return feedback
+        
+        cleaned_feedback = []
+        for query, result_code, actual_result, expected_result, explanation in feedback:
+            cleaned_feedback.append((query, result_code, self.__replace_nones_with_underscores(actual_result), self.__replace_nones_with_underscores(expected_result), explanation))
+        
+        return cleaned_feedback
     
     def __run_example(self, query, expected_result, is_ordered, is_first_only):
         result = self.query(query)
         if not expected_result:
             return self.__run_example_negative_case(query, result)
+        elif expected_result == [{}]:
+            return self.__run_example_positive_case(query, result)
         else:
             match (is_ordered, is_first_only):
                 case (1, 1):
@@ -159,9 +167,24 @@ class PrologInterface():
             
             return(query, FeedbackEnum.ERROR, result, [], explanation)
     
+    def __run_example_positive_case(self, query, result):
+        if result == [{}]:
+            return(query, FeedbackEnum.SUCCESS, result, [], "")
+        else:
+            explanation = "El predicado devuelve unificaciones innecesarias."
+            
+            if result == []:
+                explanation = "No se han devuelto respuestas."
+            
+            return(query, FeedbackEnum.ERROR, result, [], explanation)
+    
     def __run_example_ordered_and_first_only(self, query, result, expected_result):
         expected_result_first_only = [expected_result[0]]
-        if ListOfDictsComparer.includes(result, expected_result_first_only, comparator=self.__equivalent_values):
+        
+        if result == []:
+            return(query, FeedbackEnum.ERROR, result, expected_result_first_only, "No se han devuelto respuestas.")
+        
+        if not result == [] and ListOfDictsComparer.includes(result, expected_result_first_only, comparator=self.__equivalent_values):
             return(query, FeedbackEnum.SUCCESS, result, expected_result_first_only, "")
         else:
             explanation = "La respuesta esperada no se encuentra entre las devueltas."
@@ -169,7 +192,10 @@ class PrologInterface():
             return(query, FeedbackEnum.ERROR, result, expected_result_first_only, explanation),
     
     def __run_example_ordered(self, query, result, expected_result):
-        if ListOfDictsComparer.equal_set(result, expected_result, comparator=self.__equivalent_values):
+        if result == []:
+            return(query, FeedbackEnum.ERROR, result, expected_result, "No se han devuelto respuestas.")
+        
+        if not result == [] and ListOfDictsComparer.equal_set(result, expected_result, comparator=self.__equivalent_values):
             return(query, FeedbackEnum.SUCCESS, result, expected_result, "")
         else:
             explanation = "Las respuestas devueltas no coinciden con las esperadas."
@@ -180,9 +206,13 @@ class PrologInterface():
             return(query, FeedbackEnum.ERROR, result, expected_result, explanation)
     
     def __run_example_first_only(self, query, result, expected_result):
-        result_first_only = [result[0]]
         expected_result_first_only = [expected_result[0]]
-        if ListOfDictsComparer.equals(result_first_only, expected_result_first_only, comparator=self.__equivalent_values):
+        
+        if result == []:
+            return(query, FeedbackEnum.ERROR, result, expected_result_first_only, "No se han devuelto respuestas.")
+        
+        result_first_only = [result[0]]
+        if not result == [] and ListOfDictsComparer.equals(result_first_only, expected_result_first_only, comparator=self.__equivalent_values):
             return(query, FeedbackEnum.SUCCESS, result_first_only, expected_result_first_only, "")
         else:
             explanation = "La primera respuesta devuelta no coincide con la esperada."
@@ -190,7 +220,10 @@ class PrologInterface():
             return(query, FeedbackEnum.ERROR, result_first_only, expected_result_first_only, explanation)
     
     def __run_example_base(self, query, result, expected_result):
-        if ListOfDictsComparer.equals(result, expected_result, comparator=self.__equivalent_values):
+        if result == []:
+            return(query, FeedbackEnum.ERROR, result, expected_result, "No se han devuelto respuestas.")
+        
+        if not result == [] and ListOfDictsComparer.equals(result, expected_result, comparator=self.__equivalent_values):
             return(query, FeedbackEnum.SUCCESS, result, expected_result, "")
         else:
             explanation = "Las respuestas devueltas no coinciden con las esperadas."
@@ -204,10 +237,45 @@ class PrologInterface():
             return(query, FeedbackEnum.ERROR, result, expected_result, explanation)
     
     def __equivalent_values(self, first, second):
-        if isinstance(first, str) and not first[0] == "'" and not first[-1] == "'":
+        # If both return a free variable, then for testing purposes they returned the same answer
+        if first is None and second is None:
+            return True
+        
+        if isinstance(first, str) and not (first[0] == "'" and first[-1] == "'"):
             first = "'" + first + "'"
-        if isinstance(second, str) and not second[0] == "'" and not second[-1] == "'":
+        if isinstance(second, str) and not (second[0] == "'" and second[-1] == "'"):
             second = "'" + second + "'"
+        
         query = str(first) + " == " + str(second)
         result = self.query(query)
         return not (result == [])
+    
+    def __clean_results(self, item):
+        if isinstance(item, dict):
+            new_dict = {}
+            for key, value in item.items():
+                new_dict[key] = self.__clean_results(value)
+            return new_dict
+        elif isinstance(item, list):
+            return [self.__clean_results(element) for element in item]
+        elif isinstance(item, bytes):
+            # Decode bytes to string, replace single quotes with double quotes
+            decoded_item = item.decode('utf-8')
+            return '"' + decoded_item + '"'
+        elif isinstance(item, Variable):
+            return None
+        else:
+            return item
+    
+    def __replace_nones_with_underscores(self, item):
+        if isinstance(item, dict):
+            new_dict = {}
+            for key, value in item.items():
+                new_dict[key] = self.__replace_nones_with_underscores(value)
+            return new_dict
+        elif isinstance(item, list):
+            return [self.__replace_nones_with_underscores(element) for element in item]
+        elif item is None:
+            return '_'
+        else:
+            return item
