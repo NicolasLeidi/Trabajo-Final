@@ -59,11 +59,11 @@ class TeacherView(View):
     
     def change_to_batch_create_mode(self):
         """
-        Changes the view to batch create mode by disabling the batch creating mode button, enabling the manual creating mode button, updating the text of the testing mode button to "Modo de Prueba", hiding the test mode widgets, and showing the batch create mode widgets.
+        Changes the view to batch create mode by disabling the batch creating mode button, enabling the manual creating mode button, updating the text of the testing mode button to "Probar", hiding the test mode widgets, and showing the batch create mode widgets.
         """
         self._upper_side_frame.batch_creating_mode_button.config(state = "disabled")
         self._upper_side_frame.manual_creating_mode_button.config(state = "normal")
-        self._upper_side_frame.testing_mode_button.config(text = "Modo de Prueba")
+        self._upper_side_frame.testing_mode_button.config(text = "Probar")
         self._hide_test_mode_widgets()
         self._hide_manual_create_mode_widgets()
         self._show_batch_create_mode_widgets()
@@ -71,13 +71,13 @@ class TeacherView(View):
     def change_to_manual_create_mode(self):
         """
         Changes the view to manual create mode if not in batch mode.
-        Disables the manual creating mode button, updates the text of the testing mode button to "Modo de Prueba",
+        Disables the manual creating mode button, updates the text of the testing mode button to "Probar",
         hides the test mode widgets, and shows the manual create mode widgets.
         """
         if self.presenter.is_batch_mode():
             self._upper_side_frame.batch_creating_mode_button.config(state = "normal")
         self._upper_side_frame.manual_creating_mode_button.config(state = "disabled")
-        self._upper_side_frame.testing_mode_button.config(text = "Modo de Prueba")
+        self._upper_side_frame.testing_mode_button.config(text = "Probar")
         self._hide_test_mode_widgets()
         self._hide_batch_create_mode_widgets()
         self._show_manual_create_mode_widgets()

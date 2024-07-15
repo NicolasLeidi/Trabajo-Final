@@ -31,3 +31,8 @@ crossword(V1, V2, V3, H1, H2, H3):-
 
 this_must_fail(_):-
 	fail.
+
+ordered(a).
+ordered(b).
+ordered(c).
+ordered(d).

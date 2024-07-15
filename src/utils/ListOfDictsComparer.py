@@ -39,15 +39,7 @@ class ListOfDictsComparer:
         if len(list1) != len(list2):
             return False
         
-        for dict1 in list1:
-            if comparator is None:
-                if dict1 not in list2:
-                    return False
-            else:
-                for dict2 in list2:
-                    if not ListOfDictsComparer.__dict_comparer(dict1, dict2, comparator):
-                        return False
-        return True
+        return ListOfDictsComparer.includes(list1, list2, comparator)
     
     @staticmethod
     def includes(list1, list2, comparator = None):
@@ -63,13 +55,20 @@ class ListOfDictsComparer:
             True if list2 is fully included in list1 based on the comparator, False otherwise.
         """
         for dict2 in list2:
+            if not list1:
+                return False
+            
             if comparator is None:
                 if dict2 not in list1:
                     return False
             else:
+                included = False
                 for dict1 in list1:
-                    if not ListOfDictsComparer.__dict_comparer(dict1, dict2, comparator):
-                        return False
+                    if ListOfDictsComparer.__dict_comparer(dict1, dict2, comparator):
+                        included = True
+                        break
+                if not included:
+                    return False
 
         return True
     

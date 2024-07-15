@@ -26,3 +26,8 @@ crossword(V1, V2, V3, H1, H2, H3):-
 	word(H3, _, A3, _, B3, _, C3, _).
 
 this_must_fail(_).
+
+ordered(c).
+ordered(b).
+ordered(a).
+ordered(d).
