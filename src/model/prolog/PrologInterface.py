@@ -169,14 +169,14 @@ class PrologInterface():
     
     def __run_example_positive_case(self, query, result):
         if result == [{}]:
-            return(query, FeedbackEnum.SUCCESS, result, [], "")
+            return(query, FeedbackEnum.SUCCESS, result, [{}], "")
         else:
             explanation = "El predicado devuelve unificaciones innecesarias."
             
             if result == []:
                 explanation = "No se han devuelto respuestas."
             
-            return(query, FeedbackEnum.ERROR, result, [], explanation)
+            return(query, FeedbackEnum.ERROR, result, [{}], explanation)
     
     def __run_example_ordered_and_first_only(self, query, result, expected_result):
         expected_result_first_only = [expected_result[0]]
@@ -184,18 +184,18 @@ class PrologInterface():
         if result == []:
             return(query, FeedbackEnum.ERROR, result, expected_result_first_only, "No se han devuelto respuestas.")
         
-        if not result == [] and ListOfDictsComparer.includes(result, expected_result_first_only, comparator=self.__equivalent_values):
+        if ListOfDictsComparer.includes(result, expected_result_first_only, comparator=self.__equivalent_values):
             return(query, FeedbackEnum.SUCCESS, result, expected_result_first_only, "")
         else:
             explanation = "La respuesta esperada no se encuentra entre las devueltas."
             
-            return(query, FeedbackEnum.ERROR, result, expected_result_first_only, explanation),
+            return(query, FeedbackEnum.ERROR, result, expected_result_first_only, explanation)
     
     def __run_example_ordered(self, query, result, expected_result):
         if result == []:
             return(query, FeedbackEnum.ERROR, result, expected_result, "No se han devuelto respuestas.")
         
-        if not result == [] and ListOfDictsComparer.equal_set(result, expected_result, comparator=self.__equivalent_values):
+        if ListOfDictsComparer.equal_set(result, expected_result, comparator=self.__equivalent_values):
             return(query, FeedbackEnum.SUCCESS, result, expected_result, "")
         else:
             explanation = "Las respuestas devueltas no coinciden con las esperadas."
@@ -212,7 +212,7 @@ class PrologInterface():
             return(query, FeedbackEnum.ERROR, result, expected_result_first_only, "No se han devuelto respuestas.")
         
         result_first_only = [result[0]]
-        if not result == [] and ListOfDictsComparer.equals(result_first_only, expected_result_first_only, comparator=self.__equivalent_values):
+        if ListOfDictsComparer.equals(result_first_only, expected_result_first_only, comparator=self.__equivalent_values):
             return(query, FeedbackEnum.SUCCESS, result_first_only, expected_result_first_only, "")
         else:
             explanation = "La primera respuesta devuelta no coincide con la esperada."
@@ -223,7 +223,7 @@ class PrologInterface():
         if result == []:
             return(query, FeedbackEnum.ERROR, result, expected_result, "No se han devuelto respuestas.")
         
-        if not result == [] and ListOfDictsComparer.equals(result, expected_result, comparator=self.__equivalent_values):
+        if ListOfDictsComparer.equals(result, expected_result, comparator=self.__equivalent_values):
             return(query, FeedbackEnum.SUCCESS, result, expected_result, "")
         else:
             explanation = "Las respuestas devueltas no coinciden con las esperadas."
@@ -236,10 +236,14 @@ class PrologInterface():
             
             return(query, FeedbackEnum.ERROR, result, expected_result, explanation)
     
-    def __equivalent_values(self, first, second):
-        # If both return a free variable, then for testing purposes they returned the same answer
+    def __equivalent_values(self, first, second):        
+        # If both return a free variable, then for testing purposes they returned the same answer.
         if first is None and second is None:
             return True
+        
+        # A free variable is never equivalent no anything.
+        if first is None or second is None:
+            return False
         
         if isinstance(first, str) and not (first[0] == "'" and first[-1] == "'"):
             first = "'" + first + "'"

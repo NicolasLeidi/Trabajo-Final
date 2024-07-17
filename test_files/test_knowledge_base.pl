@@ -31,6 +31,7 @@ crossword(V1, V2, V3, H1, H2, H3):-
 
 this_must_fail(_):-
 	fail.
+this_must_succeed(_).
 
 ordered(a).
 ordered(b).
