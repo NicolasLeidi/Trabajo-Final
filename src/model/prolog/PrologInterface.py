@@ -28,19 +28,23 @@ class PrologInterface():
         """
         self.knowledge_base = knowledge_base
     
-    def query(self, query):
+    def query(self, query, first_only=0):
         """
         Executes a query in the Prolog knowledge base.
 
         Parameters:
             query (str): The Prolog query to execute.
+            first_only (int): Flag indicating if only the first example should matter.
 
         Returns:
             list: A list of the results of the query. [{}] represents a true and [] a false.
         """
         prolog_result = []
+        max_results = -1
+        if first_only:
+            max_results = 1
         try:
-            results = self.prolog.query(query)
+            results = self.prolog.query(query, maxresult=max_results)
             if results == [] or results == [{}]:
                 prolog_result = results
             else:
@@ -65,7 +69,7 @@ class PrologInterface():
         This function checks if the example has balanced brackets. If it does, it executes the example query and appends the result to the examples base. If the brackets are not balanced, it clears the examples base and raises a PrologSyntaxException.
         """
         if StringHandler.check_brackets_are_balanced(example):
-            result = self.query(example)
+            result = self.query(example, first_only=first_only)
             self.examples_base.append([example, result, ordered, first_only])
         else:
             self.empty_examples_base()
@@ -143,7 +147,11 @@ class PrologInterface():
         return cleaned_feedback
     
     def __run_example(self, query, expected_result, is_ordered, is_first_only):
-        result = self.query(query)
+        if is_ordered:
+            result = self.query(query)
+        else:
+            result = self.query(query, first_only=is_first_only)
+        
         if not expected_result:
             return self.__run_example_negative_case(query, result)
         elif expected_result == [{}]:
