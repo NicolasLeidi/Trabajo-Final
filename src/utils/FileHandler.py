@@ -11,7 +11,7 @@ class FileHandler:
             str or None: The contents of the text file if it exists, otherwise None.
         """
         try:
-            with open(file_path, 'r') as file:
+            with open(file_path, mode='r', encoding='utf-8') as file:
                 return file.read()
         except FileNotFoundError:
             return None
