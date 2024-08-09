@@ -1,4 +1,6 @@
 import tkinter as tk
+import traceback
+import tkinter.messagebox as tkMessageBox
 from model.Model import Model
 from presenter.StudentPresenter import StudentPresenter
 from view.StudentView import StudentView
@@ -16,4 +18,7 @@ def main():
     root.mainloop()
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception:
+        tkMessageBox.showerror('Exception', traceback.format_exc())
