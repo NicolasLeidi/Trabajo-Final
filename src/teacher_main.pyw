@@ -18,7 +18,9 @@ def main():
     root.mainloop()
 
 if __name__ == "__main__":
+    print("Starting...")
     try:
         main()
-    except Exception:
+    except:
+        print("Error")
         tkMessageBox.showerror('Exception', traceback.format_exc())

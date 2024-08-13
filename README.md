@@ -19,6 +19,16 @@ Para compilar y ejecutar los archivos main, se necesita:
 -   La librería `tkinter-tooltip` es necesaria
 -   La librería `pyparsing` es necesaria
 
+## Primer paso
+
+Antes de poder ejecutar cualquiera de los programas se requiere ejecutar el archivo `set_prolog_home_dir.bat` en una consola de windows (cmd) para poder colocar la variable de entorno SWI_HOME_DIR que requiere la aplicación para funcionar.
+
+-   Abrir una instancia de Command Prompt
+-   Ejecutar el archivo `set_prolog_home_dir.bat`
+-   Cerrar la consola
+
+Ahora podrá ejecutar los archivos ejecutables.
+
 ## Utilización de la GUI
 
 Puede ejecutar tanto la versión de alumno (`student_main.exe`) como la de profesor (`teacher_main.exe`)
