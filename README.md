@@ -39,20 +39,22 @@ Los primeros pasos para utilizar la aplicación para probar un programa son:
 
 1.  Presionar el botón **Cargar Base de Conocimiento**.
 2.  Elegir el archivo de base de conocimiento de PROLOG.
-3.  Presionar el botón de **Probar**.
-4.  Elegir el/los archivo/s de casos de prueba.
-5.  Se cargarán todos los casos de prueba en la ventana.
+3.  Presionar en `Abrir` u `Open`.
+4.  Presionar el botón de **Probar**.
+5.  Elegir el/los archivo/s de casos de prueba.
+6.  Presionar en `Abrir` u `Open`.
+7.  Se cargarán todos los casos de prueba en la ventana.
 
-    -   **Agregar Ejemplos** permite agregar más archivos de casos de prueba.
+    -   **Agregar Ejemplos** permite agregar más archivos de casos de prueba. Se repiten los pasos desde el paso 5.
     -   **Limpiar** permite eliminar todos los casos de prueba que se hayan cargado.
     -   **Remover** permite eliminar el caso de prueba seleccionado con un click del mouse previamente.
 
-6.  Presionar el botón de **Correr**.
+8.  Presionar el botón de **Correr**.
 
     -   En la parte inferior derecha se puede ver la cantidad de tests exitosos.
-    -   En verde se pueden ver los tests exitosos
-    -   En rojo se pueden ver los tests que fallaron, junto una explicación y la comparación entre resultado esperado y el que el que recibió
-    -   **Volver** Se vuelve a la ventana anterior a ver los resultados.
+    -   En verde se pueden ver los tests exitosos.
+    -   En rojo se pueden ver los tests que fallaron, junto una explicación y la comparación entre resultado esperado y el que el que recibió.
+    -   **Volver** Se vuelve a la ventana anterior donde se muestran solos los casos de prueba.
 
 ### Creación de batería de tests
 
@@ -62,11 +64,11 @@ Para crear una batería de tests tiene que realizar:
 2.  En el cuadro de arriba podrá escribir las consultas a probar, el cuadro del medio el resultado esperado y en el cuadro de abajo mostrará las consultas ya cargadas.
 
     -   Puede presionar en los checkbox de abajo para configurar el tipo de comparación al momento de correr los casos de prueba:
-        -   **Sin Orden**: compara los conjuntos de resultados sin importar el orden.
-        -   **Primer Resultado**: solo compara la primera unificación de ambos resultados.
-    -   Si se seleccionan ambos, se cumplirá si la primera unificación está contenida dentro de la resolución del programa a testear.
-    -   Si no se selecciona ninguna, se cumplirá sí y solo sí la unificación del programa elegido y el de testear son iguales.
-    -   En caso de ser un test negativo (que debe de daro falso), estas opciones no afectan al resultado, solo va a ser verdadero sí y solo sí el programa a testear falla.
+        -   **Sin Orden**: compara los conjuntos de resultados sin importar el orden de las respuestas.
+        -   **Primer Resultado**: solo compara el primer resultado, ignorando caminos alternativos restantes.
+    -   Si se seleccionan ambos, se cumplirá si el primer resultado está contenido dentro de los resultados del programa a testear.
+    -   Si no se selecciona ninguna, se cumplirá sí y solo sí los resultados son los mismos.
+    -   En caso de ser un test negativo (que debe de dar falso), estas opciones no afectan al resultado, solo va a ser verdadero sí y solo sí el programa a testear falla.
 
 3.  Escriba en el cuadro superior (`Crear Query de Caso de Prueba`) la query a probar. Tenga en cuenta que solo se puede ingresar una query a la vez.
 4.  Escriba en el cuadro del medio (`Resultado Esperado del Caso de Prueba`) el resultado que debería dar esa query. Tenga en cuenta la sintaxis:
@@ -86,6 +88,7 @@ Para crear una batería de tests tiene que realizar:
 
 6.  Cuando se termine de agregar consultas, presionar en **Guardar**.
 7.  Elegir el archivo en donde se guardarán las consultas.
+8.  Presionar en `Guardar` o `Save`.
 
 ### Creación de batería de tests asistido
 
@@ -93,31 +96,33 @@ Esta funcionalidad está solo disponible para la versión de profesores (`teache
 
 1.  Presionar el botón **Cargar Base de Conocimiento**.
 2.  Elegir el archivo de base de conocimiento de PROLOG.
-3.  Presionar el botón de **Crear Tests Asistido**.
-4.  En el cuadro de arriba podrá escribir las consultas a probar, el cuadro de abajo mostrará las consultas ya cargadas.
+3.  Presionar en `Abrir` u `Open`.
+4.  Presionar el botón de **Crear Tests Asistido**.
+5.  En el cuadro de arriba podrá escribir las consultas a probar, el cuadro de abajo mostrará las consultas ya cargadas.
 
     -   Puede presionar en los checkbox de abajo para configurar el tipo de comparación al momento de correr los casos de prueba:
-        -   **Sin Orden**: compara los conjuntos de resultados sin importar el orden.
-        -   **Primer Resultado**: solo compara la primera unificación de ambos resultados.
-    -   Si se seleccionan ambos, se cumplirá si la primera unificación está contenida dentro de la resolución del programa a testear.
-    -   Si no se selecciona ninguna, se cumplirá sí y solo sí la unificación del programa elegido y el de testear son iguales.
-    -   En caso de ser un test negativo (que debe de daro falso), estas opciones no afectan al resultado, solo va a ser verdadero sí y solo sí el programa a testear falla.
+        -   **Sin Orden**: compara los conjuntos de resultados sin importar el orden de las respuestas.
+        -   **Primer Resultado**: solo compara el primer resultado, ignorando caminos alternativos restantes.
+    -   Si se seleccionan ambos, se cumplirá si el primer resultado está contenido dentro de los resultados del programa a testear.
+    -   Si no se selecciona ninguna, se cumplirá sí y solo sí los resultados son los mismos.
+    -   En caso de ser un test negativo (que debe de dar falso), estas opciones no afectan al resultado, solo va a ser verdadero sí y solo sí el programa a testear falla.
 
-5.  Cargar las consultas a la batería con los botones.
+6.  Cargar las consultas a la batería con los botones.
 
     -   **Agregar**: coloca las consultas en la batería de tests.
     -   **Guardar**: guarda la batería de tests en un archivo.
     -   **Deshacer**: elimina la última consulta de la batería de tests.
     -   **Limpiar**: elimina todas las consultas de la batería de tests.
 
-6.  Cuando se termine de agregar consultas, presionar en **Guardar**.
-7.  Elegir el archivo en donde se guardarán las consultas.
+7.  Cuando se termine de agregar consultas, presionar en **Guardar**.
+8.  Elegir el archivo en donde se guardarán las consultas.
+9.  Presionar en `Guardar` o `Save`.
 
 ## Utilización de la versión de consola
 
 Para probar por consola se tiene que llamar al ejecutable de consola (`console_main.exe`) con los siguientes argumentos:
 
-    -   Primer argumento: el archivo .pl de base de conocimiento.
-    -   Segundo argumento en adelante: archivos o carpetas de batería de tests
+    -   Primer argumento: la dirección del archivo .pl de base de conocimiento.
+    -   Segundo argumento en adelante: dirección de los archivos o carpetas de batería de tests
         -   Los archivos tienen que tener terminación .json
         -   De cada carpeta ingresada se buscará archivos .json en esa carpeta, sin buscar en dentro de carpetas dentro.
