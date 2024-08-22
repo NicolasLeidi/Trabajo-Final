@@ -4,7 +4,11 @@
 
 Creación de batería de testing de prolog automatizado y herramienta de verificación para problemas con fines académicos
 
-## Requerimientos
+## Definición de términos
+
+Query = consulta a ser ejecutada por el intérprete de SWI-Prolog
+
+## Requerimientos técnicos
 
 Para los ejecutables, se necesita
 
@@ -15,9 +19,9 @@ Para compilar y ejecutar los archivos main, se necesita:
 
 -   Python 3.6 o superior
 -   SWI-Prolog 8.2 o superior
--   La librería `pyswip` es necesaria
--   La librería `tkinter-tooltip` es necesaria
--   La librería `pyparsing` es necesaria
+-   La librería `pyswip` 0.2.11 o superior
+-   La librería `tkinter-tooltip` 3.1.0 o superior
+-   La librería `pyparsing` 3.1.2 o superior
 
 ## Primer paso
 
@@ -35,60 +39,82 @@ Puede ejecutar tanto la versión de alumno (`student_main.exe`) como la de profe
 
 ### Testear un programa
 
-Los primeros pasos para utilizar la aplicación para probar un programa son:
+Los primeros pasos para utilizar la aplicación para testear un programa son:
 
 1.  Presionar el botón **Cargar Base de Conocimiento**.
 2.  Elegir el archivo de base de conocimiento de PROLOG.
 3.  Presionar en `Abrir` u `Open`.
 4.  Presionar el botón de **Probar**.
-5.  Elegir el/los archivo/s de casos de prueba.
+5.  Elegir el/los archivo/s de casos de prueba que deben ser en formato .json.
 6.  Presionar en `Abrir` u `Open`.
-7.  Se cargarán todos los casos de prueba en la ventana.
+7.  Se cargarán todas las queries de los casos de prueba seleccionados en el panel ubicado en la parte derecha de la ventana.
 
-    -   **Agregar Ejemplos** permite agregar más archivos de casos de prueba. Se repiten los pasos desde el paso 5.
-    -   **Limpiar** permite eliminar todos los casos de prueba que se hayan cargado.
-    -   **Remover** permite eliminar el caso de prueba seleccionado con un click del mouse previamente.
+    -   **Agregar Ejemplos** permite agregar más archivos correspondientes a casos de prueba. Se repiten los pasos desde el paso 5.
+    -   **Limpiar** permite eliminar todas las queries que se hayan cargado.
+    -   **Remover** permite eliminar una query previamente seleccionada con un click del mouse.
 
 8.  Presionar el botón de **Correr**.
 
-    -   En la parte inferior derecha se puede ver la cantidad de tests exitosos.
+    -   En la parte inferior derecha de la ventana se puede ver visualizar la cantidad de tests exitosos.
     -   En verde se pueden ver los tests exitosos.
-    -   En rojo se pueden ver los tests que fallaron, junto una explicación y la comparación entre resultado esperado y el que el que recibió.
-    -   **Volver** Se vuelve a la ventana anterior donde se muestran solos los casos de prueba.
+    -   En rojo se pueden ver los tests que fallaron, junto a una explicación del motivo que provocó el no éxito de cada test fallido y la comparación entre el resultado esperado y el resultado obtenido al ejecutar los tests.
+    -   Al presionar **Volver** Se se vuelve a la ventana anterior donde se muestran solo las query de prueba.
 
-### Creación de batería de tests
+### Creación de batería de tests - Modo manua
 
-Para crear una batería de tests tiene que realizar:
+Para crear una batería de tests se deben seguir los siguientes pasos:
 
-1.  Presionar el botón de **Crear Tests**.
-2.  En el cuadro de arriba podrá escribir las consultas a probar, el cuadro del medio el resultado esperado y en el cuadro de abajo mostrará las consultas ya cargadas.
+1.  Presionar el botón **Crear Tests**.
 
-    -   Puede presionar en los checkbox de abajo para configurar el tipo de comparación al momento de correr los casos de prueba:
-        -   **Sin Orden**: compara los conjuntos de resultados sin importar el orden de las respuestas.
-        -   **Primer Resultado**: solo compara el primer resultado, ignorando caminos alternativos restantes.
-    -   Si se seleccionan ambos, se cumplirá si el primer resultado está contenido dentro de los resultados del programa a testear.
-    -   Si no se selecciona ninguna, se cumplirá sí y solo sí los resultados son los mismos.
-    -   En caso de ser un test negativo (que debe de dar falso), estas opciones no afectan al resultado, solo va a ser verdadero sí y solo sí el programa a testear falla.
+    -   En el cuadro ubicado en el extremo superior de la ventana deberá escribir las consultas que corresponden a los casos de test, y en el cuadro del medio deberá indicar el resultado esperado para cada consulta. En el cuadro ubicado en el extremo inferior de la ventana se mostrarán las consultas añadidas a la batería de casos de test hasta el momento
 
-3.  Escriba en el cuadro superior (`Crear Query de Caso de Prueba`) la query a probar. Tenga en cuenta que solo se puede ingresar una query a la vez.
-4.  Escriba en el cuadro del medio (`Resultado Esperado del Caso de Prueba`) el resultado que debería dar esa query. Tenga en cuenta la sintaxis:
+    -   Puede seleccionar una o más de las opciones dispuestas en los checkbox que se encuentran en la parte inferior de la ventana para configurar el tipo de comparación entre los resultados esperados y los resultados obtenidos que se efectuará al momento de correr los casos de prueba:
+
+        -   **Sin Orden**: compara los conjuntos de resultados esperados y obtenidos sin importar el orden de las respuestas (es decir, sin importar el orden en que fueron especificados en el archivo del casos de prueba, ni el orden en que se obtuvieron las respuestas al ejecutar las consultas en el intérprete de SWI-Prolog).
+        -   **Primer Resultado**: solo compara el primer resultado esperado y el primer resultado obtenido, ignorando soluciones alternativas (es decir, se comparará el primer resultado especificado en el archivo de casos de prueba con el primer resultado obtenido por el intérprete de SWI-Prolog).
+
+    -   Observaciones adicionales:
+        -   Si se seleccionan ambos checkbox, la ejecución del caso de test tendrá éxito si el primer resultado obtenido por el intérprete de SWI-Prolog al ejecutarlo está contenido dentro de los resultados esperados especificados en el caso de test.
+        -   Si no se selecciona ninguno de los dos checkbox, la ejecución del caso de test tendrá éxito sí y solo sí los conjuntos de resultados esperados y obtenidos coinciden.
+        -   De querer definir un caso de test negativo (es decir, una consulta cuyo resultado esperado es fallido, obteniendo False como respuesta del intérprete de SWI-Prolog), la selección de las opciones dispuestas en los checkbox no afectan al resultado. La ejecución del caso de test tendrá éxito sí y solo sí el resultado obtenido por el intérprete de SWI-Prolog es False.
+
+2.  Escribir en el cuadro de texto ubicado en el extremo superior de la ventana (`Crear Query de Caso de Prueba`) la query a probar. Tener en cuenta que solo se puede ingresar una query a la vez.
+
+> [!IMPORTANT]
+> El modo de creación de casos de test manual permite agregar una query a la vez, y considerará incorrectas múltiples queries separadas por puntos.
+
+3.  Escribir en el cuadro de texto ubicado en el medio de la ventana (`Resultado Esperado del Caso de Prueba`) el resultado que se espera que el intérprete de SWI-Prolog obtenga al ejecutar las queries especificadas en el punto anterior. Tener en cuenta las siguientes consideraciones sobre la sintaxis:
 
     -   Si el resultado es verdadero sin ninguna unificación o falso, colocar True o False respectivamente.
     -   Si el resultado es verdadero con unificaciones, colocar las variables como:
+
         -   Variable : Valor
         -   Múltiples variables en la misma respuesta deben estar separadas con ampersand (&)
         -   Múltiples conjuntos de unificaciones válidos separados por enter
 
-5.  Cargar las consultas a la batería con los botones.
+    -   Ejemplo:
 
-    -   **Agregar**: coloca las consultas en la batería de tests.
-    -   **Guardar**: guarda la batería de tests en un archivo.
-    -   **Deshacer**: elimina la última consulta de la batería de tests.
-    -   **Limpiar**: elimina todas las consultas de la batería de tests.
+        -   Resultado colocado:
+            -   X : 2 & Lista : [2, 3, 4]
+            -   X : 3 & Lista : [2, 3, 4]
+            -   X : 4 & Lista : [2, 3, 4]
+        -   Equivale a lo siguiente en el intérprete:
+            -   X = 2, Lista = [2, 3, 4]
+            -   X = 3, Lista = [2, 3, 4]
+            -   X = 4, Lista = [2, 3, 4]
 
-6.  Cuando se termine de agregar consultas, presionar en **Guardar**.
-7.  Elegir el archivo en donde se guardarán las consultas.
-8.  Presionar en `Guardar` o `Save`.
+    -   Es importante notar que la comparación de resultados esperados y obtenidos es usando la unificación de Prolog, excepto que dos variables libres son consideradas iguales.
+
+4.  Acciones para la generación de la batería de tests:
+
+    -   **Agregar**: incorpora a la batería de tests el caso de prueba recientemente definido. Luego de presionar este botón se visualizará en el panel inferior de la ventana la consulta recientemente incorporada a la batería.
+    -   **Guardar**: permite almacenar la batería de tests generada hasta el momento (correspondientes a las consultas visualizadas en el panel inferior de la ventana) en un archivo.
+    -   **Deshacer**: elimina el último caso de prueba de la batería de tests generada hasta el momento.
+    -   **Limpiar**: elimina todos los caso de prueba de la batería de tests generada hasta el momento.
+
+5.  Una vez finalizado el añadido de casos de prueba a la batería de tests, presionar en **Guardar**.
+6.  Elegir el archivo en donde se guardarán las consultas.
+7.  Presionar en `Guardar` o `Save`.
 
 ### Creación de batería de tests asistido
 
@@ -97,24 +123,32 @@ Esta funcionalidad está solo disponible para la versión de profesores (`teache
 1.  Presionar el botón **Cargar Base de Conocimiento**.
 2.  Elegir el archivo de base de conocimiento de PROLOG.
 3.  Presionar en `Abrir` u `Open`.
-4.  Presionar el botón de **Crear Tests Asistido**.
-5.  En el cuadro de arriba podrá escribir las consultas a probar, el cuadro de abajo mostrará las consultas ya cargadas.
+4.  Presionar el botón **Crear Tests Asistido**.
+5.  Escribir las consultas que conformarán los casos de prueba en el cuadro ubicado en el extremo superior de la ventana.
 
-    -   Puede presionar en los checkbox de abajo para configurar el tipo de comparación al momento de correr los casos de prueba:
-        -   **Sin Orden**: compara los conjuntos de resultados sin importar el orden de las respuestas.
-        -   **Primer Resultado**: solo compara el primer resultado, ignorando caminos alternativos restantes.
-    -   Si se seleccionan ambos, se cumplirá si el primer resultado está contenido dentro de los resultados del programa a testear.
-    -   Si no se selecciona ninguna, se cumplirá sí y solo sí los resultados son los mismos.
-    -   En caso de ser un test negativo (que debe de dar falso), estas opciones no afectan al resultado, solo va a ser verdadero sí y solo sí el programa a testear falla.
+> [!IMPORTANT]
+> El modo de creación de casos de test asistido no requiere la especificación del resultado esperado para cada query. Los resultados esperados serán obtenidos a partir de la resolución de la consulta considerando la base de conocimiento cargada
 
-6.  Cargar las consultas a la batería con los botones.
+-   En el cuadro ubicado en el extremo superior de la ventana deberá escribir las consultas que corresponden a los casos de test, y en el cuadro del medio deberá indicar el resultado esperado para cada consulta. En el cuadro ubicado en el extremo inferior de la ventana se mostrarán las consultas añadidas a la batería de casos de test hasta el momento
 
-    -   **Agregar**: coloca las consultas en la batería de tests.
-    -   **Guardar**: guarda la batería de tests en un archivo.
-    -   **Deshacer**: elimina la última consulta de la batería de tests.
-    -   **Limpiar**: elimina todas las consultas de la batería de tests.
+-   Puede seleccionar una o más de las opciones dispuestas en los checkbox que se encuentran en la parte inferior de la ventana para configurar el tipo de comparación entre los resultados esperados y los resultados obtenidos que se efectuará al momento de correr los casos de prueba:
 
-7.  Cuando se termine de agregar consultas, presionar en **Guardar**.
+    -   **Sin Orden**: compara los conjuntos de resultados esperados y obtenidos sin importar el orden de las respuestas (es decir, sin importar el orden en que fueron especificados en el archivo del casos de prueba, ni el orden en que se obtuvieron las respuestas al ejecutar las consultas en el intérprete de SWI-Prolog).
+    -   **Primer Resultado**: solo compara el primer resultado esperado y el primer resultado obtenido, ignorando soluciones alternativas (es decir, se comparará el primer resultado especificado en el archivo de casos de prueba con el primer resultado obtenido por el intérprete de SWI-Prolog).
+
+-   Observaciones adicionales:
+    -   Si se seleccionan ambos checkbox, la ejecución del caso de test tendrá éxito si el primer resultado obtenido por el intérprete de SWI-Prolog al ejecutarlo está contenido dentro de los resultados esperados especificados en el caso de test.
+    -   Si no se selecciona ninguno de los dos checkbox, la ejecución del caso de test tendrá éxito sí y solo sí los conjuntos de resultados esperados y obtenidos coinciden.
+    -   De querer definir un caso de test negativo (es decir, una consulta cuyo resultado esperado es fallido, obteniendo False como respuesta del intérprete de SWI-Prolog), la selección de las opciones dispuestas en los checkbox no afectan al resultado. La ejecución del caso de test tendrá éxito sí y solo sí el resultado obtenido por el intérprete de SWI-Prolog es False.
+
+6.  Acciones para la generación de la batería de tests:
+
+    -   **Agregar**: incorpora a la batería de tests el caso de prueba recientemente definido. Luego de presionar este botón se visualizará en el panel inferior de la ventana la consulta recientemente incorporada a la batería.
+    -   **Guardar**: permite almacenar la batería de tests generada hasta el momento (correspondientes a las consultas visualizadas en el panel inferior de la ventana) en un archivo.
+    -   **Deshacer**: elimina el último caso de prueba de la batería de tests generada hasta el momento.
+    -   **Limpiar**: elimina todos los caso de prueba de la batería de tests generada hasta el momento.
+
+7.  Una vez finalizado el añadido de casos de prueba a la batería de tests, presionar en **Guardar**.
 8.  Elegir el archivo en donde se guardarán las consultas.
 9.  Presionar en `Guardar` o `Save`.
 
@@ -122,7 +156,13 @@ Esta funcionalidad está solo disponible para la versión de profesores (`teache
 
 Para probar por consola se tiene que llamar al ejecutable de consola (`console_main.exe`) con los siguientes argumentos:
 
-    -   Primer argumento: la dirección del archivo .pl de base de conocimiento.
-    -   Segundo argumento en adelante: dirección de los archivos o carpetas de batería de tests
-        -   Los archivos tienen que tener terminación .json
-        -   De cada carpeta ingresada se buscará archivos .json en esa carpeta, sin buscar en dentro de carpetas dentro.
+> [!NOTE]
+> Para especificar una direccion que incluya espacios, rodee la dirección con comillas dobles (Ejemplo: `"archivos de prolog/base.pl`). Permite direcciones relativas y absolutas.
+
+-   Primer argumento: la dirección del archivo .pl correspondiente a la de base de conocimiento en PROLOG.
+-   Segundo argumento en adelante: dirección de los archivos o carpetas de batería de tests
+    -   Los archivos tienen que tener terminación .json
+    -   De cada carpeta ingresada se buscará archivos .json en esa carpeta, sin buscar en dentro de carpetas dentro.
+-   Se tiene que escribir el nombre completo del archivo, incluyendo extensión (`.pl` para bases de conocimiento y `.json` para baterías de test).
+-   Ejemplo:
+    -   Estando en una consola en la carpeta de la herramienta: - `console_main.exe test_files/test_knowledge_base.pl test_files/test_examples.json test_files/test_examples_ordered.json`
