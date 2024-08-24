@@ -149,6 +149,7 @@ class View(ABC):
         Cleans the test text box of the testing frame.
         """
         self._middle_side_testing_frame.clean_test_text_box()
+        self.change_to_test_mode()
         
     def clean_loaded_examples_text_box(self):
         """
@@ -174,6 +175,7 @@ class View(ABC):
         self._upper_side_frame.testing_mode_button.config(text = "Agregar Ejemplos")
         self._hide_manual_create_mode_widgets()
         self._show_test_mode_widgets()
+        self.set_completed_test_feedback()
     
     def change_to_showing_results_mode(self):
         """

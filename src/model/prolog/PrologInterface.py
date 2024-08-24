@@ -133,16 +133,16 @@ class PrologInterface():
         appended to the `feedback` list. Finally, the `feedback` list is returned.
 
         Returns:
-            A list of feedbacks. Each feedback is a tuple containing the query, result code,
-            actual results, expected results, and explanation (if any).
+            A list of feedbacks. Each feedback is a tuple containing the query, ordered, first_only, 
+            result code, actual results, expected results, and explanation (if any).
         """
         feedback = []
         for query, expected_result, ordered, first_only in self.examples_base:
-            feedback.append(self.__run_example(query, expected_result, ordered, first_only))
+            feedback.append(self.__run_example(query, expected_result, ordered, first_only) + (ordered, first_only))
         
         cleaned_feedback = []
-        for query, result_code, actual_result, expected_result, explanation in feedback:
-            cleaned_feedback.append((query, result_code, self.__replace_nones_with_underscores(actual_result), self.__replace_nones_with_underscores(expected_result), explanation))
+        for query, result_code, actual_result, expected_result, explanation, ordered, first_only in feedback:
+            cleaned_feedback.append((query, ordered, first_only, result_code, self.__replace_nones_with_underscores(actual_result), self.__replace_nones_with_underscores(expected_result), explanation))
         
         return cleaned_feedback
     

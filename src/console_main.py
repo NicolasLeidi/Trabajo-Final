@@ -58,12 +58,21 @@ try:
     
     total_tests = len(results)
     completed_tests = 0
+    test_number = 0
     
-    for [query, result_code, results, expected_results, explanation] in results:
+    for [query, ordered, first_only, result_code, results, expected_results, explanation] in results:
+        test_number += 1
+        
+        modes = ""
+        if ordered:
+            modes = " - Sin orden"
+        if first_only:
+            modes += " - Solo primer resultado"
+            
         if result_code == FeedbackEnum.SUCCESS:
             completed_tests += 1
         else:
-            print(f"Test {query} - {result_code.name} - {explanation}\nSe esperaba:\n{expected_results}\nSe obtuvo:\n{results}\n")
+            print(f"Test {test_number} {query}{modes} - {result_code.name} - {explanation}\nSe esperaba:\n{expected_results}\nSe obtuvo:\n{results}\n")
     print(f"Test exitosos: {completed_tests}/{total_tests}")
 except Exception:
     print("Error al correr las pruebas. La sintaxis de los casos de prueba es incorrecta.")

@@ -56,6 +56,7 @@ class TeacherView(View):
         self._hide_batch_create_mode_widgets()
         self._hide_manual_create_mode_widgets()
         self._show_test_mode_widgets()
+        self.set_completed_test_feedback()
     
     def change_to_batch_create_mode(self):
         """
@@ -74,8 +75,10 @@ class TeacherView(View):
         Disables the manual creating mode button, updates the text of the testing mode button to "Probar",
         hides the test mode widgets, and shows the manual create mode widgets.
         """
-        if self.presenter.is_batch_mode():
+        if self.presenter.is_knowledge_base_submitted():
             self._upper_side_frame.batch_creating_mode_button.config(state = "normal")
+        else:
+            self._upper_side_frame.batch_creating_mode_button.config(state = "disabled")
         self._upper_side_frame.manual_creating_mode_button.config(state = "disabled")
         self._upper_side_frame.testing_mode_button.config(text = "Probar")
         self._hide_test_mode_widgets()

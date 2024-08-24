@@ -120,7 +120,7 @@ class Model():
         Runs the examples in the model and returns the results.
 
         Returns:
-            list: A list of feedbacks. Each feedback is a tuple containing the query, result code, actual results, expected results, and explanation (if any).
+            list: A list of feedbacks. Each feedback is a tuple containing the query, ordered, first_only, result code, actual results, expected results, and explanation (if any).
 
         Raises:
             Exception: If an error occurs while running the examples.

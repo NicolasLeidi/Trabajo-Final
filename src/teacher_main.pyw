@@ -21,5 +21,4 @@ if __name__ == "__main__":
     try:
         main()
     except:
-        print("Error")
         tkMessageBox.showerror('Exception', traceback.format_exc())

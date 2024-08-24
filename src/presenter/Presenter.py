@@ -42,6 +42,12 @@ class AppPresenter(ABC):
         """
         return self.mode == self.modes.Showing_Results
     
+    def is_knowledge_base_submitted(self):
+        """
+        Check if a knowledge base was submitted.
+        """
+        return self.knowledge_base_submitted
+    
     def add_batch_examples(self, examples, ordered, first_only):
         """
         Add batch examples to the model, and causes an update to the loaded examples text box of the binded view.
@@ -142,6 +148,7 @@ class AppPresenter(ABC):
         if response[0]:
             self.view.enable_mode_buttons()
             self.view.insert_text_to_knowledge_base_text_box(response[1])
+            self.knowledge_base_submitted = True
         else:
             self.open_popup("Error", response[1])
     
@@ -208,11 +215,11 @@ class AppPresenter(ABC):
         completed = 0
         total = len(results)
         
-        for [query, result_code, results, expected_results, explanation] in results:
+        for [query, ordered, first_only, result_code, results, expected_results, explanation] in results:
             test_number += 1
             if result_code == FeedbackEnum.SUCCESS:
                 completed += 1
-            self.send_example_to_view(query, test_number, result_code, explanation, expected_results, results)
+            self.send_example_to_view(query, ordered, first_only, test_number, result_code, explanation, expected_results, results)
         
         self.mode = self.modes.Showing_Results
         self.view.change_to_showing_results_mode()
@@ -226,7 +233,7 @@ class AppPresenter(ABC):
         self.model.clean_examples()
         self.view.clean_test_text_box()
     
-    def send_example_to_view(self, query, test_number, result_code, explanation, expected_results, results):
+    def send_example_to_view(self, query, ordered, first_only, test_number, result_code, explanation, expected_results, results):
         """
         Sends the example and its result to the view for display.
 
@@ -238,19 +245,29 @@ class AppPresenter(ABC):
 
         Parameters:
             query (str): The query for the test.
+            ordered (int): If the test compares the results in order or not.
+            first_only (int): If the test only compares the first result.
             test_number (int): The number of the test.
             result_code (FeedbackEnum): The result code indicating the success or failure of the test.
             explanation (str): The explanation for the test failure.
             expected_results (list): The expected results for the test.
             results (list): The actual results for the test.
         """
-        text = f"Test {test_number} - {query}\n"
+        modes = self._test_mode_string(ordered, first_only)
+        text = f"Test {test_number} - {query} {modes}\n"
         
         match result_code:
             case FeedbackEnum.SUCCESS:
-                text = f"Test {test_number} - {query} - Test passed.\n"
+                text = f"Test {test_number} - {query}{modes} - Test passed.\nSe esperaba:\n"
+                text += self._result_formatter(expected_results)
+                
+                # If both ordered and first_only are true, show the results given.
+                if ordered and first_only:
+                    text += "\nSe obtuvo:\n"
+                    text += self._result_formatter(results)
+                
             case FeedbackEnum.ERROR:
-                text = f"Test {test_number} - {query} - Test failed.\n{explanation}\n\n>Se esperaba:\n"
+                text = f"Test {test_number} - {query} {modes} - Test failed.\n{explanation}\n\n>Se esperaba:\n"
                 text += self._result_formatter(expected_results)
                 text += "\n>Se obtuvo:\n"
                 text += self._result_formatter(results)
@@ -288,15 +305,28 @@ class AppPresenter(ABC):
         examples = self.model.get_loaded_examples()
                
         # Add the examples to the test text box but without ending with a new line.
-        for example in examples[:-1]:
-            self.view.insert_example_to_test_text_box(str(example[0]) + "\n")
-        if examples[-1]:
-            self.view.insert_example_to_test_text_box(str(examples[-1][0]))
+        for query, expected_result, ordered, first_only in examples[:-1]:
+            modes = self._test_mode_string(ordered, first_only)
+            self.view.insert_example_to_test_text_box(f"{str(query)}{modes}\n>Se espera:\n{self._result_formatter(expected_result)}\n")
+        if examples and examples[-1]:
+            query, expected_result, ordered, first_only = examples[-1]
+            modes = self._test_mode_string(ordered, first_only)
+            self.view.insert_example_to_test_text_box(f"{str(query)}{modes}\n>Se espera:\n{self._result_formatter(expected_result)}\n")
     
     def _update_loaded_examples_text_box(self):
         self.view.clean_loaded_examples_text_box()
-        for example in self.model.get_loaded_examples():
-            self.view.insert_example_to_loaded_examples_text_box(str(example[0]) + "\n")
+        for query, expected_result, ordered, first_only in self.model.get_loaded_examples():
+            modes = self._test_mode_string(ordered, first_only)
+            self.view.insert_example_to_loaded_examples_text_box(f"{str(query)}{modes}\n")
+
+
+    def _test_mode_string(self, ordered, first_only):
+        modes = ""
+        if ordered:
+            modes = " - Sin orden"
+        if first_only:
+            modes += " - Solo primer resultado"
+        return modes
     
     def handle_test_text_box_click(self, line):
         """

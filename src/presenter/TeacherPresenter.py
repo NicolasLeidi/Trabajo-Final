@@ -8,6 +8,7 @@ class TeacherPresenter(AppPresenter):
         self.modes = Enum('Mode', ['Testing', 'Showing_Results', 'Batch_Creating', 'Manual_Creating', 'Not_Selected'])
         self.mode = self.modes.Not_Selected
         self.selected_test_line = None
+        self.knowledge_base_submitted = False
     
     def is_batch_mode(self):
         """
