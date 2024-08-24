@@ -75,5 +75,5 @@ try:
             print(f"Test {test_number} {query}{modes} - {result_code.name} - {explanation}\nSe esperaba:\n{expected_results}\nSe obtuvo:\n{results}\n")
     print(f"Test exitosos: {completed_tests}/{total_tests}")
 except Exception:
-    print("Error al correr las pruebas. La sintaxis de los casos de prueba es incorrecta.")
+    print("Error al correr los tests. La sintaxis de los casos de test es incorrecta.")
     sys.exit()

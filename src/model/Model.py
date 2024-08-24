@@ -128,7 +128,7 @@ class Model():
         try:
             return self.prolog_interface.test_examples()
         except Exception:
-            self.presenter.show_message("Error", "Error al correr las pruebas. La sintaxis de los casos de prueba es incorrecta.")
+            self.presenter.show_message("Error", "Error al correr los tests. La sintaxis de los casos de test es incorrecta.")
     
     def clean_examples(self):
         """

@@ -13,7 +13,7 @@ class KnowledgeBaseFrame(Frame):
         self.knowledge_base_label = Label(self, text="Base de Conocimiento")
         self.knowledge_base_text_box = Text(self)
         
-        ToolTip(self.knowledge_base_text_box, msg="Base de conocimiento cargada, será usada para realizar pruebas.", delay=1.0)
+        ToolTip(self.knowledge_base_text_box, msg="Base de conocimiento cargada, será usada para realizar los tests.", delay=1.0)
         self.knowledge_base_text_box.config(state = "disabled")
         self.knowledge_base_text_box.configure(bg="gray")
         
