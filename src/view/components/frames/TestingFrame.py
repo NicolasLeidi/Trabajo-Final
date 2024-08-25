@@ -22,14 +22,55 @@ class TestingFrame(Frame):
     
     def __handle_test_text_box_click(self, function, event):
         line = int(self.test_text_box.index(f"@{event.x},{event.y}").split(".")[0])
-        self.__highlight_current_line(line)
-        function(line)
+        
+        # Check if the selected line is empty
+        selected_line_text = self.test_text_box.get(f"{line}.0", f"{line}.end").strip()
+        if selected_line_text == "":
+            return False
+        
+        start_line, end_line = self.__find_section_boundaries(line)
+        section_number = self.__calculate_section_number(start_line)
+        
+        self.__highlight_section(start_line, end_line)
+        function(section_number)
+
+    def __find_section_boundaries(self, line):
+        start_line = line
+        end_line = line
+
+        # Move up to find the start of the section
+        while start_line > 1:
+            previous_line_text = self.test_text_box.get(f"{start_line-1}.0", f"{start_line-1}.end")
+            if previous_line_text.strip() == "":
+                break
+            start_line -= 1
+
+        # Move down to find the end of the section (empty line or end of the text)
+        while end_line < int(self.test_text_box.index("end-1c").split(".")[0]):
+            next_line_text = self.test_text_box.get(f"{end_line+1}.0", f"{end_line+1}.end")
+            if next_line_text.strip() == "":
+                break
+            end_line += 1
+
+        return start_line, end_line
     
-    def __highlight_current_line(self, line):
+    def __calculate_section_number(self, start_line):
+        section_number = 1
+        current_line = 1
+        
+        while current_line < start_line:
+            line_text = self.test_text_box.get(f"{current_line}.0", f"{current_line}.end").strip()
+            if line_text == "":
+                section_number += 1
+            current_line += 1
+        
+        return section_number
+    
+    def __highlight_section(self, start_line, end_line):
         self.test_text_box.tag_remove("highlight", "1.0", "end")
-        self.test_text_box.tag_add("highlight", f"{line}.0", f"{line}.end")
+        self.test_text_box.tag_add("highlight", f"{start_line}.0", f"{end_line}.end")
         self.test_text_box.tag_config("highlight", background="yellow")
-    
+        
     def insert_test_text_box(self, text):
         """
         Inserts the given text into the test text box.
