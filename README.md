@@ -45,6 +45,9 @@ Los primeros pasos para utilizar la aplicación para testear un programa son:
 
 ![image](https://github.com/user-attachments/assets/d8669330-aa1e-4119-b25f-39bcfb3dad85)
 
+> [!IMPORTANT]
+> Dado limitaciones actuales, para cargar una nueva base de conocimiento se requiere cerrar y abrir la aplicación
+
 2.  Elegir el archivo de base de conocimiento de PROLOG.
 3.  Presionar en `Abrir` u `Open`.
 
@@ -165,6 +168,9 @@ Esta funcionalidad está solo disponible para la versión de profesores (`teache
 1.  Presionar el botón **Cargar Base de Conocimiento**.
 
 ![image](https://github.com/user-attachments/assets/d8669330-aa1e-4119-b25f-39bcfb3dad85)
+
+> [!IMPORTANT]
+> Dado limitaciones actuales, para cargar una nueva base de conocimiento se requiere cerrar y abrir la aplicación
 
 2.  Elegir el archivo de base de conocimiento de PROLOG.
 3.  Presionar en `Abrir` u `Open`.
