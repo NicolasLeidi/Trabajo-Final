@@ -72,7 +72,6 @@ Test seleccionado para remover:
 
 ![image](https://github.com/user-attachments/assets/cf02f229-0e96-478d-9606-c398e6a2c07e)
 
-
 8.  Presionar el botón de **Correr**.
 
 ![image](https://github.com/user-attachments/assets/4b29b541-0591-4b95-99b2-34d10a464710)
@@ -80,13 +79,13 @@ Test seleccionado para remover:
 -   En la parte inferior derecha de la ventana se puede ver visualizar la cantidad de tests exitosos.
 -   En verde se pueden ver los tests exitosos.
 -   En rojo se pueden ver los tests que fallaron, junto a una explicación del motivo que provocó el no éxito de cada test fallido y la comparación entre el resultado esperado y el resultado obtenido al ejecutar los tests.
--   Al presionar **Volver** Se se vuelve a la ventana anterior donde se muestran solo las query de prueba.
+-   Al presionar **Volver** Se vuelve a la ventana anterior donde se muestran solo las query de prueba.
 
 Ejemplo sin errores en la base de conocimiento
 
 ![image](https://github.com/user-attachments/assets/30aa6eca-1039-4894-be15-79b80f14f5e2)
 
-Ejemplo con errores en la base de concoimiento
+Ejemplo con errores en la base de conocimiento
 
 ![image](https://github.com/user-attachments/assets/6f4d6990-dc01-422f-822c-92cd16b29cf9)
 
@@ -112,23 +111,23 @@ Para crear una batería de tests se deben seguir los siguientes pasos:
     -   Si no se selecciona ninguno de los dos checkbox, la ejecución del caso de test tendrá éxito sí y solo sí los conjuntos de resultados esperados y obtenidos coinciden.
     -   De querer definir un caso de test negativo (es decir, una consulta cuyo resultado esperado es fallido, obteniendo False como respuesta del intérprete de SWI-Prolog), la selección de las opciones dispuestas en los checkbox no afectan al resultado. La ejecución del caso de test tendrá éxito sí y solo sí el resultado obtenido por el intérprete de SWI-Prolog es False.
 
-2.  Escribir en el cuadro de texto ubicado en el extremo superior de la ventana (`Crear Query de Caso de Prueba`) la query a probar. Tener en cuenta que solo se puede ingresar una query a la vez.
+2.  Escribir en el cuadro de texto ubicado en el extremo superior de la ventana (`Crear Query de Caso de Test`) la query a probar. Tener en cuenta que solo se puede ingresar una query a la vez.
 
 ![image](https://github.com/user-attachments/assets/929b4a36-2ea7-4515-af28-136dbaaf3f35)
 
 > [!IMPORTANT]
 > El modo de creación de casos de test manual permite agregar una query a la vez, y considerará incorrectas múltiples queries separadas por puntos.
 
-3.  Escribir en el cuadro de texto ubicado en el medio de la ventana (`Resultado Esperado del Caso de Prueba`) el resultado que se espera que el intérprete de SWI-Prolog obtenga al ejecutar las queries especificadas en el punto anterior. Tener en cuenta las siguientes consideraciones sobre la sintaxis:
+3.  Escribir en el cuadro de texto ubicado en el medio de la ventana (`Resultado Esperado del Caso de Test`) el resultado que se espera que el intérprete de SWI-Prolog obtenga al ejecutar las queries especificadas en el punto anterior. Tener en cuenta las siguientes consideraciones sobre la sintaxis:
 
 ![image](https://github.com/user-attachments/assets/f955e75d-48c0-40f8-9c9c-9ba292e72198)
 
--   Si el resultado es verdadero sin ninguna unificación o falso, colocar True o False respectivamente.
--   Si el resultado es verdadero con unificaciones, colocar las variables como:
+-   Si el resultado es verdadero sin ninguna sustitución o falso, colocar True o False respectivamente.
+-   Si el resultado es verdadero con sustituciones, colocar las variables como:
 
     -   Variable : Valor
     -   Múltiples variables en la misma respuesta deben estar separadas con ampersand (&)
-    -   Múltiples conjuntos de unificaciones válidos separados por enter
+    -   Múltiples conjuntos de sustituciones válidos separados por enter
 
 -   Ejemplo:
 
@@ -141,7 +140,7 @@ Para crear una batería de tests se deben seguir los siguientes pasos:
         -   X = 3, Lista = [2, 3, 4]
         -   X = 4, Lista = [2, 3, 4]
 
--   Es importante notar que la comparación de resultados esperados y obtenidos es usando la unificación de Prolog, excepto que dos variables libres son consideradas iguales.
+-   Es importante notar que la comparación de resultados esperados y obtenidos es usando el operador de unificación de SWI-Prolog, excepto que dos variables libres son consideradas iguales.
 
 4.  Acciones para la generación de la batería de tests:
 
@@ -228,7 +227,7 @@ Luego de presionar **Agregar**
 Para probar por consola se tiene que llamar al ejecutable de consola (`console_main.exe`) con los siguientes argumentos:
 
 > [!NOTE]
-> Para especificar una direccion que incluya espacios, rodee la dirección con comillas dobles (Ejemplo: `"archivos de prolog/base.pl`). Permite direcciones relativas y absolutas.
+> Para especificar una direccion que incluya espacios, rodee la dirección con comillas dobles (Ejemplo: `"archivos de prolog/base.pl"`). Permite direcciones relativas y absolutas.
 
 -   Primer argumento: la dirección del archivo .pl correspondiente a la de base de conocimiento en PROLOG.
 -   Segundo argumento en adelante: dirección de los archivos o carpetas de batería de tests
@@ -239,4 +238,3 @@ Para probar por consola se tiene que llamar al ejecutable de consola (`console_m
     -   Estando en una consola en la carpeta de la herramienta: - `console_main.exe test_files/test_knowledge_base.pl test_files/test_examples.json test_files/test_examples_ordered.json`
 
 ![image](https://github.com/user-attachments/assets/ea2b6732-9958-43e6-9f99-5482abaf4d49)
-
