@@ -147,7 +147,7 @@ Para crear una batería de tests se deben seguir los siguientes pasos:
     -   **Agregar**: incorpora a la batería de tests el caso de prueba recientemente definido. Luego de presionar este botón se visualizará en el panel inferior de la ventana la consulta recientemente incorporada a la batería.
     -   **Guardar**: permite almacenar la batería de tests generada hasta el momento (correspondientes a las consultas visualizadas en el panel inferior de la ventana) en un archivo.
     -   **Deshacer**: elimina el último caso de prueba de la batería de tests generada hasta el momento.
-    -   **Limpiar**: elimina todos los caso de prueba de la batería de tests generada hasta el momento.
+    -   **Limpiar**: elimina todos los casos de prueba de la batería de tests generada hasta el momento.
 
 Luego de presionar **Agregar**
 
@@ -158,7 +158,7 @@ Luego de presionar **Agregar**
 
 ![image](https://github.com/user-attachments/assets/6e70c003-ae44-4ee3-9d3e-73f807f68580)
 
-8.  Presionar en `Guardar` o `Save`.
+7.  Presionar en `Guardar` o `Save`.
 
 ### Creación de batería de tests asistido
 
@@ -227,7 +227,7 @@ Luego de presionar **Agregar**
 Para probar por consola se tiene que llamar al ejecutable de consola (`console_main.exe`) con los siguientes argumentos:
 
 > [!NOTE]
-> Para especificar una direccion que incluya espacios, rodee la dirección con comillas dobles (Ejemplo: `"archivos de prolog/base.pl"`). Permite direcciones relativas y absolutas.
+> Para especificar una dirección que incluya espacios, rodee la dirección con comillas dobles (Ejemplo: `"archivos de prolog/base.pl"`). Permite direcciones relativas y absolutas.
 
 -   Primer argumento: la dirección del archivo .pl correspondiente a la de base de conocimiento en PROLOG.
 -   Segundo argumento en adelante: dirección de los archivos o carpetas de batería de tests
