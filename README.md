@@ -129,6 +129,9 @@ Para crear una batería de tests se deben seguir los siguientes pasos:
     -   Múltiples variables en la misma respuesta deben estar separadas con ampersand (&)
     -   Múltiples conjuntos de sustituciones válidos separados por enter
 
+-   Variables anónimas deberán ser colocadas simplemente como guión bajo (\_)
+-   Strings entre comillas simples, si se quiere que tengan comillas dobles, colocarlas dentro de las comillas simples (ej: '"X"').
+
 -   Ejemplo:
 
     -   Resultado colocado:

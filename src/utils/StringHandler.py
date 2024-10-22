@@ -43,7 +43,8 @@ class StringHandler:
         if data.isnumeric():
             return int(data)
         elif data[0] == '[' and data[-1] == ']':
-            transformed_list = ast.literal_eval(data)
+            cleaned_data = data.replace('_', 'None')
+            transformed_list = ast.literal_eval(cleaned_data)
         
             # Iterate through the list and process elements if necessary
             for i, element in enumerate(transformed_list):
@@ -51,5 +52,5 @@ class StringHandler:
                     transformed_list[i] = int(element)
         
             return transformed_list
-        else:
+        else: 
             return data

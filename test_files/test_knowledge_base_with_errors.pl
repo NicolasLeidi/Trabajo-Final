@@ -1,5 +1,9 @@
 crear(X, Y, [X, Y]).
 
+ordered(c).
+ordered(b).
+ordered(a).
+ordered(d).
 
 insertar_ordenado([], Ys, Ys).
 insertar_ordenado(Xs, [], Xs).
@@ -27,8 +31,3 @@ crossword(V1, V2, V3, H1, H2, H3):-
 
 this_must_fail(test).
 this_must_succeed(test).
-
-ordered(c).
-ordered(b).
-ordered(a).
-ordered(d).

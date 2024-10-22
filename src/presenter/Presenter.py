@@ -112,7 +112,7 @@ class AppPresenter(ABC):
                             
                             # If the value starts with underscore, it means it's a free variable that needs to be replaced with None
                             
-                            if (isinstance(unstringified, str) and unstringified[0] == '_'):
+                            if (unstringified == '_' or (isinstance(unstringified, str) and unstringified[0] == '_')):
                                 unstringified = None
                             
                             result_to_add[name.strip()] = unstringified
